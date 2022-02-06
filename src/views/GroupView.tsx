@@ -9,11 +9,11 @@ export const Groupview = (props: Props) => {
   const { group } = props;
 
   return (
-    <div>
-      <div>{group.name}</div>
+    <div className="w-content mx-auto">
+      <h2>{group.name}</h2>
       <div>
         {group.todos?.map((todo) => (
-          <Todo todoItem={todo} />
+          <Todo key={todo.id} todoItem={todo} />
         ))}
       </div>
     </div>
