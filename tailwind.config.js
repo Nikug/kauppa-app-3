@@ -5,7 +5,7 @@ module.exports = {
       width: {
         content: "600px",
       },
-      "max-width": {
+      maxWidth: {
         content: "600px",
       },
     },

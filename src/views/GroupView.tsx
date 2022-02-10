@@ -10,7 +10,7 @@ export const Groupview = (props: Props) => {
   const { group } = props;
 
   return (
-    <div className="w-content mx-auto">
+    <div className="w-full max-w-content">
       <h2>{group.name}</h2>
       <div>
         {group.todos?.map((todo) => (
