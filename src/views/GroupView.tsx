@@ -1,4 +1,5 @@
 import { Todo } from "../components/Todo";
+import { TodoInput } from "../components/TodoInput";
 import { TodoGroup } from "../types/todo";
 
 interface Props {
@@ -15,6 +16,7 @@ export const Groupview = (props: Props) => {
         {group.todos?.map((todo) => (
           <Todo key={todo.id} todoItem={todo} />
         ))}
+        <TodoInput group={group} />
       </div>
     </div>
   );
