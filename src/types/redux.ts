@@ -1,6 +1,6 @@
 import { TodoItem } from "./todo";
 
 export interface AddTodoPayload {
-  groupdId: string;
+  groupId: string;
   todo: TodoItem;
 }

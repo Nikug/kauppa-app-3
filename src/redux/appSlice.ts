@@ -17,7 +17,7 @@ export const appSlice = createSlice({
   reducers: {
     addTodo: (state, action: PayloadAction<AddTodoPayload>) => {
       for (const group of state.groups) {
-        if (group.id === action.payload.groupdId) {
+        if (group.id === action.payload.groupId) {
           if (!group.todos) group.todos = [];
           group.todos.push(action.payload.todo);
           break;
