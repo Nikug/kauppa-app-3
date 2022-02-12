@@ -1,15 +1,10 @@
 import classNames from "classnames";
-import { DetailedHTMLProps, forwardRef, InputHTMLAttributes, Ref } from "react";
+import { forwardRef, Ref } from "react";
+import { InputProps } from "../../types/react";
 import { buttonClasses } from "./Button";
 
 export const SubmitButton = forwardRef(
-  (
-    props: DetailedHTMLProps<
-      InputHTMLAttributes<HTMLInputElement>,
-      HTMLInputElement
-    >,
-    ref: Ref<HTMLInputElement>
-  ) => {
+  (props: InputProps, ref: Ref<HTMLInputElement>) => {
     const { children, className, ...rest } = props;
 
     return (

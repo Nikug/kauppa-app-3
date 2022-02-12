@@ -1,6 +1,7 @@
 import classNames from "classnames";
-import { forwardRef, HTMLAttributes, Ref } from "react";
+import { forwardRef, Ref } from "react";
 import { CheckIcon } from "@heroicons/react/solid";
+import { InputProps } from "../../types/react";
 
 const checkboxClasses = [
   "appearance-none",
@@ -17,7 +18,7 @@ const checkboxClasses = [
 ];
 
 export const Checkbox = forwardRef(
-  (props: HTMLAttributes<HTMLInputElement>, ref: Ref<HTMLInputElement>) => {
+  (props: InputProps, ref: Ref<HTMLInputElement>) => {
     const { className, ...rest } = props;
 
     return (

@@ -14,7 +14,7 @@ export const Groupview = (props: Props) => {
       <h2>{group.name}</h2>
       <div>
         {group.todos?.map((todo) => (
-          <Todo key={todo.id} todo={todo} />
+          <Todo key={todo.id} todo={todo} group={group} />
         ))}
         <TodoInput group={group} />
       </div>
