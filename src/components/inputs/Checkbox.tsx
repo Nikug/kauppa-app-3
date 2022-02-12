@@ -13,6 +13,7 @@ const checkboxClasses = [
   "border-2",
   "checked:border-none",
   "checked:bg-primary",
+  "hover:checked:bg-primary-dark",
   "transition-all",
   "duration-75",
 ];

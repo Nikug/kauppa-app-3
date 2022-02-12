@@ -9,7 +9,6 @@ const textClasses = (done: boolean) =>
     "text-black": !done,
     "font-semibold": !done,
     "text-muted-dark": done,
-    "line-through": done,
     "font-medium": done,
   });
 
