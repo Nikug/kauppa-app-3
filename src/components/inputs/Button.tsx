@@ -7,8 +7,8 @@ export const buttonClasses = classNames(
   "shadow",
   "px-4",
   "py-2",
-  "bg-indigo-600",
-  "hover:bg-indigo-700"
+  "bg-primary",
+  "hover:bg-primary-dark"
 );
 
 export const Button = forwardRef(

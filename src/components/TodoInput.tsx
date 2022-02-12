@@ -4,6 +4,7 @@ import { useAppDispatch } from "../redux/hooks";
 import { TodoGroup, TodoItem } from "../types/todo";
 import { SubmitButton } from "./inputs/SubmitButton";
 import { TextInput } from "./inputs/TextInput";
+import { v1 as uuid } from "uuid";
 
 interface FormInputs {
   content: string;
@@ -20,7 +21,8 @@ export const TodoInput = (props: Props) => {
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     const newTodo: TodoItem = {
-      id: data.content,
+      id: uuid(),
+      done: false,
       content: data.content,
     };
     dispatch(addTodo({ groupId: group.id, todo: newTodo }));
@@ -29,7 +31,7 @@ export const TodoInput = (props: Props) => {
   };
 
   return (
-    <div className="fixed bottom-0 w-full max-w-content flex items-center h-16 bg-slate-400">
+    <div className="fixed bottom-0 w-full max-w-content flex items-center h-16 bg-secondary-light">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex gap-x-4 w-full px-4"

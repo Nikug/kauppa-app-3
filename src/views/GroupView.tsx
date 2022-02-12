@@ -1,4 +1,4 @@
-import { Todo } from "../components/Todo";
+import { Todo } from "../todo";
 import { TodoInput } from "../components/TodoInput";
 import { TodoGroup } from "../types/todo";
 
@@ -14,7 +14,7 @@ export const Groupview = (props: Props) => {
       <h2>{group.name}</h2>
       <div>
         {group.todos?.map((todo) => (
-          <Todo key={todo.id} todoItem={todo} />
+          <Todo key={todo.id} todo={todo} />
         ))}
         <TodoInput group={group} />
       </div>
