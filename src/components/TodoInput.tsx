@@ -39,7 +39,7 @@ export const TodoInput = (props: Props) => {
         <TextInput
           {...register("content")}
           className="w-full"
-          placeholder="Lisää..."
+          placeholder="New..."
         />
         <SubmitButton value="Add" />
       </form>
