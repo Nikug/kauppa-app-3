@@ -9,3 +9,8 @@ export interface UpdateTodoPayload {
   groupId: string;
   todo: TodoItem;
 }
+
+export interface RemoveTodoPayload {
+  groupId: string;
+  todo: TodoItem;
+}

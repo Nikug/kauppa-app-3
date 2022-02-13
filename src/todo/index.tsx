@@ -1,16 +1,21 @@
+import { XIcon } from "@heroicons/react/outline";
 import classNames from "classnames";
 import { Checkbox } from "../components/inputs/Checkbox";
-import { updateTodo } from "../redux/appSlice";
+import { IconButton } from "../components/inputs/IconButton";
+import { removeTodo, updateTodo } from "../redux/appSlice";
 import { useAppDispatch } from "../redux/hooks";
 import { TodoGroup, TodoItem } from "../types/todo";
 
 const textClasses = (done: boolean) =>
-  classNames({
-    "text-black": !done,
-    "font-semibold": !done,
-    "text-muted-dark": done,
-    "font-medium": done,
-  });
+  classNames(
+    {
+      "text-black": !done,
+      "font-semibold": !done,
+      "text-muted-dark": done,
+      "font-medium": done,
+    },
+    "capitalize"
+  );
 
 const containerClasses = (done: boolean) =>
   classNames(
@@ -18,6 +23,7 @@ const containerClasses = (done: boolean) =>
     "px-4",
     "flex",
     "items-center",
+    "justify-between",
     "gap-4",
     "transition-all",
     {
@@ -39,18 +45,25 @@ export const Todo = (props: Props) => {
 
   return (
     <div className={containerClasses(todo.done)}>
-      <Checkbox
-        checked={todo.done}
-        onChange={(event) =>
-          dispatch(
-            updateTodo({
-              groupId: group.id,
-              todo: { ...todo, done: event.target.checked },
-            })
-          )
-        }
+      <div className="flex gap-x-4">
+        <Checkbox
+          checked={todo.done}
+          onChange={(event) =>
+            dispatch(
+              updateTodo({
+                groupId: group.id,
+                todo: { ...todo, done: event.target.checked },
+              })
+            )
+          }
+        />
+        <p className={textClasses(todo.done)}>{todo.content}</p>
+      </div>
+      <IconButton
+        icon={<XIcon />}
+        className="text-primary hover:text-primary-dark"
+        onClick={() => dispatch(removeTodo({ groupId: group.id, todo: todo }))}
       />
-      <p className={textClasses(todo.done)}>{todo.content}</p>
     </div>
   );
 };

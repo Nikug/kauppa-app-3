@@ -30,7 +30,7 @@ export const Checkbox = forwardRef(
           className={classNames(className, checkboxClasses)}
           ref={ref}
         />
-        <CheckIcon className="w-6 h-6 ml-1 text-white hidden peer-checked:block absolute pointer-events-none" />
+        <CheckIcon className="w-6 h-6 ml-1 mt-1 text-white hidden peer-checked:block absolute pointer-events-none" />
       </>
     );
   }
