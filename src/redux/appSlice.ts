@@ -6,13 +6,24 @@ import {
 } from "../types/redux";
 import { TodoGroup } from "../types/todo";
 import { RootState } from "./store";
+import { v1 as uuid } from "uuid";
 
 interface AppState {
   groups: TodoGroup[];
 }
 
 const initialState: AppState = {
-  groups: [{ id: "main", name: "Main", todos: [] }],
+  groups: [
+    {
+      id: "main",
+      name: "Main",
+      todos: [
+        { id: uuid(), content: "Banaani", done: false },
+        { id: uuid(), content: "Omena", done: false },
+        { id: uuid(), content: "appelsiini", done: true },
+      ],
+    },
+  ],
 };
 
 export const appSlice = createSlice({

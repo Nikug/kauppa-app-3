@@ -13,7 +13,7 @@ export const Groupview = (props: Props) => {
   return (
     <div className="w-full max-w-content">
       <GroupHeader group={group} />
-      <div className="fixed top-16 bottom-16 w-full max-w-content overflow-y-auto">
+      <div className="fixed top-16 bottom-16 w-full max-w-content overflow-y-auto overflow-x-hidden">
         {group.todos?.map((todo) => (
           <Todo key={todo.id} todo={todo} group={group} />
         ))}
