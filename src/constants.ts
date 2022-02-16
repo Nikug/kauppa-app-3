@@ -1,0 +1,1 @@
+export const GESTURE_DISTANCE_THRESHOLD = 50;
