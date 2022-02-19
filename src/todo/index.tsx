@@ -4,7 +4,7 @@ import { Checkbox } from "../components/inputs/Checkbox";
 import { removeTodo, updateTodo } from "../redux/appSlice";
 import { useAppDispatch } from "../redux/hooks";
 import { TodoGroup, TodoItem } from "../types/todo";
-import { useSpring, animated } from "@react-spring/web";
+import { useSpring, animated, useTransition } from "@react-spring/web";
 import { useGesture } from "@use-gesture/react";
 import { GESTURE_DISTANCE_THRESHOLD } from "../constants";
 import {
@@ -41,7 +41,8 @@ const containerClasses = (done: boolean) =>
       "border-muted-light": done,
       "bg-white": !done,
     },
-    "touch-none"
+    "touch-none",
+    "transition-colors"
   );
 
 const backgroundClasses = classNames(
@@ -90,6 +91,13 @@ export const Todo = (props: Props) => {
     },
   });
 
+  const transition = useTransition(todo.id, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leaver: { opacity: 0 },
+    delay: 200,
+  });
+
   const position = spring.x.to({
     range: [-100, 0, 100],
     output: [-100, 0, 100],
@@ -113,40 +121,43 @@ export const Todo = (props: Props) => {
     dispatch(removeTodo({ groupId: group.id, todo: todo }));
   };
 
-  return (
-    <div className="relative">
-      <animated.div
-        {...bind()}
-        style={{ x: position }}
-        className={containerClasses(todo.done)}
-      >
-        <div className="flex gap-x-4">
-          <Checkbox checked={todo.done} onChange={handleCheck} />
-          <p className={textClasses(todo.done)}>{todo.content}</p>
-        </div>
-      </animated.div>
-      {todo.done && (
-        <div
-          className={classNames(
-            backgroundClasses,
-            "bg-gradient-to-r from-white to-secondary via-white"
+  return transition(
+    (styles, id) =>
+      id && (
+        <animated.div className="relative" style={styles}>
+          <animated.div
+            {...bind()}
+            style={{ x: position }}
+            className={containerClasses(todo.done)}
+          >
+            <div className="flex gap-x-4">
+              <Checkbox checked={todo.done} onChange={handleCheck} />
+              <p className={textClasses(todo.done)}>{todo.content}</p>
+            </div>
+          </animated.div>
+          {todo.done && (
+            <div
+              className={classNames(
+                backgroundClasses,
+                "bg-gradient-to-r from-white to-secondary via-white"
+              )}
+            >
+              <TrashIcon className="h-8 w-8 text-primary-dark" />
+              <RewindIcon className="h-8 w-8 text-white" />
+            </div>
           )}
-        >
-          <TrashIcon className="h-8 w-8 text-primary-dark" />
-          <RewindIcon className="h-8 w-8 text-white" />
-        </div>
-      )}
-      {!todo.done && (
-        <div
-          className={classNames(
-            backgroundClasses,
-            "bg-gradient-to-l from-white to-primary-dark via-white"
+          {!todo.done && (
+            <div
+              className={classNames(
+                backgroundClasses,
+                "bg-gradient-to-l from-white to-primary-dark via-white"
+              )}
+            >
+              <CheckIcon className="h-8 w-8 text-white" />
+              <PencilIcon className="h-8 w-8 text-primary-dark" />
+            </div>
           )}
-        >
-          <CheckIcon className="h-8 w-8 text-white" />
-          <PencilIcon className="h-8 w-8 text-primary-dark" />
-        </div>
-      )}
-    </div>
+        </animated.div>
+      )
   );
 };
