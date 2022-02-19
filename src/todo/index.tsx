@@ -4,9 +4,9 @@ import { Checkbox } from "../components/inputs/Checkbox";
 import { removeTodo, updateTodo } from "../redux/appSlice";
 import { useAppDispatch } from "../redux/hooks";
 import { TodoGroup, TodoItem } from "../types/todo";
-import { useSpring, animated, useTransition } from "@react-spring/web";
+import { useSpring, animated } from "@react-spring/web";
 import { useGesture } from "@use-gesture/react";
-import { GESTURE_DISTANCE_THRESHOLD } from "../constants";
+import { GESTURE_DISTANCE_THRESHOLD, GESTURE_MAX_DISTANCE } from "../constants";
 import {
   CheckIcon,
   PencilIcon,
@@ -29,7 +29,7 @@ const containerClasses = (done: boolean) =>
   classNames(
     "absolute",
     "w-full",
-    "h-16",
+    "h-full",
     "border",
     "px-4",
     "flex",
@@ -46,8 +46,8 @@ const containerClasses = (done: boolean) =>
   );
 
 const backgroundClasses = classNames(
-  "h-16",
   "px-4",
+  "h-full",
   "flex",
   "justify-between",
   "items-center"
@@ -91,16 +91,9 @@ export const Todo = (props: Props) => {
     },
   });
 
-  const transition = useTransition(todo.id, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leaver: { opacity: 0 },
-    delay: 200,
-  });
-
   const position = spring.x.to({
-    range: [-100, 0, 100],
-    output: [-100, 0, 100],
+    range: [-GESTURE_MAX_DISTANCE, 0, GESTURE_MAX_DISTANCE],
+    output: [-GESTURE_MAX_DISTANCE, 0, GESTURE_MAX_DISTANCE],
     extrapolate: "clamp",
   });
 
@@ -121,43 +114,40 @@ export const Todo = (props: Props) => {
     dispatch(removeTodo({ groupId: group.id, todo: todo }));
   };
 
-  return transition(
-    (styles, id) =>
-      id && (
-        <animated.div className="relative" style={styles}>
-          <animated.div
-            {...bind()}
-            style={{ x: position }}
-            className={containerClasses(todo.done)}
-          >
-            <div className="flex gap-x-4">
-              <Checkbox checked={todo.done} onChange={handleCheck} />
-              <p className={textClasses(todo.done)}>{todo.content}</p>
-            </div>
-          </animated.div>
-          {todo.done && (
-            <div
-              className={classNames(
-                backgroundClasses,
-                "bg-gradient-to-r from-white to-secondary via-white"
-              )}
-            >
-              <TrashIcon className="h-8 w-8 text-primary-dark" />
-              <RewindIcon className="h-8 w-8 text-white" />
-            </div>
+  return (
+    <div className="relative h-full">
+      <animated.div
+        {...bind()}
+        style={{ x: position }}
+        className={containerClasses(todo.done)}
+      >
+        <div className="flex gap-x-4">
+          <Checkbox checked={todo.done} onChange={handleCheck} />
+          <p className={textClasses(todo.done)}>{todo.content}</p>
+        </div>
+      </animated.div>
+      {todo.done && (
+        <div
+          className={classNames(
+            backgroundClasses,
+            "bg-gradient-to-r from-white to-secondary via-white"
           )}
-          {!todo.done && (
-            <div
-              className={classNames(
-                backgroundClasses,
-                "bg-gradient-to-l from-white to-primary-dark via-white"
-              )}
-            >
-              <CheckIcon className="h-8 w-8 text-white" />
-              <PencilIcon className="h-8 w-8 text-primary-dark" />
-            </div>
+        >
+          <TrashIcon className="h-8 w-8 text-primary-dark" />
+          <RewindIcon className="h-8 w-8 text-white" />
+        </div>
+      )}
+      {!todo.done && (
+        <div
+          className={classNames(
+            backgroundClasses,
+            "bg-gradient-to-l from-white to-primary-dark via-white"
           )}
-        </animated.div>
-      )
+        >
+          <CheckIcon className="h-8 w-8 text-white" />
+          <PencilIcon className="h-8 w-8 text-primary-dark" />
+        </div>
+      )}
+    </div>
   );
 };

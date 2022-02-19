@@ -1,1 +1,2 @@
 export const GESTURE_DISTANCE_THRESHOLD = 50;
+export const GESTURE_MAX_DISTANCE = 75;
