@@ -7,12 +7,7 @@ import { TodoGroup, TodoItem } from "../types/todo";
 import { useSpring, animated } from "@react-spring/web";
 import { useGesture } from "@use-gesture/react";
 import { GESTURE_DISTANCE_THRESHOLD, GESTURE_MAX_DISTANCE } from "../constants";
-import {
-  CheckIcon,
-  PencilIcon,
-  RewindIcon,
-  TrashIcon,
-} from "@heroicons/react/outline";
+import { Background } from "./Background";
 
 const textClasses = (done: boolean) =>
   classNames(
@@ -45,14 +40,6 @@ const containerClasses = (done: boolean) =>
     "transition-colors"
   );
 
-const backgroundClasses = classNames(
-  "px-4",
-  "h-full",
-  "flex",
-  "justify-between",
-  "items-center"
-);
-
 interface Props {
   todo: TodoItem;
   group: TodoGroup;
@@ -73,7 +60,7 @@ export const Todo = (props: Props) => {
         immediate: (name) => active && name === "x",
       });
     },
-    onDragEnd: ({ movement: [movementX], ...rest }) => {
+    onDragEnd: ({ movement: [movementX] }) => {
       if (Math.abs(movementX) < GESTURE_DISTANCE_THRESHOLD) return;
       const isRight = movementX > 0;
 
@@ -116,38 +103,20 @@ export const Todo = (props: Props) => {
 
   return (
     <div className="relative h-full">
+      <Background done={todo.done} />
       <animated.div
-        {...bind()}
         style={{ x: position }}
         className={containerClasses(todo.done)}
       >
-        <div className="flex gap-x-4">
-          <Checkbox checked={todo.done} onChange={handleCheck} />
-          <p className={textClasses(todo.done)}>{todo.content}</p>
+        <div className="flex w-full h-full items-center gap-4">
+          <div className="">
+            <Checkbox checked={todo.done} onChange={handleCheck} />
+          </div>
+          <div {...bind()} className="flex items-center grow h-full">
+            <p className={textClasses(todo.done)}>{todo.content}</p>
+          </div>
         </div>
       </animated.div>
-      {todo.done && (
-        <div
-          className={classNames(
-            backgroundClasses,
-            "bg-gradient-to-r from-white to-secondary via-white"
-          )}
-        >
-          <TrashIcon className="h-8 w-8 text-primary-dark" />
-          <RewindIcon className="h-8 w-8 text-white" />
-        </div>
-      )}
-      {!todo.done && (
-        <div
-          className={classNames(
-            backgroundClasses,
-            "bg-gradient-to-l from-white to-primary-dark via-white"
-          )}
-        >
-          <CheckIcon className="h-8 w-8 text-white" />
-          <PencilIcon className="h-8 w-8 text-primary-dark" />
-        </div>
-      )}
     </div>
   );
 };

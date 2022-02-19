@@ -3,6 +3,7 @@ import { TodoInput } from "../components/TodoInput";
 import { TodoGroup } from "../types/todo";
 import { GroupHeader } from "../components/GroupHeader";
 import { animated, useTransition } from "@react-spring/web";
+import { ANIMATION_DURATION, TODO_ITEM_HEIGHT } from "../constants";
 
 interface Props {
   group: TodoGroup;
@@ -12,12 +13,12 @@ export const Groupview = (props: Props) => {
   const { group } = props;
 
   const transitions = useTransition(group.todos ?? [], {
+    initial: { opacity: 1, height: TODO_ITEM_HEIGHT },
     from: { opacity: 0, height: "0" },
-    enter: { opacity: 1, height: "4rem" },
+    enter: { opacity: 1, height: TODO_ITEM_HEIGHT },
     leave: { opacity: 0, height: "0" },
-    delay: 200,
+    delay: ANIMATION_DURATION,
     keys: (todo) => todo.id,
-    exitBeforeEnter: false,
   });
 
   return (

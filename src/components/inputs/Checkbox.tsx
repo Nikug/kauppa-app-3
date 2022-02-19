@@ -5,7 +5,6 @@ import { InputProps } from "../../types/react";
 
 const checkboxClasses = [
   "appearance-none",
-  "relative",
   "peer",
   "w-8",
   "h-8",
@@ -23,15 +22,15 @@ export const Checkbox = forwardRef(
     const { className, ...rest } = props;
 
     return (
-      <>
+      <div className="relative">
         <input
           type="checkbox"
           {...rest}
           className={classNames(className, checkboxClasses)}
           ref={ref}
         />
-        <CheckIcon className="w-6 h-6 ml-1 mt-1 text-white hidden peer-checked:block absolute pointer-events-none" />
-      </>
+        <CheckIcon className="absolute inset-1 text-white hidden peer-checked:block pointer-events-none" />
+      </div>
     );
   }
 );
