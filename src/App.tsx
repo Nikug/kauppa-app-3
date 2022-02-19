@@ -4,6 +4,7 @@ import { Groupview } from "./views/GroupView";
 
 function App() {
   const groups = useSelector(getGroups);
+
   return (
     <div className="flex justify-center">
       {groups.map((group) => (
