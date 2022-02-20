@@ -18,3 +18,7 @@ export interface RemoveTodoPayload {
 export interface UpdateGroupPayload {
   group: TodoGroup;
 }
+
+export interface SetGroupsPayload {
+  groups: TodoGroup[];
+}

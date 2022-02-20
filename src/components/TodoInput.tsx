@@ -1,8 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { TodoGroup, TodoItem } from "../types/todo";
+import { Api, TodoGroup, TodoItem } from "../types/todo";
 import { SubmitButton } from "./inputs/SubmitButton";
 import { TextInput } from "./inputs/TextInput";
-import { v1 as uuid } from "uuid";
 import { addTodo } from "../firebase/api";
 
 interface FormInputs {
@@ -18,8 +17,7 @@ export const TodoInput = (props: Props) => {
   const { register, handleSubmit, reset, setFocus } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    const newTodo: TodoItem = {
-      id: uuid(),
+    const newTodo: Api<TodoItem> = {
       done: false,
       content: data.content,
     };

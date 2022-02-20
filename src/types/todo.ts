@@ -9,3 +9,11 @@ export interface TodoGroup {
   name?: string;
   todos?: TodoItem[];
 }
+
+export interface FirebaseTodoGroup {
+  name?: string;
+  todos?: FirebaseData<TodoItem>;
+}
+
+export type Api<T> = Omit<T, "id">;
+export type FirebaseData<T> = Record<string, Api<T>>;

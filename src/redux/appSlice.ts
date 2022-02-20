@@ -2,29 +2,19 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   AddTodoPayload,
   RemoveTodoPayload,
+  SetGroupsPayload,
   UpdateGroupPayload,
   UpdateTodoPayload,
 } from "../types/redux";
 import { TodoGroup } from "../types/todo";
 import { RootState } from "./store";
-import { v1 as uuid } from "uuid";
 
 interface AppState {
   groups: TodoGroup[];
 }
 
 const initialState: AppState = {
-  groups: [
-    {
-      id: "main",
-      name: "Main",
-      todos: [
-        { id: uuid(), content: "Banaani", done: false },
-        { id: uuid(), content: "Omena", done: false },
-        { id: uuid(), content: "appelsiini", done: true },
-      ],
-    },
-  ],
+  groups: [],
 };
 
 export const appSlice = createSlice({
@@ -67,14 +57,23 @@ export const appSlice = createSlice({
     },
     updateGroup: (state, action: PayloadAction<UpdateGroupPayload>) => {
       const { group } = action.payload;
-      state.groups = state.groups.map((oldGroup) =>
-        oldGroup.id === group.id ? group : oldGroup
+      const index = state.groups.findIndex(
+        (existingGroup) => existingGroup.id === group.id
       );
+      if (index < 0) {
+        state.groups.push(group);
+      } else {
+        state.groups[index] = group;
+      }
+    },
+    setGroups: (state, action: PayloadAction<SetGroupsPayload>) => {
+      const { groups } = action.payload;
+      state.groups = groups;
     },
   },
 });
 
-export const { addTodo, updateTodo, removeTodo, updateGroup } =
+export const { addTodo, updateTodo, removeTodo, updateGroup, setGroups } =
   appSlice.actions;
 export default appSlice.reducer;
 
