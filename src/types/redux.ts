@@ -1,4 +1,4 @@
-import { TodoItem } from "./todo";
+import { TodoGroup, TodoItem } from "./todo";
 
 export interface AddTodoPayload {
   groupId: string;
@@ -13,4 +13,8 @@ export interface UpdateTodoPayload {
 export interface RemoveTodoPayload {
   groupId: string;
   todo: TodoItem;
+}
+
+export interface UpdateGroupPayload {
+  group: TodoGroup;
 }

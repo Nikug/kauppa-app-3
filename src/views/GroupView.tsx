@@ -4,6 +4,8 @@ import { TodoGroup } from "../types/todo";
 import { GroupHeader } from "../components/GroupHeader";
 import { animated, useTransition } from "@react-spring/web";
 import { ANIMATION_DURATION, TODO_ITEM_HEIGHT } from "../constants";
+import { useEffect } from "react";
+import { listenForGroup } from "../firebase/api";
 
 interface Props {
   group: TodoGroup;
@@ -11,6 +13,11 @@ interface Props {
 
 export const Groupview = (props: Props) => {
   const { group } = props;
+
+  useEffect(() => {
+    const unsubscribe = listenForGroup(group.id);
+    return unsubscribe;
+  }, [group.id]);
 
   const transitions = useTransition(group.todos ?? [], {
     initial: { opacity: 1, height: TODO_ITEM_HEIGHT },

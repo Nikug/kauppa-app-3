@@ -1,10 +1,9 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { addTodo } from "../redux/appSlice";
-import { useAppDispatch } from "../redux/hooks";
 import { TodoGroup, TodoItem } from "../types/todo";
 import { SubmitButton } from "./inputs/SubmitButton";
 import { TextInput } from "./inputs/TextInput";
 import { v1 as uuid } from "uuid";
+import { addTodo } from "../firebase/api";
 
 interface FormInputs {
   content: string;
@@ -17,7 +16,6 @@ interface Props {
 export const TodoInput = (props: Props) => {
   const { group } = props;
   const { register, handleSubmit, reset, setFocus } = useForm<FormInputs>();
-  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     const newTodo: TodoItem = {
@@ -25,7 +23,7 @@ export const TodoInput = (props: Props) => {
       done: false,
       content: data.content,
     };
-    dispatch(addTodo({ groupId: group.id, todo: newTodo }));
+    addTodo(group.id, newTodo);
     reset();
     setFocus("content");
   };

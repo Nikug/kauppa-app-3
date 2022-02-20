@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   AddTodoPayload,
   RemoveTodoPayload,
+  UpdateGroupPayload,
   UpdateTodoPayload,
 } from "../types/redux";
 import { TodoGroup } from "../types/todo";
@@ -64,10 +65,17 @@ export const appSlice = createSlice({
           : group
       );
     },
+    updateGroup: (state, action: PayloadAction<UpdateGroupPayload>) => {
+      const { group } = action.payload;
+      state.groups = state.groups.map((oldGroup) =>
+        oldGroup.id === group.id ? group : oldGroup
+      );
+    },
   },
 });
 
-export const { addTodo, updateTodo, removeTodo } = appSlice.actions;
+export const { addTodo, updateTodo, removeTodo, updateGroup } =
+  appSlice.actions;
 export default appSlice.reducer;
 
 export const getGroups = (state: RootState) => state.app.groups;
