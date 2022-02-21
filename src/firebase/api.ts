@@ -6,16 +6,42 @@ import {
   set,
   onValue,
   get,
+  remove,
 } from "firebase/database";
 import { setGroups, updateGroup } from "../redux/appSlice";
 import { Api, TodoItem } from "../types/todo";
 import { store } from "../redux/store";
 
-export const addTodo = (groupId: string, todo: Api<TodoItem>) => {
+export const addTodo = async (groupId: string, todo: Api<TodoItem>) => {
   const firebase = getDatabase();
 
-  const newTodo = push(child(ref(firebase), `groups/${groupId}/todos`));
-  set(newTodo, todo);
+  try {
+    const newTodo = push(child(ref(firebase), `groups/${groupId}/todos`));
+    await set(newTodo, todo);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const removeTodo = async (groupId: string, todoId: string) => {
+  const firebase = getDatabase();
+
+  try {
+    await remove(ref(firebase, `groups/${groupId}/todos/${todoId}`));
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const updateTodo = async (groupId: string, todo: TodoItem) => {
+  const firebase = getDatabase();
+
+  try {
+    const { id, ...rest } = todo;
+    await set(ref(firebase, `groups/${groupId}/todos/${id}`), rest);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const listenForGroup = (groupId: string) => {
@@ -29,8 +55,12 @@ export const listenForGroup = (groupId: string) => {
 
 export const getGroups = async (route: string) => {
   const firebase = getDatabase();
-  const groupsSnapshot = await get(child(ref(firebase), "groups"));
-  if (groupsSnapshot.exists()) {
-    store.dispatch(setGroups({ groups: groupsSnapshot.val() }));
+  try {
+    const groupsSnapshot = await get(child(ref(firebase), "groups"));
+    if (groupsSnapshot.exists()) {
+      store.dispatch(setGroups({ groups: groupsSnapshot.val() }));
+    }
+  } catch (e) {
+    console.error(e);
   }
 };

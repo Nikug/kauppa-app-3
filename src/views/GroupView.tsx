@@ -45,7 +45,7 @@ export const Groupview = (props: Props) => {
           (styles, todo) =>
             todo && (
               <animated.div style={styles}>
-                <Todo key={todo.id} todo={todo} />
+                <Todo key={todo.id} todo={todo} groupId={groupId} />
               </animated.div>
             )
         )}

@@ -6,6 +6,7 @@ import { useSpring, animated } from "@react-spring/web";
 import { useGesture } from "@use-gesture/react";
 import { GESTURE_DISTANCE_THRESHOLD, GESTURE_MAX_DISTANCE } from "../constants";
 import { Background } from "./Background";
+import { updateTodo, removeTodo } from "../firebase/api";
 
 const textClasses = (done: boolean) =>
   classNames(
@@ -39,11 +40,12 @@ const containerClasses = (done: boolean) =>
   );
 
 interface Props {
+  groupId: string;
   todo: TodoItem;
 }
 
 export const Todo = (props: Props) => {
-  const { todo } = props;
+  const { todo, groupId } = props;
 
   const [spring, api] = useSpring(() => ({
     from: { x: 0 },
@@ -84,12 +86,12 @@ export const Todo = (props: Props) => {
     updateCheck(event.target.checked);
   };
 
-  const updateCheck = (done: boolean) => {
-    // Add firebase handler here
+  const updateCheck = async (done: boolean) => {
+    await updateTodo(groupId, { ...todo, done });
   };
 
-  const handleRemove = () => {
-    // Add firebase handler here
+  const handleRemove = async () => {
+    await removeTodo(groupId, todo.id);
   };
 
   return (
