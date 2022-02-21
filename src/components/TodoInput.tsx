@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Api, TodoGroup, TodoItem } from "../types/todo";
+import { Api, TodoItem } from "../types/todo";
 import { SubmitButton } from "./inputs/SubmitButton";
 import { TextInput } from "./inputs/TextInput";
 import { addTodo } from "../firebase/api";
@@ -9,11 +9,11 @@ interface FormInputs {
 }
 
 interface Props {
-  group: TodoGroup;
+  groupId: string;
 }
 
 export const TodoInput = (props: Props) => {
-  const { group } = props;
+  const { groupId } = props;
   const { register, handleSubmit, reset, setFocus } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
@@ -21,7 +21,7 @@ export const TodoInput = (props: Props) => {
       done: false,
       content: data.content,
     };
-    addTodo(group.id, newTodo);
+    addTodo(groupId, newTodo);
     reset();
     setFocus("content");
   };

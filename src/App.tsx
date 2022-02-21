@@ -13,7 +13,9 @@ function App() {
 
   return (
     <div className="flex justify-center">
-      {groups?.length > 0 && <Groupview key={groups[0].id} group={groups[0]} />}
+      {groups["main"] && (
+        <Groupview key="main" groupId="main" group={groups["main"]} />
+      )}
     </div>
   );
 }

@@ -1,9 +1,7 @@
 import classNames from "classnames";
 import { ChangeEvent } from "react";
 import { Checkbox } from "../components/inputs/Checkbox";
-import { removeTodo, updateTodo } from "../redux/appSlice";
-import { useAppDispatch } from "../redux/hooks";
-import { TodoGroup, TodoItem } from "../types/todo";
+import { TodoItem } from "../types/todo";
 import { useSpring, animated } from "@react-spring/web";
 import { useGesture } from "@use-gesture/react";
 import { GESTURE_DISTANCE_THRESHOLD, GESTURE_MAX_DISTANCE } from "../constants";
@@ -42,12 +40,10 @@ const containerClasses = (done: boolean) =>
 
 interface Props {
   todo: TodoItem;
-  group: TodoGroup;
 }
 
 export const Todo = (props: Props) => {
-  const { todo, group } = props;
-  const dispatch = useAppDispatch();
+  const { todo } = props;
 
   const [spring, api] = useSpring(() => ({
     from: { x: 0 },
@@ -89,16 +85,11 @@ export const Todo = (props: Props) => {
   };
 
   const updateCheck = (done: boolean) => {
-    dispatch(
-      updateTodo({
-        groupId: group.id,
-        todo: { ...todo, done },
-      })
-    );
+    // Add firebase handler here
   };
 
   const handleRemove = () => {
-    dispatch(removeTodo({ groupId: group.id, todo: todo }));
+    // Add firebase handler here
   };
 
   return (

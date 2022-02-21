@@ -8,9 +8,8 @@ import {
   get,
 } from "firebase/database";
 import { setGroups, updateGroup } from "../redux/appSlice";
-import { Api, FirebaseTodoGroup, TodoItem } from "../types/todo";
+import { Api, TodoItem } from "../types/todo";
 import { store } from "../redux/store";
-import { mapGroup, mapGroups } from "./util";
 
 export const addTodo = (groupId: string, todo: Api<TodoItem>) => {
   const firebase = getDatabase();
@@ -23,9 +22,7 @@ export const listenForGroup = (groupId: string) => {
   const firebase = getDatabase();
   const group = ref(firebase, `groups/${groupId}`);
   const unsubscribe = onValue(group, (snapshot) => {
-    const firebaseGroup: FirebaseTodoGroup = snapshot.val();
-    const newGroup = mapGroup(groupId, firebaseGroup);
-    store.dispatch(updateGroup({ group: newGroup }));
+    store.dispatch(updateGroup({ groupId: groupId, group: snapshot.val() }));
   });
   return unsubscribe;
 };
@@ -34,7 +31,6 @@ export const getGroups = async (route: string) => {
   const firebase = getDatabase();
   const groupsSnapshot = await get(child(ref(firebase), "groups"));
   if (groupsSnapshot.exists()) {
-    const mappedGroups = mapGroups(groupsSnapshot.val());
-    store.dispatch(setGroups({ groups: mappedGroups }));
+    store.dispatch(setGroups({ groups: groupsSnapshot.val() }));
   }
 };

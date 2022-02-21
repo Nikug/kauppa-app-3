@@ -1,25 +1,34 @@
 import { Todo } from "../todo";
 import { TodoInput } from "../components/TodoInput";
-import { TodoGroup } from "../types/todo";
 import { GroupHeader } from "../components/GroupHeader";
 import { animated, useTransition } from "@react-spring/web";
 import { ANIMATION_DURATION, TODO_ITEM_HEIGHT } from "../constants";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { listenForGroup } from "../firebase/api";
+import { TodoGroup, TodoItem } from "../types/todo";
 
 interface Props {
+  groupId: string;
   group: TodoGroup;
 }
 
 export const Groupview = (props: Props) => {
-  const { group } = props;
+  const { group, groupId } = props;
 
   useEffect(() => {
-    const unsubscribe = listenForGroup(group.id);
+    const unsubscribe = listenForGroup(groupId);
     return unsubscribe;
-  }, [group.id]);
+  }, [groupId]);
 
-  const transitions = useTransition(group.todos ?? [], {
+  const todos: TodoItem[] | undefined = useMemo(() => {
+    if (!group.todos) return undefined;
+    return Object.entries(group.todos).map(([id, todo]) => ({
+      id: id,
+      ...todo,
+    }));
+  }, [group.todos]);
+
+  const transitions = useTransition(todos ?? [], {
     initial: { opacity: 1, height: TODO_ITEM_HEIGHT },
     from: { opacity: 0, height: "0" },
     enter: { opacity: 1, height: TODO_ITEM_HEIGHT },
@@ -36,12 +45,12 @@ export const Groupview = (props: Props) => {
           (styles, todo) =>
             todo && (
               <animated.div style={styles}>
-                <Todo key={todo.id} todo={todo} group={group} />
+                <Todo key={todo.id} todo={todo} />
               </animated.div>
             )
         )}
       </div>
-      <TodoInput group={group} />
+      <TodoInput groupId={groupId} />
     </div>
   );
 };

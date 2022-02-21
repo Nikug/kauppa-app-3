@@ -5,12 +5,6 @@ export interface TodoItem {
 }
 
 export interface TodoGroup {
-  id: string;
-  name?: string;
-  todos?: TodoItem[];
-}
-
-export interface FirebaseTodoGroup {
   name?: string;
   todos?: FirebaseData<TodoItem>;
 }
