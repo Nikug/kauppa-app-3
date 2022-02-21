@@ -1,8 +1,11 @@
 ## Database schema
 
 - routes
-  - metadata
+  - users
+    - owner: `boolean`
 - groups
-  - metadata
-  - routeId
+  - name: `string`
+  - routeId: `string`
   - todos
+    - content: `string`
+    - done: `boolean`
