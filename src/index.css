@@ -30,3 +30,18 @@ code {
     @apply text-xl;
   }
 }
+
+@layer components {
+  .paper {
+    @apply rounded border shadow;
+  }
+  .paper-hover {
+    @apply rounded border shadow hover:shadow-lg transition-shadow;
+  }
+  .primary {
+    @apply bg-primary hover:bg-primary-dark;
+  }
+  .secondary {
+    @apply bg-secondary hover:bg-secondary-dark;
+  }
+}

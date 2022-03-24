@@ -4,3 +4,8 @@ export type InputProps = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 >;
+
+export interface LoginInformation {
+  email: string;
+  password: string;
+}

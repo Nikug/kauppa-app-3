@@ -1,24 +1,39 @@
 import classNames from "classnames";
-import { forwardRef, HTMLAttributes, Ref } from "react";
+import { DetailedHTMLProps, forwardRef, Ref } from "react";
 
-const inputClasses = classNames(
-  "text-black",
-  "border",
-  "rounded",
-  "px-4",
-  "outline-none"
-);
+const inputClasses = (hasError: boolean) =>
+  classNames(
+    "text-black",
+    "border",
+    "rounded",
+    "px-2",
+    "outline-none",
+    "w-full",
+    {
+      "border-error": hasError,
+    }
+  );
+
+interface Props {
+  error?: string;
+}
 
 export const TextInput = forwardRef(
-  (props: HTMLAttributes<HTMLInputElement>, ref: Ref<HTMLInputElement>) => {
-    const { className, ...rest } = props;
+  (
+    props: DetailedHTMLProps<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    > &
+      Props,
+    ref: Ref<HTMLInputElement>
+  ) => {
+    const { className, error, ...rest } = props;
 
     return (
-      <input
-        ref={ref}
-        {...rest}
-        className={classNames(className, inputClasses)}
-      />
+      <div className={className}>
+        <input ref={ref} {...rest} className={inputClasses(!!error)} />
+        {error && <p className="text-error text-sm">{error}</p>}
+      </div>
     );
   }
 );

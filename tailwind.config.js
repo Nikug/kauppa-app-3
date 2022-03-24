@@ -19,13 +19,16 @@ module.exports = {
         },
         secondary: {
           light: colors.stone[400],
-          DEFAULT: colors.stone[500],
-          dark: colors.stone[600],
+          DEFAULT: colors.stone[600],
+          dark: colors.stone[700],
         },
         muted: {
           light: colors.stone[200],
           DEFAULT: colors.stone[400],
           dark: colors.stone[500],
+        },
+        error: {
+          DEFAULT: colors.red[500],
         },
       },
     },
