@@ -5,6 +5,7 @@ import { getGroups as getApiGroups } from "./firebase/api";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./views/Home";
 import { Layout } from "./Layouts/Layout";
+import { Register } from "./views/Register";
 
 function App() {
   const groups = useSelector(getGroups);
@@ -20,7 +21,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
 
-            <Route path="/register" element={"Register"} />
+            <Route path="/register" element={<Register />} />
 
             <Route path="/list">
               <Route path="" element={"Main"} />
