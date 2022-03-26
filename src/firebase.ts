@@ -23,31 +23,3 @@ export const initializeFirebase = () => {
   const auth = getAuth(firebaseApp);
   return { firebaseApp, firebase, auth };
 };
-
-export const createNewUser = async (login: LoginInformation) => {
-  const auth = getAuth();
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      login.email,
-      login.password
-    );
-    return userCredential;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const loginUser = async (login: LoginInformation) => {
-  const auth = getAuth();
-  try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      login.email,
-      login.password
-    );
-    return userCredential;
-  } catch (error) {
-    console.error(error);
-  }
-};

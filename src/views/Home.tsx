@@ -1,21 +1,27 @@
+import { getAuth } from "firebase/auth";
+import { useEffect } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { LinkButton } from "../components/inputs/LinkButton";
 import { Login } from "../components/Login";
-import { loginUser } from "../firebase";
 import { LoginInformation } from "../types/react";
 
 export const Home = () => {
   const navigate = useNavigate();
+  const auth = getAuth();
+  const [signIntWithEmailAndPassword, user, , error] =
+    useSignInWithEmailAndPassword(auth);
 
   const handleLogin = async (login: LoginInformation) => {
-    const userCredentials = await loginUser(login);
-
-    // TODO: Handle bad login with toast
-    if (!userCredentials) return;
-
-    console.log(userCredentials);
-    navigate("/list");
+    await signIntWithEmailAndPassword(login.email, login.password);
   };
+
+  useEffect(() => {
+    // TODO: Handle bad login with toast
+    if (error || !user) return;
+
+    navigate("/list");
+  }, [user, error, navigate]);
 
   return (
     <div className="w-full">
