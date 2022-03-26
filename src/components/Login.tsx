@@ -4,18 +4,22 @@ import { Button } from "./inputs/Button";
 import { SubmitButton } from "./inputs/SubmitButton";
 import { TextInput } from "./inputs/TextInput";
 
-export const Login = () => {
+interface Props {
+  onSubmit(login: LoginInformation): void;
+  isRegister?: boolean;
+}
+
+export const Login = (props: Props) => {
+  const { onSubmit, isRegister } = props;
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginInformation>();
 
-  const onSubmit = (login: LoginInformation) => {};
-
   return (
     <div className="paper-hover p-4 text-center w-full">
-      <h2 className="mb-4">Login</h2>
+      <h2 className="mb-4">{isRegister ? "Register" : "Login"}</h2>
       <form
         className="flex flex-col text-left"
         onSubmit={handleSubmit(onSubmit)}
@@ -36,8 +40,10 @@ export const Login = () => {
           error={errors.password?.message}
           {...register("password", { required: "required" })}
         />
-        <SubmitButton value="Login" className="primary mb-4" />
-        <Button className="secondary mb-4">Register</Button>
+        <SubmitButton
+          value={isRegister ? "Register" : "Login"}
+          className="primary mb-4"
+        />
         <Button className="secondary">Login with Google</Button>
       </form>
     </div>
