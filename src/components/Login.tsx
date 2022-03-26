@@ -1,4 +1,8 @@
+import { getAuth } from "firebase/auth";
+import { useEffect } from "react";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { LoginInformation } from "../types/react";
 import { Button } from "./inputs/Button";
 import { SubmitButton } from "./inputs/SubmitButton";
@@ -11,11 +15,22 @@ interface Props {
 
 export const Login = (props: Props) => {
   const { onSubmit, isRegister } = props;
+  const auth = getAuth();
+  const [signInWithGoogle, user, , error] = useSignInWithGoogle(auth);
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginInformation>();
+
+  useEffect(() => {
+    // TODO: Handle bad login with toast
+    if (error || !user) return;
+
+    navigate("/list");
+  }, [user, error, navigate]);
 
   return (
     <div className="paper-hover p-4 text-center w-full">
@@ -44,8 +59,10 @@ export const Login = (props: Props) => {
           value={isRegister ? "Register" : "Login"}
           className="primary mb-4"
         />
-        <Button className="secondary">Login with Google</Button>
       </form>
+      <Button className="secondary w-full" onClick={() => signInWithGoogle()}>
+        Login with Google
+      </Button>
     </div>
   );
 };
