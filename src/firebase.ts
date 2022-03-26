@@ -6,7 +6,6 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { LoginInformation } from "./types/react";
-import { auth } from ".";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -26,6 +25,7 @@ export const initializeFirebase = () => {
 };
 
 export const createNewUser = async (login: LoginInformation) => {
+  const auth = getAuth();
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -39,6 +39,7 @@ export const createNewUser = async (login: LoginInformation) => {
 };
 
 export const loginUser = async (login: LoginInformation) => {
+  const auth = getAuth();
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,

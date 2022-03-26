@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { initializeFirebase } from "./firebase";
 
-export const { firebaseApp, firebase, auth } = initializeFirebase();
+initializeFirebase();
 
 ReactDOM.render(
   <React.StrictMode>

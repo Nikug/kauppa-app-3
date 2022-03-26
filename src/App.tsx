@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./views/Home";
 import { Layout } from "./Layouts/Layout";
 import { Register } from "./views/Register";
+import { Authenticated } from "./components/Authenticated";
 
 function App() {
   const groups = useSelector(getGroups);
@@ -24,8 +25,22 @@ function App() {
             <Route path="/register" element={<Register />} />
 
             <Route path="/list">
-              <Route path="" element={"Main"} />
-              <Route path=":id" element={"Id"} />
+              <Route
+                path=""
+                element={
+                  <Authenticated>
+                    <div>Main</div>
+                  </Authenticated>
+                }
+              />
+              <Route
+                path=":id"
+                element={
+                  <Authenticated>
+                    <div>Id</div>
+                  </Authenticated>
+                }
+              />
             </Route>
 
             <Route path="*" element={"Not found"} />
