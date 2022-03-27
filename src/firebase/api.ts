@@ -8,7 +8,7 @@ import {
   get,
   remove,
 } from "firebase/database";
-import { setGroups, updateGroup } from "../redux/appSlice";
+import { setCollections, setGroups, updateGroup } from "../redux/appSlice";
 import { Api, TodoItem } from "../types/todo";
 import { store } from "../redux/store";
 
@@ -63,4 +63,13 @@ export const getGroups = async (route: string) => {
   } catch (e) {
     console.error(e);
   }
+};
+
+export const listenForRoutes = async () => {
+  const firebase = getDatabase();
+  const collections = ref(firebase, `collections`);
+  const unsubscribe = onValue(collections, (snapshot) => {
+    store.dispatch(setCollections({ collections: snapshot.val() }));
+  });
+  return unsubscribe;
 };

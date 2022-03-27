@@ -1,13 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SetGroupsPayload, UpdateGroupPayload } from "../types/redux";
-import { FirebaseData, TodoGroup } from "../types/todo";
+import {
+  SetCollectionsPayload,
+  SetGroupsPayload,
+  UpdateGroupPayload,
+} from "../types/redux";
+import { FirebaseData, TodoCollection, TodoGroup } from "../types/todo";
 import { RootState } from "./store";
 
 interface AppState {
   groups: FirebaseData<TodoGroup>;
+  collections: FirebaseData<TodoCollection>;
 }
 
-const initialState: AppState = { groups: {} };
+const initialState: AppState = { groups: {}, collections: {} };
 
 export const appSlice = createSlice({
   name: "app",
@@ -21,10 +26,14 @@ export const appSlice = createSlice({
       const { groups } = action.payload;
       state.groups = groups;
     },
+    setCollections: (state, action: PayloadAction<SetCollectionsPayload>) => {
+      const { collections } = action.payload;
+      state.collections = collections;
+    },
   },
 });
 
-export const { updateGroup, setGroups } = appSlice.actions;
+export const { updateGroup, setGroups, setCollections } = appSlice.actions;
 export default appSlice.reducer;
 
 export const getGroups = (state: RootState) => state.app.groups;

@@ -1,11 +1,14 @@
 ## Database schema
 
-- routes
+- collections
+  - id: `string`
+  - name: `string`
   - users
+    - userId: `string`
     - owner: `boolean`
 - groups
   - name: `string`
-  - routeId: `string`
+  - collectionId: `string`
   - todos
     - content: `string`
     - done: `boolean`
