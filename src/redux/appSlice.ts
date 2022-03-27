@@ -37,3 +37,4 @@ export const { updateGroup, setGroups, setCollections } = appSlice.actions;
 export default appSlice.reducer;
 
 export const getGroups = (state: RootState) => state.app.groups;
+export const getCollections = (state: RootState) => state.app.collections;

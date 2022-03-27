@@ -11,6 +11,7 @@ export interface TodoGroup {
 
 export interface TodoCollection {
   id: string;
+  url: string;
   name: string;
   users: FirebaseData<User>;
 }

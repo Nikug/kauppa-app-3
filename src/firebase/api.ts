@@ -9,7 +9,7 @@ import {
   remove,
 } from "firebase/database";
 import { setCollections, setGroups, updateGroup } from "../redux/appSlice";
-import { Api, TodoItem } from "../types/todo";
+import { Api, TodoCollection, TodoItem } from "../types/todo";
 import { store } from "../redux/store";
 
 export const addTodo = async (groupId: string, todo: Api<TodoItem>) => {
@@ -65,7 +65,18 @@ export const getGroups = async (route: string) => {
   }
 };
 
-export const listenForRoutes = async () => {
+export const addCollection = async (collection: Api<TodoCollection>) => {
+  const firebase = getDatabase();
+
+  try {
+    const newCollection = push(child(ref(firebase), `collections`));
+    await set(newCollection, collection);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const listenForCollections = () => {
   const firebase = getDatabase();
   const collections = ref(firebase, `collections`);
   const unsubscribe = onValue(collections, (snapshot) => {

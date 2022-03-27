@@ -7,6 +7,7 @@ import { Home } from "./views/Home";
 import { Layout } from "./Layouts/Layout";
 import { Register } from "./views/Register";
 import { Authenticated } from "./components/Authenticated";
+import { Collections } from "./views/Collections";
 
 function App() {
   const groups = useSelector(getGroups);
@@ -29,7 +30,7 @@ function App() {
                 path=""
                 element={
                   <Authenticated>
-                    <div>Main</div>
+                    <Collections />
                   </Authenticated>
                 }
               />
