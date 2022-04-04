@@ -8,26 +8,26 @@ import humanId from "human-id";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const createNewCollection = (userId: string): Api<TodoCollection> => ({
-  url: humanId({ separator: "-", capitalize: false }),
-  name: "",
-  users: {
-    [userId]: {
-      isOwner: true,
-    },
-  },
-});
+const createNewCollection = (userId: string): Api<TodoCollection> => {
+  const url = humanId({ separator: "-", capitalize: false });
+  return {
+    url,
+    name: url,
+  };
+};
 
 export const Collections = () => {
   const auth = getAuth();
   const [user] = useAuthState(auth);
 
   const collections = useSelector(getCollections);
+  console.log(collections);
 
   useEffect(() => {
-    const unsubscribe = listenForCollections();
+    if (!user?.uid) return;
+    const unsubscribe = listenForCollections(user.uid);
     return unsubscribe;
-  }, []);
+  }, [user?.uid]);
 
   const collectionList: TodoCollection[] = useMemo(() => {
     return Object.entries(collections).map(([id, collection]) => ({
@@ -39,7 +39,7 @@ export const Collections = () => {
   const createCollection = () => {
     if (!user) return;
     const newCollection = createNewCollection(user.uid);
-    addCollection(newCollection);
+    addCollection(user.uid, newCollection);
   };
 
   return (
@@ -49,9 +49,11 @@ export const Collections = () => {
           Add collection
         </Button>
       </div>
-      <div>
+      <div className="text-black">
         {collectionList.map((collection) => (
-          <h2>{collection.name}</h2>
+          <h2 key={collection.id}>
+            {collection.name} {collection.url}
+          </h2>
         ))}
       </div>
     </div>

@@ -1,0 +1,28 @@
+{
+  "rules": {
+    "users": {
+      ".read": "auth.uid != null",
+      "$uid": {
+        ".write": "auth.uid != null && auth.uid == $uid"
+      }
+    },
+    "userCollections": {
+      "$uid": {
+        ".read": "auth.uid != null && auth.uid == $uid",
+        ".write": "auth.uid != null && auth.uid == $uid"
+      }
+    },
+    "collections": {
+      "$collection_id": {
+        ".read": "auth.uid != null && root.child('userCollections').child(auth.uid).hasChild($collection_id)",
+        ".write": "auth.uid != null && root.child('userCollections').child(auth.uid).hasChild($collection_id)"
+      }
+    },
+    "groups": {
+      "$collection_id": {
+        ".read": "auth.uid != null && root.child('userCollections').child(auth.uid).hasChild($collection_id)",
+        ".write": "auth.uid != null && root.child('userCollections').child(auth.uid).hasChild($collection_id)"
+      }
+    }
+  }
+}

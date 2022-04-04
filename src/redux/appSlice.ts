@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  SetCollectionsPayload,
+  SetCollectionPayload,
   SetGroupsPayload,
   UpdateGroupPayload,
 } from "../types/redux";
@@ -26,14 +26,14 @@ export const appSlice = createSlice({
       const { groups } = action.payload;
       state.groups = groups;
     },
-    setCollections: (state, action: PayloadAction<SetCollectionsPayload>) => {
-      const { collections } = action.payload;
-      state.collections = collections;
+    setCollection: (state, action: PayloadAction<SetCollectionPayload>) => {
+      const { collectionId, collection } = action.payload;
+      state.collections[collectionId] = collection;
     },
   },
 });
 
-export const { updateGroup, setGroups, setCollections } = appSlice.actions;
+export const { updateGroup, setGroups, setCollection } = appSlice.actions;
 export default appSlice.reducer;
 
 export const getGroups = (state: RootState) => state.app.groups;

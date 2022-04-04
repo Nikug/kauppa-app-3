@@ -1,4 +1,4 @@
-import { FirebaseData, TodoCollection, TodoGroup } from "./todo";
+import { Api, FirebaseData, TodoCollection, TodoGroup } from "./todo";
 
 export interface UpdateGroupPayload {
   groupId: string;
@@ -9,6 +9,7 @@ export interface SetGroupsPayload {
   groups: FirebaseData<TodoGroup>;
 }
 
-export interface SetCollectionsPayload {
-  collections: FirebaseData<TodoCollection>;
+export interface SetCollectionPayload {
+  collectionId: string;
+  collection: Api<TodoCollection>;
 }

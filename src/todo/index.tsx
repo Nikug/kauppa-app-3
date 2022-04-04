@@ -41,11 +41,12 @@ const containerClasses = (done: boolean) =>
 
 interface Props {
   groupId: string;
+  collectionId: string;
   todo: TodoItem;
 }
 
 export const Todo = (props: Props) => {
-  const { todo, groupId } = props;
+  const { todo, groupId, collectionId } = props;
 
   const [spring, api] = useSpring(() => ({
     from: { x: 0 },
@@ -87,11 +88,11 @@ export const Todo = (props: Props) => {
   };
 
   const updateCheck = async (done: boolean) => {
-    await updateTodo(groupId, { ...todo, done });
+    await updateTodo(collectionId, groupId, { ...todo, done });
   };
 
   const handleRemove = async () => {
-    await removeTodo(groupId, todo.id);
+    await removeTodo(collectionId, groupId, todo.id);
   };
 
   return (

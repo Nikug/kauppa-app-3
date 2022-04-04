@@ -10,10 +10,11 @@ interface FormInputs {
 
 interface Props {
   groupId: string;
+  collectionId: string;
 }
 
 export const TodoInput = (props: Props) => {
-  const { groupId } = props;
+  const { groupId, collectionId } = props;
   const { register, handleSubmit, reset, setFocus } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
@@ -21,7 +22,7 @@ export const TodoInput = (props: Props) => {
       done: false,
       content: data.content,
     };
-    addTodo(groupId, newTodo);
+    addTodo(collectionId, groupId, newTodo);
     reset();
     setFocus("content");
   };

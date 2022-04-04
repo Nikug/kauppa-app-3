@@ -9,16 +9,17 @@ import { TodoGroup, TodoItem } from "../types/todo";
 
 interface Props {
   groupId: string;
+  collectionId: string;
   group: TodoGroup;
 }
 
 export const Groupview = (props: Props) => {
-  const { group, groupId } = props;
+  const { group, groupId, collectionId } = props;
 
   useEffect(() => {
-    const unsubscribe = listenForGroup(groupId);
+    const unsubscribe = listenForGroup(collectionId, groupId);
     return unsubscribe;
-  }, [groupId]);
+  }, [groupId, collectionId]);
 
   const todos: TodoItem[] | undefined = useMemo(() => {
     if (!group.todos) return undefined;
@@ -45,12 +46,17 @@ export const Groupview = (props: Props) => {
           (styles, todo) =>
             todo && (
               <animated.div style={styles}>
-                <Todo key={todo.id} todo={todo} groupId={groupId} />
+                <Todo
+                  key={todo.id}
+                  todo={todo}
+                  groupId={groupId}
+                  collectionId={collectionId}
+                />
               </animated.div>
             )
         )}
       </div>
-      <TodoInput groupId={groupId} />
+      <TodoInput groupId={groupId} collectionId={collectionId} />
     </div>
   );
 };
