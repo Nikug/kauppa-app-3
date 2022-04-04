@@ -18,9 +18,9 @@ export const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    updateGroup: (state, action: PayloadAction<UpdateGroupPayload>) => {
-      const { groupId, group } = action.payload;
-      state.groups[groupId] = group;
+    updateGroups: (state, action: PayloadAction<UpdateGroupPayload>) => {
+      const { groups } = action.payload;
+      state.groups = groups;
     },
     setGroups: (state, action: PayloadAction<SetGroupsPayload>) => {
       const { groups } = action.payload;
@@ -33,8 +33,18 @@ export const appSlice = createSlice({
   },
 });
 
-export const { updateGroup, setGroups, setCollection } = appSlice.actions;
+export const { updateGroups, setGroups, setCollection } = appSlice.actions;
 export default appSlice.reducer;
 
 export const getGroups = (state: RootState) => state.app.groups;
 export const getCollections = (state: RootState) => state.app.collections;
+export const getCollection = (
+  state: RootState,
+  url: string | undefined
+): TodoCollection | undefined => {
+  const result = Object.entries(state.app.collections).find(
+    ([id, collection]) => collection.url === url
+  );
+  if (!result) return undefined;
+  return { id: result[0], ...result[1] };
+};

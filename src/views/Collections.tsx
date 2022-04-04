@@ -7,6 +7,7 @@ import { Api, TodoCollection } from "../types/todo";
 import humanId from "human-id";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Link } from "react-router-dom";
 
 const createNewCollection = (userId: string): Api<TodoCollection> => {
   const url = humanId({ separator: "-", capitalize: false });
@@ -21,7 +22,6 @@ export const Collections = () => {
   const [user] = useAuthState(auth);
 
   const collections = useSelector(getCollections);
-  console.log(collections);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -51,9 +51,10 @@ export const Collections = () => {
       </div>
       <div className="text-black">
         {collectionList.map((collection) => (
-          <h2 key={collection.id}>
-            {collection.name} {collection.url}
-          </h2>
+          <div key={collection.id}>
+            <h2 key={collection.id}>{collection.name}</h2>
+            <Link to={collection.url}>{collection.url}</Link>
+          </div>
         ))}
       </div>
     </div>

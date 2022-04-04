@@ -3,8 +3,7 @@ import { TodoInput } from "../components/TodoInput";
 import { GroupHeader } from "../components/GroupHeader";
 import { animated, useTransition } from "@react-spring/web";
 import { ANIMATION_DURATION, TODO_ITEM_HEIGHT } from "../constants";
-import { useEffect, useMemo } from "react";
-import { listenForGroup } from "../firebase/api";
+import { useMemo } from "react";
 import { TodoGroup, TodoItem } from "../types/todo";
 
 interface Props {
@@ -15,11 +14,6 @@ interface Props {
 
 export const Groupview = (props: Props) => {
   const { group, groupId, collectionId } = props;
-
-  useEffect(() => {
-    const unsubscribe = listenForGroup(collectionId, groupId);
-    return unsubscribe;
-  }, [groupId, collectionId]);
 
   const todos: TodoItem[] | undefined = useMemo(() => {
     if (!group.todos) return undefined;

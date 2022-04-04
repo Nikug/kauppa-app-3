@@ -1,8 +1,7 @@
 import { Api, FirebaseData, TodoCollection, TodoGroup } from "./todo";
 
 export interface UpdateGroupPayload {
-  groupId: string;
-  group: TodoGroup;
+  groups: FirebaseData<TodoGroup>;
 }
 
 export interface SetGroupsPayload {

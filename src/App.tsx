@@ -1,21 +1,12 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { getGroups } from "./redux/appSlice";
-import { getGroups as getApiGroups } from "./firebase/api";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./views/Home";
 import { Layout } from "./Layouts/Layout";
 import { Register } from "./views/Register";
 import { Authenticated } from "./components/Authenticated";
 import { Collections } from "./views/Collections";
+import { Groups } from "./views/Groups";
 
 function App() {
-  const groups = useSelector(getGroups);
-
-  useEffect(() => {
-    // getApiGroups("mainRoute");
-  }, []);
-
   return (
     <div className="flex justify-center">
       <BrowserRouter>
@@ -38,7 +29,7 @@ function App() {
                 path=":id"
                 element={
                   <Authenticated>
-                    <div>Id</div>
+                    <Groups />
                   </Authenticated>
                 }
               />
