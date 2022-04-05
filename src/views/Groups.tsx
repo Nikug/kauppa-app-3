@@ -39,6 +39,7 @@ export const Groups = () => {
   }, [user?.uid]);
 
   const groupList: TodoGroup[] = useMemo(() => {
+    if (!groups) return [];
     return Object.entries(groups).map(([id, group]) => ({
       id: id,
       ...group,
@@ -60,7 +61,7 @@ export const Groups = () => {
       </div>
       <div>
         <Dropdown value={selectedGroup ? selectedGroup.name : "Select a group"}>
-          {groupList.map((group) => (
+          {groupList?.map((group) => (
             <option key={group.id} onClick={() => setSelectedGroup(group)}>
               {group.name} todos:{" "}
               {Object.values(group?.todos ?? {}).length ?? 0}

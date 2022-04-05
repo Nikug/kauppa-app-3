@@ -1,7 +1,7 @@
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { getNameFromEmail } from "../utils";
+import { getUsername } from "../utils";
 import { Dropdown } from "./Dropdown";
 
 export const NavBar = () => {
@@ -23,7 +23,7 @@ export const NavBar = () => {
       </div>
       {user && (
         <div className="font-semibold">
-          <Dropdown value={user?.displayName || getNameFromEmail(user.email)}>
+          <Dropdown value={getUsername(user)}>
             <option onClick={logout}>Logout</option>
           </Dropdown>
         </div>

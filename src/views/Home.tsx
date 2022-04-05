@@ -1,7 +1,7 @@
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { LinkButton } from "../components/inputs/LinkButton";
-import { getNameFromEmail } from "../utils";
+import { getUsername } from "../utils";
 
 export const Home = () => {
   const auth = getAuth();
@@ -15,9 +15,7 @@ export const Home = () => {
     <div className="w-full flex justify-center text-center py-8">
       {user && (
         <div className="flex flex-col align-center mt-8">
-          <h2 className="mb-8">
-            Hello {user?.displayName || getNameFromEmail(user.email)}!
-          </h2>
+          <h2 className="mb-8">Hello {getUsername(user)}!</h2>
           <LinkButton className="primary" href="/list">
             Go to your collections
           </LinkButton>

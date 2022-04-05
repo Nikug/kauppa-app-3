@@ -1,3 +1,15 @@
+import { User } from "firebase/auth";
+
+export const getUsername = (user: User) => {
+  if (user.displayName) {
+    return user.displayName;
+  }
+  if (user.email) {
+    return getNameFromEmail(user.email);
+  }
+  return "";
+};
+
 export const getNameFromEmail = (email: string | null) => {
   if (!email) return "";
   const [name] = email.split("@");
