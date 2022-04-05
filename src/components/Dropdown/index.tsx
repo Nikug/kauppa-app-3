@@ -12,11 +12,11 @@ import { sameWidth } from "./PopperModifiers";
 
 const selectClasses = `px-4
   py-2
-  bg-white
   block
   w-full
   flex
   items-center
+  cursor-pointer
   `;
 const optionClasses = `px-4
   bg-white
@@ -28,7 +28,7 @@ const optionClasses = `px-4
 interface Props {
   className?: string;
   children?: ReactNode;
-  value?: string | number;
+  value?: string | number | null;
 }
 
 export const Dropdown = (props: HTMLAttributes<HTMLDivElement> & Props) => {

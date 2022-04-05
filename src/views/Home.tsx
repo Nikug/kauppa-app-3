@@ -1,45 +1,39 @@
-import { getAuth, signOut } from "firebase/auth";
-import { useEffect } from "react";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
-import { Button } from "../components/inputs/Button";
+import { getAuth } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { LinkButton } from "../components/inputs/LinkButton";
-import { Login } from "../components/Login";
-import { LoginInformation } from "../types/react";
+import { getNameFromEmail } from "../utils";
 
 export const Home = () => {
-  const navigate = useNavigate();
   const auth = getAuth();
-  const [signIntWithEmailAndPassword, user, , error] =
-    useSignInWithEmailAndPassword(auth);
+  const [user, loading] = useAuthState(auth);
 
-  const handleLogin = async (login: LoginInformation) => {
-    await signIntWithEmailAndPassword(login.email, login.password);
-  };
-
-  useEffect(() => {
-    // TODO: Handle bad login with toast
-    if (error || !user) return;
-
-    navigate("/list");
-  }, [user, error, navigate]);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="w-full">
-      <div className="mb-8">
-        <Login onSubmit={handleLogin} />
-      </div>
-      <div className="mb-4">
-        <p className="mb-4">New user? Create an account instead</p>
-        <LinkButton className="secondary" href="/register">
-          Create an account
-        </LinkButton>
-      </div>
-      <div>
-        <Button onClick={() => signOut(auth)} className="primary">
-          Logout
-        </Button>
-      </div>
+    <div className="w-full flex justify-center text-center py-8">
+      {user && (
+        <div className="flex flex-col align-center mt-8">
+          <h2 className="mb-8">
+            Hello {user?.displayName || getNameFromEmail(user.email)}!
+          </h2>
+          <LinkButton className="primary" href="/list">
+            Go to your collections
+          </LinkButton>
+        </div>
+      )}
+      {!user && (
+        <div className="w-full flex flex-col px-32">
+          <h1 className="mb-32">Welcome!</h1>
+          <LinkButton className="primary mb-6" href="/login">
+            Login
+          </LinkButton>
+          <LinkButton className="secondary" href="/register">
+            Create an account
+          </LinkButton>
+        </div>
+      )}
     </div>
   );
 };

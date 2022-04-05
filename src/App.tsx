@@ -5,6 +5,7 @@ import { Register } from "./views/Register";
 import { Authenticated } from "./components/Authenticated";
 import { Collections } from "./views/Collections";
 import { Groups } from "./views/Groups";
+import { LoginView } from "./views/LoginView";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route index element={<Home />} />
 
             <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<LoginView />} />
 
             <Route path="/list">
               <Route

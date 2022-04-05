@@ -16,10 +16,13 @@ export const Register = () => {
   };
 
   useEffect(() => {
-    // TODO: Handle bad login with toast
-    if (error || !user) return;
+    if (error || !user) {
+      // TODO: Handle bad login with toast
+      console.log(error);
+      return;
+    }
 
-    navigate("/list");
+    navigate("/");
   }, [user, error, navigate]);
 
   return (
