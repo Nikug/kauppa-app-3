@@ -17,6 +17,18 @@ const createNewGroup = (): Api<TodoGroup> => ({
   name: humanId({ separator: "-", capitalize: false }),
 });
 
+const navClasses = `
+  sticky
+  top-0
+  h-16
+  bg-primary
+  text-white
+  flex
+  items-center
+  px-2
+  justify-between
+`;
+
 export const TodoNavBar = () => {
   const auth = getAuth();
   const [user] = useAuthState(auth);
@@ -44,12 +56,10 @@ export const TodoNavBar = () => {
   };
 
   return (
-    <div className="sticky top-0 h-16 bg-primary text-white flex items-center px-4 justify-between">
-      <div>
-        <a className="font-bold text-white text-3xl" href="/list">
-          {selectedCollection?.name ?? "Kauppa App"}
-        </a>
-      </div>
+    <div className={navClasses}>
+      <a className="font-bold text-white text-xl truncate" href="/list">
+        {selectedCollection?.name ?? "Kauppa App"}
+      </a>
       {user && (
         <div className="font-semibold">
           <Dropdown

@@ -7,17 +7,15 @@ import { useGesture } from "@use-gesture/react";
 import { GESTURE_DISTANCE_THRESHOLD, GESTURE_MAX_DISTANCE } from "../constants";
 import { Background } from "./Background";
 import { updateTodo, removeTodo } from "../firebase/api";
+import { capitalizeFirstLetter } from "../utils";
 
 const textClasses = (done: boolean) =>
-  classNames(
-    {
-      "text-black": !done,
-      "font-semibold": !done,
-      "text-muted-dark": done,
-      "font-medium": done,
-    },
-    "capitalize"
-  );
+  classNames({
+    "text-black": !done,
+    "font-semibold": !done,
+    "text-muted-dark": done,
+    "font-medium": done,
+  });
 
 const containerClasses = (done: boolean) =>
   classNames(
@@ -35,7 +33,6 @@ const containerClasses = (done: boolean) =>
       "border-muted-light": done,
       "bg-white": !done,
     },
-    "touch-none",
     "transition-colors"
   );
 
@@ -106,8 +103,10 @@ export const Todo = (props: Props) => {
           <div className="">
             <Checkbox checked={todo.done} onChange={handleCheck} />
           </div>
-          <div {...bind()} className="flex items-center grow h-full">
-            <p className={textClasses(todo.done)}>{todo.content}</p>
+          <div {...bind()} className="flex items-center grow h-full touch-none">
+            <p className={textClasses(todo.done)}>
+              {capitalizeFirstLetter(todo.content)}
+            </p>
           </div>
         </div>
       </animated.div>

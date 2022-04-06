@@ -19,3 +19,8 @@ export const getNameFromEmail = (email: string | null) => {
     .join(" ");
   return capitalizedName;
 };
+
+export const capitalizeFirstLetter = (text?: string) => {
+  if (!text) return "";
+  return text[0].toUpperCase() + text.substring(1);
+};

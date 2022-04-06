@@ -18,6 +18,7 @@ const selectClasses = `px-4
   items-center
   justify-between
   cursor-pointer
+  truncate
   `;
 const optionClasses = `px-4
   bg-white

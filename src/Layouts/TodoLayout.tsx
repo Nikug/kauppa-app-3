@@ -38,7 +38,7 @@ export const TodoLayout = () => {
   }, [collectionUrl, selectedCollection?.id, dispatch, collections]);
 
   return (
-    <div className="w-content max-w-content">
+    <div className="w-content max-w-content min-w-0">
       <Authenticated>
         <>
           <TodoNavBar />
