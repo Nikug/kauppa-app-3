@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { DetailedHTMLProps, forwardRef, Ref } from "react";
 
-const inputClasses = (hasError: boolean) =>
+const inputClasses = (hasError: boolean, large?: boolean) =>
   classNames(
     "text-black",
     "border",
@@ -9,13 +9,13 @@ const inputClasses = (hasError: boolean) =>
     "px-2",
     "outline-none",
     "w-full",
-    {
-      "border-error": hasError,
-    }
+    { "border-error": hasError },
+    { "py-2": large }
   );
 
 interface Props {
   error?: string;
+  large?: boolean;
 }
 
 export const TextInput = forwardRef(
@@ -27,11 +27,11 @@ export const TextInput = forwardRef(
       Props,
     ref: Ref<HTMLInputElement>
   ) => {
-    const { className, error, ...rest } = props;
+    const { className, error, large, ...rest } = props;
 
     return (
       <div className={className}>
-        <input ref={ref} {...rest} className={inputClasses(!!error)} />
+        <input ref={ref} {...rest} className={inputClasses(!!error, large)} />
         {error && <p className="text-error text-sm">{error}</p>}
       </div>
     );

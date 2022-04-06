@@ -14,18 +14,18 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<LoginView />} />
           </Route>
+
           <Route element={<TodoLayout />}>
             <Route path="/list">
               <Route path="" element={<Collections />} />
               <Route path=":id" element={<Groups />} />
             </Route>
-
-            <Route path="*" element={"Not found"} />
           </Route>
+
+          <Route path="*" element={"Not found"} />
         </Routes>
       </BrowserRouter>
     </div>

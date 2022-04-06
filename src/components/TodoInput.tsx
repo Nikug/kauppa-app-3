@@ -28,17 +28,18 @@ export const TodoInput = (props: Props) => {
   };
 
   return (
-    <div className="fixed bottom-0 w-full max-w-content flex items-center h-16 bg-secondary-light">
+    <div className="fixed bottom-0 w-full max-w-content flex items-center h-16 bg-primary">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex gap-x-4 w-full px-4"
+        className="flex gap-x-4 w-full px-4 items-center"
       >
         <TextInput
           {...register("content")}
-          className="w-full"
+          className="w-full h-full"
           placeholder="New..."
+          large
         />
-        <SubmitButton value="Add" />
+        <SubmitButton className="bg-secondary" value="Add" />
       </form>
     </div>
   );

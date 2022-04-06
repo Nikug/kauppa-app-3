@@ -46,8 +46,8 @@ export const TodoNavBar = () => {
   return (
     <div className="sticky top-0 h-16 bg-primary text-white flex items-center px-4 justify-between">
       <div>
-        <a className="font-bold text-white text-3xl" href="/">
-          {selectedCollection?.name}
+        <a className="font-bold text-white text-3xl" href="/list">
+          {selectedCollection?.name ?? "Kauppa App"}
         </a>
       </div>
       {user && (

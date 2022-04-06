@@ -86,6 +86,6 @@ export const getSelectedGroup = (state: RootState) => {
   if (state.app.selectedGroup == null) return undefined;
   return {
     id: state.app.selectedGroup,
-    ...state.app.collections[state.app.selectedGroup],
+    ...state.app.groups[state.app.selectedGroup],
   };
 };

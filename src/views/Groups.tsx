@@ -1,42 +1,25 @@
-import { getAuth } from "firebase/auth";
-import humanId from "human-id";
-import { useEffect, useMemo, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useParams } from "react-router-dom";
+import { useEffect, useMemo } from "react";
 import { Button } from "../components/inputs/Button";
-import { addGroup, listenForGroups } from "../firebase/api";
-import { getCollection, getGroups } from "../redux/appSlice";
+import { listenForGroups } from "../firebase/api";
+import {
+  getGroups,
+  getSelectedCollection,
+  getSelectedGroup,
+} from "../redux/appSlice";
 import { useAppSelector } from "../redux/hooks";
-import { Api, TodoGroup } from "../types/todo";
-import { listenForCollections } from "../firebase/api";
-import { Dropdown } from "../components/Dropdown";
-
-const createNewGroup = (): Api<TodoGroup> => ({
-  name: humanId({ separator: "-", capitalize: false }),
-});
+import { TodoGroup } from "../types/todo";
+import { GroupView } from "./GroupView";
 
 export const Groups = () => {
-  const { id: collectionUrl } = useParams<{ id: string }>();
-  const auth = getAuth();
-  const [user] = useAuthState(auth);
-  const [selectedGroup, setSelectedGroup] = useState<TodoGroup | undefined>();
-
   const groups = useAppSelector(getGroups);
-  const collection = useAppSelector((state) =>
-    getCollection(state, collectionUrl ?? null)
-  );
+  const selectedCollection = useAppSelector(getSelectedCollection);
+  const selectedGroup = useAppSelector(getSelectedGroup);
 
   useEffect(() => {
-    if (!collection?.id) return;
-    const unsubscribe = listenForGroups(collection.id);
+    if (!selectedCollection?.id) return;
+    const unsubscribe = listenForGroups(selectedCollection.id);
     return unsubscribe;
-  }, [collection?.id]);
-
-  useEffect(() => {
-    if (!user?.uid) return;
-    const unsubscribe = listenForCollections(user.uid);
-    return unsubscribe;
-  }, [user?.uid]);
+  }, [selectedCollection?.id]);
 
   const groupList: TodoGroup[] = useMemo(() => {
     if (!groups) return [];
@@ -46,30 +29,32 @@ export const Groups = () => {
     }));
   }, [groups]);
 
-  const createGroup = () => {
-    if (!collection) return;
-    const newGroup = createNewGroup();
-    addGroup(collection.id, newGroup);
-  };
+  const createGroup = () => console.log("creating a group");
+  const handleGroupSelect = (group: TodoGroup) =>
+    console.log("selecting a group", group.id);
 
   return (
     <div>
-      <div className="mt-4">
-        <Button className="bg-primary" onClick={createGroup}>
-          Add group
-        </Button>
-      </div>
-      <div>
-        <Dropdown value={selectedGroup ? selectedGroup.name : "Select a group"}>
+      {!groups && (
+        <div className="mt-4">
+          <Button className="bg-primary" onClick={createGroup}>
+            Add group
+          </Button>
+        </div>
+      )}
+      {groups && !selectedGroup && (
+        <div>
           {groupList?.map((group) => (
-            <option key={group.id} onClick={() => setSelectedGroup(group)}>
+            <option key={group.id} onClick={() => handleGroupSelect(group)}>
               {group.name} todos:{" "}
               {Object.values(group?.todos ?? {}).length ?? 0}
             </option>
           ))}
-          <option value="">Add new group</option>
-        </Dropdown>
-      </div>
+        </div>
+      )}
+      {groups && selectedGroup && selectedCollection && (
+        <GroupView group={selectedGroup} collectionId={selectedCollection.id} />
+      )}
     </div>
   );
 };
