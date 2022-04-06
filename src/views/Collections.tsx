@@ -2,12 +2,13 @@ import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Button } from "../components/inputs/Button";
 import { addCollection, listenForCollections } from "../firebase/api";
-import { getCollections } from "../redux/appSlice";
+import { getCollections, setSelectedCollection } from "../redux/appSlice";
 import { Api, TodoCollection } from "../types/todo";
 import humanId from "human-id";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../redux/hooks";
 
 const createNewCollection = (userId: string): Api<TodoCollection> => {
   const url = humanId({ separator: "-", capitalize: false });
@@ -20,7 +21,7 @@ const createNewCollection = (userId: string): Api<TodoCollection> => {
 export const Collections = () => {
   const auth = getAuth();
   const [user] = useAuthState(auth);
-
+  const dispatch = useAppDispatch();
   const collections = useSelector(getCollections);
 
   useEffect(() => {
@@ -42,6 +43,10 @@ export const Collections = () => {
     addCollection(user.uid, newCollection);
   };
 
+  const selectCollection = (colletionId: string) => {
+    dispatch(setSelectedCollection(colletionId));
+  };
+
   return (
     <div>
       <div>
@@ -53,7 +58,12 @@ export const Collections = () => {
         {collectionList.map((collection) => (
           <div key={collection.id}>
             <h2 key={collection.id}>{collection.name}</h2>
-            <Link to={collection.url}>{collection.url}</Link>
+            <Link
+              to={collection.url}
+              onClick={() => selectCollection(collection.id)}
+            >
+              {collection.url}
+            </Link>
           </div>
         ))}
       </div>

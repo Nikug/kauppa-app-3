@@ -16,6 +16,7 @@ const selectClasses = `px-4
   w-full
   flex
   items-center
+  justify-between
   cursor-pointer
   `;
 const optionClasses = `px-4
@@ -29,10 +30,11 @@ interface Props {
   className?: string;
   children?: ReactNode;
   value?: string | number | null;
+  sameWidthPopup?: boolean;
 }
 
 export const Dropdown = (props: HTMLAttributes<HTMLDivElement> & Props) => {
-  const { className, children, value, ...rest } = props;
+  const { className, children, value, sameWidthPopup, ...rest } = props;
   const [open, setOpen] = useState(false);
 
   const [referenceElement, setReferenceElement] =
@@ -42,7 +44,7 @@ export const Dropdown = (props: HTMLAttributes<HTMLDivElement> & Props) => {
   );
 
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    modifiers: [sameWidth],
+    modifiers: sameWidthPopup ? [sameWidth] : [],
   });
 
   const handleClick = useCallback(
@@ -70,7 +72,7 @@ export const Dropdown = (props: HTMLAttributes<HTMLDivElement> & Props) => {
         className={selectClasses}
         onClick={() => setOpen((prev) => !prev)}
       >
-        {value} <ChevronDownIcon className="w-4 h-4 mt-1 ml-2" />
+        {value} <ChevronDownIcon className="w-4 h-4 mt-1" />
       </div>
       {open && (
         <Portal>

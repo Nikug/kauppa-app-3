@@ -23,7 +23,7 @@ export const Groups = () => {
 
   const groups = useAppSelector(getGroups);
   const collection = useAppSelector((state) =>
-    getCollection(state, collectionUrl)
+    getCollection(state, collectionUrl ?? null)
   );
 
   useEffect(() => {
