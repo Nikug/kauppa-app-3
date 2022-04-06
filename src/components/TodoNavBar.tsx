@@ -1,3 +1,4 @@
+import { PencilIcon } from "@heroicons/react/solid";
 import { getAuth } from "firebase/auth";
 import humanId from "human-id";
 import { useMemo } from "react";
@@ -66,17 +67,13 @@ export const TodoNavBar = () => {
             value={selectedGroup ? selectedGroup.name : "Select a group"}
           >
             {groupList?.map((group) => (
-              <option
-                key={group.id}
-                onClick={() => handleGroupSelect(group.id)}
-              >
-                {group.name} todos:{" "}
-                {Object.values(group?.todos ?? {}).length ?? 0}
-              </option>
+              <div key={group.id} onClick={() => handleGroupSelect(group.id)}>
+                {group.name} ({Object.values(group?.todos ?? {}).length ?? 0})
+              </div>
             ))}
-            <option value="" onClick={createGroup}>
-              Add new group
-            </option>
+            <div onClick={createGroup}>
+              Add new group <PencilIcon className="h-4 w-4 inline" />
+            </div>
           </Dropdown>
         </div>
       )}

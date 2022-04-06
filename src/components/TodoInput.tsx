@@ -18,6 +18,7 @@ export const TodoInput = (props: Props) => {
   const { register, handleSubmit, reset, setFocus } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    if (!data.content) return;
     const newTodo: Api<TodoItem> = {
       done: false,
       content: data.content,
@@ -39,7 +40,7 @@ export const TodoInput = (props: Props) => {
           placeholder="New..."
           large
         />
-        <SubmitButton className="bg-secondary" value="Add" />
+        <SubmitButton className="secondary" value="Add" />
       </form>
     </div>
   );

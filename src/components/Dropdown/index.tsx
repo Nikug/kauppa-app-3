@@ -21,6 +21,7 @@ const selectClasses = `px-4
   truncate
   `;
 const optionClasses = `px-4
+  py-2
   bg-white
   text-black
   hover:bg-primary
