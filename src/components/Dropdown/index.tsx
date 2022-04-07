@@ -26,6 +26,7 @@ const optionClasses = `px-4
   text-black
   hover:bg-primary
   hover:text-white
+  cursor-pointer
   `;
 
 interface Props {
