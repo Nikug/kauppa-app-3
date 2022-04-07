@@ -8,6 +8,8 @@ import { GESTURE_DISTANCE_THRESHOLD, GESTURE_MAX_DISTANCE } from "../constants";
 import { Background } from "./Background";
 import { updateTodo, removeTodo } from "../firebase/api";
 import { capitalizeFirstLetter } from "../utils";
+import { useAppDispatch } from "../redux/hooks";
+import { addEditModal } from "../redux/modalSlice";
 
 const textClasses = (done: boolean) =>
   classNames({
@@ -44,6 +46,7 @@ interface Props {
 
 export const Todo = (props: Props) => {
   const { todo, groupId, collectionId } = props;
+  const dispatch = useAppDispatch();
 
   const [spring, api] = useSpring(() => ({
     from: { x: 0 },
@@ -69,6 +72,8 @@ export const Todo = (props: Props) => {
       } else {
         if (isRight) {
           updateCheck(true);
+        } else {
+          updateTodoContent();
         }
       }
     },
@@ -90,6 +95,14 @@ export const Todo = (props: Props) => {
 
   const handleRemove = async () => {
     await removeTodo(collectionId, groupId, todo.id);
+  };
+
+  const updateTodoContent = () => {
+    dispatch(
+      addEditModal({
+        title: "Edit Todo",
+      })
+    );
   };
 
   return (

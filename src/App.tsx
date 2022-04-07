@@ -6,10 +6,12 @@ import { Collections } from "./views/Collections";
 import { Groups } from "./views/Groups";
 import { LoginView } from "./views/LoginView";
 import { TodoLayout } from "./Layouts/TodoLayout";
+import { ModalContainer } from "./components/Modal/ModalContainer";
 
 function App() {
   return (
     <div className="flex justify-center">
+      <ModalContainer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
