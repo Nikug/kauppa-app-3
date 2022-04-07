@@ -1,8 +1,7 @@
 import { XIcon } from "@heroicons/react/solid";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useAppDispatch } from "../../redux/hooks";
-import { removeEditModal } from "../../redux/modalSlice";
+import { useModalContext } from "../../contexts/ModalContextProvider";
 import { EditModal } from "../../types/modal";
 import { Button } from "../inputs/Button";
 import { SubmitButton } from "../inputs/SubmitButton";
@@ -14,7 +13,7 @@ interface Props {
 
 export const Modal = (props: Props) => {
   const { modal } = props;
-  const dispatch = useAppDispatch();
+  const { dispatch } = useModalContext();
   const { register, handleSubmit, setFocus } = useForm({
     defaultValues: { value: modal.value },
   });
@@ -23,14 +22,15 @@ export const Modal = (props: Props) => {
     setFocus("value");
   }, [setFocus]);
 
+  const closeModal = () => dispatch({ type: "remove", payload: modal.uid });
+
   const onSubmit = (data: { value: string | undefined }) => {
-    console.log(data.value);
-    dispatch(removeEditModal(modal.uid));
+    closeModal();
     if (modal.onOk) modal.onOk(data.value ?? "");
   };
 
   const onCancel = () => {
-    dispatch(removeEditModal(modal.uid));
+    closeModal();
     if (modal.onCancel) modal.onCancel();
   };
 

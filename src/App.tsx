@@ -7,29 +7,32 @@ import { Groups } from "./views/Groups";
 import { LoginView } from "./views/LoginView";
 import { TodoLayout } from "./Layouts/TodoLayout";
 import { ModalContainer } from "./components/Modal/ModalContainer";
+import { ModalContextProvider } from "./contexts/ModalContextProvider";
 
 function App() {
   return (
     <div className="flex justify-center">
-      <ModalContainer />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<LoginView />} />
-          </Route>
-
-          <Route element={<TodoLayout />}>
-            <Route path="/list">
-              <Route path="" element={<Collections />} />
-              <Route path=":id" element={<Groups />} />
+      <ModalContextProvider>
+        <ModalContainer />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<LoginView />} />
             </Route>
-          </Route>
 
-          <Route path="*" element={"Not found"} />
-        </Routes>
-      </BrowserRouter>
+            <Route element={<TodoLayout />}>
+              <Route path="/list">
+                <Route path="" element={<Collections />} />
+                <Route path=":id" element={<Groups />} />
+              </Route>
+            </Route>
+
+            <Route path="*" element={"Not found"} />
+          </Routes>
+        </BrowserRouter>
+      </ModalContextProvider>
     </div>
   );
 }

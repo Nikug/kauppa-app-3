@@ -1,13 +1,12 @@
 import { Modal } from ".";
-import { useAppSelector } from "../../redux/hooks";
-import { getEditModals } from "../../redux/modalSlice";
+import { useModalContext } from "../../contexts/ModalContextProvider";
 
 export const ModalContainer = () => {
-  const editModals = useAppSelector(getEditModals);
+  const { modals } = useModalContext();
 
   return (
     <>
-      {editModals.map((modal) => (
+      {modals.map((modal) => (
         <Modal key={modal.uid} modal={modal} />
       ))}
     </>
