@@ -72,7 +72,7 @@ export const TodoNavBar = () => {
               </div>
             ))}
             <div onClick={createGroup}>
-              Add new group <PencilIcon className="h-4 w-4 inline" />
+              Add new group <PencilIcon className="h-4 w-4 inline text-icon" />
             </div>
           </Dropdown>
         </div>

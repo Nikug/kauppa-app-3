@@ -30,6 +30,9 @@ module.exports = {
         error: {
           DEFAULT: colors.red[500],
         },
+        icon: {
+          DEFAULT: colors.gray[500],
+        },
       },
     },
   },

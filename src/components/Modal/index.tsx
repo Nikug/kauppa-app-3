@@ -43,7 +43,7 @@ export const Modal = (props: Props) => {
       <div className="w-full h-full flex justify-center items-center">
         <div className="paper-hover bg-white px-4 py-2 relative w-full mx-2 max-w-content">
           <XIcon
-            className="h-8 w-8 absolute top-2 right-2 cursor-pointer"
+            className="h-8 w-8 absolute top-2 right-2 cursor-pointer text-icon"
             onClick={onCancel}
           />
           <h2 className="mb-8">{modal.title}</h2>
