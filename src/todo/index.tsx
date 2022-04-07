@@ -101,6 +101,7 @@ export const Todo = (props: Props) => {
     dispatch(
       addEditModal({
         title: "Edit Todo",
+        value: todo.content,
       })
     );
   };
