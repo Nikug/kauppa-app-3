@@ -7,8 +7,8 @@ import { Api, TodoCollection } from "../types/todo";
 import humanId from "human-id";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Link } from "react-router-dom";
 import { useAppDispatch } from "../redux/hooks";
+import { Collection } from "../components/Collection";
 
 const createNewCollection = (userId: string): Api<TodoCollection> => {
   const url = humanId({ separator: "-", capitalize: false });
@@ -56,15 +56,7 @@ export const Collections = () => {
       </div>
       <div className="text-black">
         {collectionList.map((collection) => (
-          <div key={collection.id}>
-            <h2 key={collection.id}>{collection.name}</h2>
-            <Link
-              to={collection.url}
-              onClick={() => selectCollection(collection.id)}
-            >
-              {collection.url}
-            </Link>
-          </div>
+          <Collection collection={collection} onSelect={selectCollection} />
         ))}
       </div>
     </div>
