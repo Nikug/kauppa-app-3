@@ -1,4 +1,5 @@
 import { User } from "firebase/auth";
+import { TodoGroup } from "./types/todo";
 
 export const getUsername = (user: User) => {
   if (user.displayName) {
@@ -20,4 +21,10 @@ export const getNameFromEmail = (email: string | null) => {
 export const capitalizeFirstLetter = (text?: string) => {
   if (!text) return "";
   return text[0].toUpperCase() + text.substring(1);
+};
+
+export const getTodoCount = (group?: TodoGroup) => {
+  if (!group?.todos) return 0;
+  const todos = Object.keys(group.todos);
+  return todos.length;
 };

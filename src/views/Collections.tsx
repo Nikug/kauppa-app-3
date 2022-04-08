@@ -1,22 +1,12 @@
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { Button } from "../components/inputs/Button";
-import { addCollection, listenForCollections } from "../firebase/api";
+import { listenForCollections } from "../firebase/api";
 import { getCollections, setSelectedCollection } from "../redux/appSlice";
-import { Api, TodoCollection } from "../types/todo";
-import humanId from "human-id";
+import { TodoCollection } from "../types/todo";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useAppDispatch } from "../redux/hooks";
 import { Collection } from "../components/Collection";
-
-const createNewCollection = (userId: string): Api<TodoCollection> => {
-  const url = humanId({ separator: "-", capitalize: false });
-  return {
-    url,
-    name: url,
-  };
-};
 
 export const Collections = () => {
   const auth = getAuth();
@@ -37,26 +27,19 @@ export const Collections = () => {
     }));
   }, [collections]);
 
-  const createCollection = () => {
-    if (!user) return;
-    const newCollection = createNewCollection(user.uid);
-    addCollection(user.uid, newCollection);
-  };
-
   const selectCollection = (colletionId: string) => {
     dispatch(setSelectedCollection(colletionId));
   };
 
   return (
     <div>
-      <div>
-        <Button className="primary" onClick={createCollection}>
-          Add collection
-        </Button>
-      </div>
       <div className="text-black">
         {collectionList.map((collection) => (
-          <Collection collection={collection} onSelect={selectCollection} />
+          <Collection
+            key={collection.id}
+            collection={collection}
+            onSelect={selectCollection}
+          />
         ))}
       </div>
     </div>

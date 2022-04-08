@@ -3,7 +3,8 @@ import { getAuth } from "firebase/auth";
 import humanId from "human-id";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { addGroup } from "../firebase/api";
+import { createModal, useModalContext } from "../contexts/ModalContextProvider";
+import { addCollection, addGroup } from "../firebase/api";
 import {
   getGroups,
   getSelectedCollection,
@@ -11,12 +12,21 @@ import {
   setSelectedGroup,
 } from "../redux/appSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { Api, TodoGroup } from "../types/todo";
+import { Api, TodoCollection, TodoGroup } from "../types/todo";
+import { getTodoCount } from "../utils";
 import { Dropdown } from "./Dropdown";
+import { TextButton } from "./inputs/TextButton";
 
 const createNewGroup = (): Api<TodoGroup> => ({
   name: humanId({ separator: "-", capitalize: false }),
 });
+
+const createNewCollection = (): Api<TodoCollection> => {
+  const url = humanId({ separator: "-", capitalize: false });
+  return {
+    url,
+  };
+};
 
 const navClasses = `
   sticky
@@ -37,11 +47,32 @@ export const TodoNavBar = () => {
   const selectedCollection = useAppSelector(getSelectedCollection);
   const selectedGroup = useAppSelector(getSelectedGroup);
   const groups = useAppSelector(getGroups);
+  const { dispatch: modalDispatch } = useModalContext();
 
   const createGroup = () => {
     if (!selectedCollection) return;
     const newGroup = createNewGroup();
-    addGroup(selectedCollection.id, newGroup);
+    modalDispatch(
+      createModal({
+        title: "Create group",
+        okButtonText: "Save",
+        onOk: (value) =>
+          addGroup(selectedCollection.id, { ...newGroup, name: value }),
+      })
+    );
+  };
+
+  const createCollection = () => {
+    if (!user) return;
+    const newCollection = createNewCollection();
+    modalDispatch(
+      createModal({
+        title: "Create collection",
+        okButtonText: "Save",
+        onOk: (value) =>
+          addCollection(user.uid, { ...newCollection, name: value }),
+      })
+    );
   };
 
   const groupList: TodoGroup[] = useMemo(() => {
@@ -56,19 +87,27 @@ export const TodoNavBar = () => {
     dispatch(setSelectedGroup(groupId));
   };
 
+  const todoCount = (group: TodoGroup) => getTodoCount(group);
+
   return (
     <div className={navClasses}>
       <a className="font-bold text-white text-xl truncate" href="/list">
         {selectedCollection?.name ?? "Kauppa App"}
       </a>
-      {user && (
+      {user && !selectedCollection && (
+        <TextButton onClick={createCollection}>Add collection</TextButton>
+      )}
+      {user && selectedCollection && !groupList && (
+        <TextButton onClick={createGroup}>Add group</TextButton>
+      )}
+      {user && selectedCollection && (
         <div className="font-semibold">
           <Dropdown
             value={selectedGroup ? selectedGroup.name : "Select a group"}
           >
             {groupList?.map((group) => (
               <div key={group.id} onClick={() => handleGroupSelect(group.id)}>
-                {group.name} ({Object.values(group?.todos ?? {}).length ?? 0})
+                {group.name} {todoCount(group) ? `(${todoCount(group)})` : ""}
               </div>
             ))}
             <div onClick={createGroup}>

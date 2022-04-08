@@ -75,14 +75,16 @@ export const getCollection = (
   if (!result) return undefined;
   return { id: result[0], ...result[1] };
 };
-export const getSelectedCollection = (state: RootState) => {
+export const getSelectedCollection = (
+  state: RootState
+): TodoCollection | undefined => {
   if (state.app.selectedCollection == null) return undefined;
   return {
     id: state.app.selectedCollection,
     ...state.app.collections[state.app.selectedCollection],
   };
 };
-export const getSelectedGroup = (state: RootState) => {
+export const getSelectedGroup = (state: RootState): TodoGroup | undefined => {
   if (state.app.selectedGroup == null) return undefined;
   return {
     id: state.app.selectedGroup,
