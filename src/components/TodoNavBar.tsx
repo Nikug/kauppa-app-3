@@ -54,6 +54,7 @@ export const TodoNavBar = () => {
     const newGroup = createNewGroup();
     modalDispatch(
       createModal({
+        type: "edit",
         title: "Create group",
         label: "Name",
         okButtonText: "Save",
@@ -69,6 +70,7 @@ export const TodoNavBar = () => {
     const newCollection = createNewCollection();
     modalDispatch(
       createModal({
+        type: "edit",
         title: "Create collection",
         label: "Name",
         okButtonText: "Save",

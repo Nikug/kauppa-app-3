@@ -43,6 +43,7 @@ export const Groups = () => {
     const newGroup = createNewGroup();
     modalDispatch(
       createModal({
+        type: "edit",
         title: "Create group",
         label: "Name",
         value: newGroup.name,

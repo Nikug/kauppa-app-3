@@ -1,17 +1,17 @@
-import { XIcon } from "@heroicons/react/solid";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useModalContext } from "../../contexts/ModalContextProvider";
-import { EditModal } from "../../types/modal";
+import { EditModal as EditModalType } from "../../types/modal";
 import { Button } from "../inputs/Button";
 import { SubmitButton } from "../inputs/SubmitButton";
 import { TextInput } from "../inputs/TextInput";
+import { ModalBody } from "./ModalBody";
 
 interface Props {
-  modal: EditModal;
+  modal: EditModalType;
 }
 
-export const Modal = (props: Props) => {
+export const EditModal = (props: Props) => {
   const { modal } = props;
   const { dispatch } = useModalContext();
   const { register, handleSubmit, setFocus } = useForm({
@@ -35,33 +35,20 @@ export const Modal = (props: Props) => {
   };
 
   return (
-    <div className="fixed inset-0 z-10">
-      <div
-        className="bg-black opacity-50 w-full h-full absolute"
-        onClick={onCancel}
-      />
-      <div className="w-full h-full flex justify-center items-center">
-        <div className="paper-hover bg-white px-4 py-2 relative w-full mx-2 max-w-content">
-          <XIcon
-            className="h-8 w-8 absolute top-2 right-2 cursor-pointer text-icon"
-            onClick={onCancel}
+    <ModalBody onClose={onCancel} title={modal.title}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {modal.label && <label>{modal.label}</label>}
+        <TextInput {...register("value")} />
+        <div className="flex mt-4 justify-end gap-x-8">
+          <Button onClick={onCancel} className="secondary">
+            {modal.cancelButtonText ?? "Cancel"}
+          </Button>
+          <SubmitButton
+            value={modal.okButtonText ?? "Ok"}
+            className="primary"
           />
-          <h2 className="mb-8">{modal.title}</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {modal.label && <label>{modal.label}</label>}
-            <TextInput {...register("value")} />
-            <div className="flex mt-4 justify-end gap-x-8">
-              <Button onClick={onCancel} className="secondary">
-                {modal.cancelButtonText ?? "Cancel"}
-              </Button>
-              <SubmitButton
-                value={modal.okButtonText ?? "Ok"}
-                className="primary"
-              />
-            </div>
-          </form>
         </div>
-      </div>
-    </div>
+      </form>
+    </ModalBody>
   );
 };

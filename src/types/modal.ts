@@ -1,14 +1,22 @@
 import { Dispatch } from "react";
 
-export interface EditModal {
+export interface Modal {
+  type: "confirmation" | "edit";
   uid: string;
-  title: string;
-  label?: string;
-  value?: string;
+  title?: string;
   okButtonText?: string;
   cancelButtonText?: string;
-  onOk?(value: string): void;
   onCancel?(): void;
+}
+
+export interface ConfirmationModal extends Modal {
+  onOk?(): void;
+}
+
+export interface EditModal extends Omit<Modal, "onOk"> {
+  label?: string;
+  value?: string;
+  onOk?(value: string): void;
 }
 
 export interface ModalAction<T> {
@@ -17,6 +25,6 @@ export interface ModalAction<T> {
 }
 
 export interface ModalContextState {
-  modals: EditModal[];
+  modals: Modal[];
   dispatch: Dispatch<ModalAction<unknown>>;
 }

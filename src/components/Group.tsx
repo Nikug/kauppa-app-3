@@ -19,6 +19,7 @@ export const Group = (props: Props) => {
     if (!collectionId) return;
     dispatch(
       createModal({
+        type: "edit",
         title: "Edit group",
         label: "Name",
         value: group.name,

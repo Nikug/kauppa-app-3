@@ -16,6 +16,7 @@ export const Collection = (props: Props) => {
   const editCollection = () => {
     dispatch(
       createModal({
+        type: "edit",
         title: "Edit collection",
         value: collection.name,
         label: "Name",

@@ -99,6 +99,7 @@ export const Todo = (props: Props) => {
   const updateTodoContent = () => {
     dispatch(
       createModal({
+        type: "edit",
         title: "Edit Todo",
         label: "Content",
         value: todo.content,
