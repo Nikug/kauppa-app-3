@@ -41,6 +41,7 @@ export const Groups = () => {
           {groupList?.map((group) => (
             <Group
               key={group.id}
+              collectionId={selectedCollection?.id}
               group={group}
               onSelect={(id) => handleGroupSelect(id)}
             />

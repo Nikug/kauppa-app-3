@@ -6,6 +6,7 @@ import {
   set,
   onValue,
   remove,
+  update,
 } from "firebase/database";
 import { setCollection, updateGroups } from "../redux/appSlice";
 import { Api, TodoCollection, TodoGroup, TodoItem } from "../types/todo";
@@ -92,12 +93,36 @@ export const addCollection = async (
   }
 };
 
+export const updateCollection = async (collectionId: string, name: string) => {
+  const firebase = getDatabase();
+
+  try {
+    await update(ref(firebase, `collections/${collectionId}`), { name });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const addGroup = async (collectionId: string, group: Api<TodoGroup>) => {
   const firebase = getDatabase();
 
   try {
     const newGroup = push(child(ref(firebase), `groups/${collectionId}`));
     await set(ref(firebase, `groups/${collectionId}/${newGroup.key}`), group);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const updateGroup = async (
+  collectionId: string,
+  groupId: string,
+  name: string
+) => {
+  const firebase = getDatabase();
+
+  try {
+    await update(ref(firebase, `groups/${collectionId}/${groupId}`), { name });
   } catch (e) {
     console.error(e);
   }
