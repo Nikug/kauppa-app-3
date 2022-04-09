@@ -17,6 +17,7 @@ export const Button = forwardRef(
 
     return (
       <button
+        type="button"
         ref={ref}
         {...rest}
         className={classNames(className, buttonClasses)}
