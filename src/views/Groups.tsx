@@ -1,6 +1,9 @@
 import { useEffect, useMemo } from "react";
 import { Group } from "../components/Group";
-import { listenForGroups } from "../firebase/api";
+import { Button } from "../components/inputs/Button";
+import { createNewGroup } from "../components/TodoNavBar";
+import { createModal, useModalContext } from "../contexts/ModalContextProvider";
+import { addGroup, listenForGroups } from "../firebase/api";
 import {
   getGroups,
   getSelectedCollection,
@@ -16,6 +19,7 @@ export const Groups = () => {
   const selectedCollection = useAppSelector(getSelectedCollection);
   const selectedGroup = useAppSelector(getSelectedGroup);
   const dispatch = useAppDispatch();
+  const { dispatch: modalDispatch } = useModalContext();
 
   useEffect(() => {
     if (!selectedCollection?.id) return;
@@ -34,8 +38,31 @@ export const Groups = () => {
   const handleGroupSelect = (groupId: string) =>
     dispatch(setSelectedGroup(groupId));
 
+  const createGroup = () => {
+    if (!selectedCollection) return;
+    const newGroup = createNewGroup();
+    modalDispatch(
+      createModal({
+        title: "Create group",
+        label: "Name",
+        value: newGroup.name,
+        okButtonText: "Save",
+        onOk: (value) =>
+          addGroup(selectedCollection.id, { ...newGroup, name: value }),
+      })
+    );
+  };
+
   return (
     <div>
+      {!groupList.length && (
+        <div className="h-screen flex flex-col justify-center items-center">
+          <i className="mb-8">No groups</i>
+          <Button className="primary" onClick={createGroup}>
+            Create group
+          </Button>
+        </div>
+      )}
       {groups && !selectedGroup && (
         <div>
           {groupList?.map((group) => (

@@ -100,6 +100,7 @@ export const Todo = (props: Props) => {
     dispatch(
       createModal({
         title: "Edit Todo",
+        label: "Content",
         value: todo.content,
         onOk: (content) =>
           updateTodo(collectionId, groupId, { ...todo, content }),

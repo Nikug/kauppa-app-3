@@ -48,6 +48,7 @@ export const Modal = (props: Props) => {
           />
           <h2 className="mb-8">{modal.title}</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
+            {modal.label && <label>{modal.label}</label>}
             <TextInput {...register("value")} />
             <div className="flex mt-4 justify-end gap-x-8">
               <Button onClick={onCancel} className="secondary">

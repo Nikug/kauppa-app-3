@@ -3,7 +3,7 @@ import { Dispatch } from "react";
 export interface EditModal {
   uid: string;
   title: string;
-  subtitle?: string;
+  label?: string;
   value?: string;
   okButtonText?: string;
   cancelButtonText?: string;

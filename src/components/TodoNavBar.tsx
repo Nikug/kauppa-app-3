@@ -17,8 +17,8 @@ import { getTodoCount } from "../utils";
 import { Dropdown } from "./Dropdown";
 import { TextButton } from "./inputs/TextButton";
 
-const createNewGroup = (): Api<TodoGroup> => ({
-  name: humanId({ separator: "-", capitalize: false }),
+export const createNewGroup = (): Api<TodoGroup> => ({
+  name: "",
 });
 
 const createNewCollection = (): Api<TodoCollection> => {
@@ -55,7 +55,9 @@ export const TodoNavBar = () => {
     modalDispatch(
       createModal({
         title: "Create group",
+        label: "Name",
         okButtonText: "Save",
+        value: newGroup.name,
         onOk: (value) =>
           addGroup(selectedCollection.id, { ...newGroup, name: value }),
       })
@@ -68,6 +70,7 @@ export const TodoNavBar = () => {
     modalDispatch(
       createModal({
         title: "Create collection",
+        label: "Name",
         okButtonText: "Save",
         onOk: (value) =>
           addCollection(user.uid, { ...newCollection, name: value }),

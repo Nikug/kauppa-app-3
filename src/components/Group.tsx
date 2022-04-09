@@ -20,6 +20,7 @@ export const Group = (props: Props) => {
     dispatch(
       createModal({
         title: "Edit group",
+        label: "Name",
         value: group.name,
         okButtonText: "Save",
         onOk: (value) => updateGroup(collectionId, group.id, value),

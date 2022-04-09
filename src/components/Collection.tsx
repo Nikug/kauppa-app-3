@@ -18,6 +18,7 @@ export const Collection = (props: Props) => {
       createModal({
         title: "Edit collection",
         value: collection.name,
+        label: "Name",
         okButtonText: "Save",
         onOk: (value) => updateCollection(collection.id, value),
       })
