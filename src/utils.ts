@@ -1,4 +1,5 @@
 import { User } from "firebase/auth";
+import { EMAIL_DOT } from "./constants";
 import { TodoGroup } from "./types/todo";
 
 export const getUsername = (user: User) => {
@@ -28,3 +29,5 @@ export const getTodoCount = (group?: TodoGroup) => {
   const todos = Object.keys(group.todos);
   return todos.length;
 };
+
+export const emailToKey = (email: string) => email.replaceAll(".", EMAIL_DOT);

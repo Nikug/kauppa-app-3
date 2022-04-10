@@ -16,12 +16,6 @@ export interface TodoCollection {
   name?: string;
 }
 
-export interface User {
-  id: string;
-  email: string;
-  username?: string;
-}
-
 export type Api<T> = Omit<T, "id">;
 export type FirebaseData<T> = Record<string, Api<T>>;
 

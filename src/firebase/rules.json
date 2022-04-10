@@ -3,7 +3,7 @@
     "users": {
       "$email": {
         ".read": "auth.uid != null",
-        ".write": "auth.uid != null && root.child('users').child($email).hasChild(auth.uid)"
+        ".write": "auth.uid != null && auth.token.email.replace('.', 'DOT') === $email"
       }
     },
     "collectionUsers": {

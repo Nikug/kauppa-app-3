@@ -1,30 +1,17 @@
 import { getAuth } from "firebase/auth";
-import { useEffect } from "react";
-import {
-  useAuthState,
-  useSignInWithEmailAndPassword,
-} from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { LinkButton } from "../components/inputs/LinkButton";
 import { Login } from "../components/Login";
 import { LoginInformation } from "../types/react";
 
 export const LoginView = () => {
   const auth = getAuth();
-  const [user] = useAuthState(auth);
-  const navigate = useNavigate();
 
   const [signIntWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
   const handleLogin = async (login: LoginInformation) => {
     await signIntWithEmailAndPassword(login.email, login.password);
   };
-
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
 
   return (
     <div className="w-full">

@@ -1,8 +1,9 @@
 import { getAuth } from "firebase/auth";
 import { useEffect } from "react";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { addUser } from "../firebase/api";
 import { LoginInformation } from "../types/react";
 import { Button } from "./inputs/Button";
 import { SubmitButton } from "./inputs/SubmitButton";
@@ -16,7 +17,8 @@ interface Props {
 export const Login = (props: Props) => {
   const { onSubmit, isRegister } = props;
   const auth = getAuth();
-  const [signInWithGoogle, user, , error] = useSignInWithGoogle(auth);
+  const [signInWithGoogle, , , error] = useSignInWithGoogle(auth);
+  const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
   const {
@@ -29,7 +31,11 @@ export const Login = (props: Props) => {
     // TODO: Handle bad login with toast
     if (error || !user) return;
 
-    navigate("/list");
+    const addAndNavigate = async () => {
+      await addUser(user);
+      navigate("/list");
+    };
+    addAndNavigate();
   }, [user, error, navigate]);
 
   return (

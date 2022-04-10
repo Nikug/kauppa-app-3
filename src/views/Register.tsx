@@ -1,15 +1,20 @@
 import { getAuth } from "firebase/auth";
 import { useEffect } from "react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+  useAuthState,
+  useCreateUserWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Login } from "../components/Login";
+import { addUser } from "../firebase/api";
 import { LoginInformation } from "../types/react";
 
 export const Register = () => {
   const navigate = useNavigate();
   const auth = getAuth();
-  const [createUserWithEmailAndPassword, user, , error] =
+  const [createUserWithEmailAndPassword, , , error] =
     useCreateUserWithEmailAndPassword(auth);
+  const [user] = useAuthState(auth);
 
   const handleRegister = async (login: LoginInformation) => {
     await createUserWithEmailAndPassword(login.email, login.password);
@@ -18,11 +23,13 @@ export const Register = () => {
   useEffect(() => {
     if (error || !user) {
       // TODO: Handle bad login with toast
-      console.log(error);
       return;
     }
-
-    navigate("/");
+    const addAndNavigate = async () => {
+      await addUser(user);
+      navigate("/list");
+    };
+    addAndNavigate();
   }, [user, error, navigate]);
 
   return (

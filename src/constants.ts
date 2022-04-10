@@ -3,3 +3,5 @@ export const GESTURE_MAX_DISTANCE = 75;
 
 export const TODO_ITEM_HEIGHT = "4rem";
 export const ANIMATION_DURATION = 75;
+
+export const EMAIL_DOT = "DOT";

@@ -12,6 +12,8 @@ import {
 import { setCollection, updateGroups } from "../redux/appSlice";
 import { Api, TodoCollection, TodoGroup, TodoItem } from "../types/todo";
 import { store } from "../redux/store";
+import { User } from "firebase/auth";
+import { emailToKey } from "../utils";
 
 export const addTodo = async (
   collectionId: string,
@@ -134,6 +136,7 @@ export const updateGroup = async (
 export const listenForCollections = (userId: string) => {
   const firebase = getDatabase();
   const collectionIds = ref(firebase, `userCollections/${userId}`);
+
   const unsubscribes: Unsubscribe[] = [];
   const unsubscribe = onValue(collectionIds, (snapshot) => {
     snapshot.forEach((collectionId) => {
@@ -156,4 +159,18 @@ export const listenForCollections = (userId: string) => {
     unsubscribe();
     unsubscribes.forEach((unsubscribe) => unsubscribe());
   };
+};
+
+export const addUser = async (user: User) => {
+  const firebase = getDatabase();
+
+  try {
+    if (!user.email) throw new Error("User must have an email");
+    await set(ref(firebase, `users/${emailToKey(user.email)}`), {
+      uid: user.uid,
+      username: user.displayName,
+    });
+  } catch (e) {
+    console.error(e);
+  }
 };
