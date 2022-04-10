@@ -28,13 +28,20 @@ export type FirebaseData<T> = Record<string, Api<T>>;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface FirebaseSchema {
   users: {
-    [uid: string]: {
-      email: string;
+    [email: string]: {
+      uid: string;
       username?: string;
     };
   };
+  // Used for data access rules
+  collectionUsers: {
+    [collectionId: string]: {
+      [userId: string]: boolean;
+    };
+  };
+  // Used for fetching all user collections
   userCollections: {
-    [uid: string]: {
+    [userId: string]: {
       [collectionId: string]: boolean;
     };
   };

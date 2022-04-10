@@ -1,9 +1,15 @@
 {
   "rules": {
     "users": {
-      ".read": "auth.uid != null",
-      "$uid": {
-        ".write": "auth.uid != null && auth.uid == $uid"
+      "$email": {
+        ".read": "auth.uid != null",
+        ".write": "auth.uid != null && root.child('users').child($email).hasChild(auth.uid)"
+      }
+    },
+    "collectionUsers": {
+      "$collection_id": {
+        ".read": "auth.uid != null && (root.child('collectionUsers').child($collection_id).hasChild(auth.uid) || !root.child('collections').hasChild($collection_id))",
+        ".write": "auth.uid != null && (root.child('collectionUsers').child($collection_id).hasChild(auth.uid) || !root.child('collections').hasChild($collection_id))"
       }
     },
     "userCollections": {
@@ -14,14 +20,14 @@
     },
     "collections": {
       "$collection_id": {
-        ".read": "auth.uid != null && root.child('userCollections').child(auth.uid).hasChild($collection_id)",
-        ".write": "auth.uid != null && root.child('userCollections').child(auth.uid).hasChild($collection_id)"
+        ".read": "auth.uid != null && root.child('collectionUsers').child($collection_id).hasChild(auth.uid)",
+        ".write": "auth.uid != null && root.child('collectionUsers').child($collection_id).hasChild(auth.uid)"
       }
     },
     "groups": {
       "$collection_id": {
-        ".read": "auth.uid != null && root.child('userCollections').child(auth.uid).hasChild($collection_id)",
-        ".write": "auth.uid != null && root.child('userCollections').child(auth.uid).hasChild($collection_id)"
+        ".read": "auth.uid != null && root.child('collectionUsers').child($collection_id).hasChild(auth.uid)",
+        ".write": "auth.uid != null && root.child('collectionUsers').child($collection_id).hasChild(auth.uid)"
       }
     }
   }

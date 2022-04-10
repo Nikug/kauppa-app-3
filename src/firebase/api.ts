@@ -7,6 +7,7 @@ import {
   onValue,
   remove,
   update,
+  Unsubscribe,
 } from "firebase/database";
 import { setCollection, updateGroups } from "../redux/appSlice";
 import { Api, TodoCollection, TodoGroup, TodoItem } from "../types/todo";
@@ -79,15 +80,17 @@ export const addCollection = async (
   const firebase = getDatabase();
 
   try {
-    const newUserCollection = push(
-      child(ref(firebase), `userCollections/${userId}`)
-    );
-    await set(newUserCollection, true);
-
+    const newCollection = push(child(ref(firebase), "collections"));
     await set(
-      ref(firebase, `collections/${newUserCollection.key}`),
-      collection
+      ref(firebase, `collectionUsers/${newCollection.key}/${userId}`),
+      true
     );
+    await set(
+      ref(firebase, `userCollections/${userId}/${newCollection.key}`),
+      true
+    );
+
+    await set(newCollection, collection);
   } catch (e) {
     console.error(e);
   }
@@ -131,13 +134,14 @@ export const updateGroup = async (
 export const listenForCollections = (userId: string) => {
   const firebase = getDatabase();
   const collectionIds = ref(firebase, `userCollections/${userId}`);
+  const unsubscribes: Unsubscribe[] = [];
   const unsubscribe = onValue(collectionIds, (snapshot) => {
     snapshot.forEach((collectionId) => {
       const collectionKey = collectionId.key;
       if (!collectionKey) return;
       const collection = ref(firebase, `collections/${collectionId.key}`);
 
-      onValue(collection, (collectionSnapshot) => {
+      const collectionUnsubscibe = onValue(collection, (collectionSnapshot) => {
         store.dispatch(
           setCollection({
             collectionId: collectionKey,
@@ -145,7 +149,11 @@ export const listenForCollections = (userId: string) => {
           })
         );
       });
+      unsubscribes.push(collectionUnsubscibe);
     });
   });
-  return unsubscribe;
+  return () => {
+    unsubscribe();
+    unsubscribes.forEach((unsubscribe) => unsubscribe());
+  };
 };
