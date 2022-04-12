@@ -9,6 +9,7 @@ import { Background } from "./Background";
 import { updateTodo, removeTodo } from "../firebase/api";
 import { capitalizeFirstLetter } from "../utils";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
+import { EditModal } from "../types/modal";
 
 const textClasses = (done: boolean) =>
   classNames({
@@ -98,7 +99,7 @@ export const Todo = (props: Props) => {
 
   const updateTodoContent = () => {
     dispatch(
-      createModal({
+      createModal<EditModal>({
         type: "edit",
         title: "Edit Todo",
         label: "Content",

@@ -12,6 +12,7 @@ import {
   setSelectedGroup,
 } from "../redux/appSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { EditModal } from "../types/modal";
 import { Api, TodoCollection, TodoGroup } from "../types/todo";
 import { getTodoCount } from "../utils";
 import { Dropdown } from "./Dropdown";
@@ -53,7 +54,7 @@ export const TodoNavBar = () => {
     if (!selectedCollection) return;
     const newGroup = createNewGroup();
     modalDispatch(
-      createModal({
+      createModal<EditModal>({
         type: "edit",
         title: "Create group",
         label: "Name",
@@ -69,7 +70,7 @@ export const TodoNavBar = () => {
     if (!user) return;
     const newCollection = createNewCollection();
     modalDispatch(
-      createModal({
+      createModal<EditModal>({
         type: "edit",
         title: "Create collection",
         label: "Name",

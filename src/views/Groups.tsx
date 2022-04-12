@@ -11,6 +11,7 @@ import {
   setSelectedGroup,
 } from "../redux/appSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { EditModal } from "../types/modal";
 import { TodoGroup } from "../types/todo";
 import { GroupView } from "./GroupView";
 
@@ -42,7 +43,7 @@ export const Groups = () => {
     if (!selectedCollection) return;
     const newGroup = createNewGroup();
     modalDispatch(
-      createModal({
+      createModal<EditModal>({
         type: "edit",
         title: "Create group",
         label: "Name",

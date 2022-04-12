@@ -8,9 +8,16 @@ import {
   remove,
   update,
   Unsubscribe,
+  get,
 } from "firebase/database";
 import { setCollection, updateGroups } from "../redux/appSlice";
-import { Api, TodoCollection, TodoGroup, TodoItem } from "../types/todo";
+import {
+  Api,
+  TodoCollection,
+  TodoGroup,
+  TodoItem,
+  UserShare,
+} from "../types/todo";
 import { store } from "../redux/store";
 import { User } from "firebase/auth";
 import { emailToKey } from "../utils";
@@ -170,6 +177,33 @@ export const addUser = async (user: User) => {
       uid: user.uid,
       username: user.displayName,
     });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getUserByEmail = async (
+  email?: string
+): Promise<UserShare | null | undefined> => {
+  if (!email) return;
+  const firebase = getDatabase();
+
+  try {
+    const user = await get(ref(firebase, `users/${emailToKey(email)}`));
+    return user.val();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const addUserToCollection = async (
+  userId: string,
+  collectionId: string
+) => {
+  const firebase = getDatabase();
+
+  try {
+    await set(ref(firebase, `collectionUsers/${collectionId}/${userId}`), true);
   } catch (e) {
     console.error(e);
   }

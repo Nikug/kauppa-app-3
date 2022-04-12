@@ -31,3 +31,5 @@ export const getTodoCount = (group?: TodoGroup) => {
 };
 
 export const emailToKey = (email: string) => email.replaceAll(".", EMAIL_DOT);
+export const emailKeyToEmail = (email: string) =>
+  email.replaceAll(EMAIL_DOT, ".");

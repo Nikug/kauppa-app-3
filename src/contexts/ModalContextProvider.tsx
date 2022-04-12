@@ -1,5 +1,10 @@
 import { createContext, ReactNode, useContext, useReducer } from "react";
-import { EditModal, ModalAction, ModalContextState } from "../types/modal";
+import {
+  EditModal,
+  Modal,
+  ModalAction,
+  ModalContextState,
+} from "../types/modal";
 import { v1 as uuid } from "uuid";
 
 // Type guards
@@ -29,11 +34,11 @@ const modalReducer = (state: EditModal[], action: ModalAction<unknown>) => {
 };
 
 // Actions
-export const createModal = (
-  modal: Omit<EditModal, "uid">
-): ModalAction<EditModal> => ({
+export const createModal = <T extends Modal>(
+  modal: Omit<T, "uid">
+): ModalAction<T> => ({
   type: "create",
-  payload: { uid: uuid(), ...modal },
+  payload: { uid: uuid(), ...modal } as T,
 });
 export const removeModal = (uid: string): ModalAction<string> => ({
   type: "remove",

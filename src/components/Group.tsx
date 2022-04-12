@@ -2,6 +2,7 @@ import { PencilIcon } from "@heroicons/react/solid";
 import { useMemo } from "react";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { updateGroup } from "../firebase/api";
+import { EditModal } from "../types/modal";
 import { TodoGroup } from "../types/todo";
 import { getTodoCount } from "../utils";
 
@@ -18,7 +19,7 @@ export const Group = (props: Props) => {
   const editGroup = () => {
     if (!collectionId) return;
     dispatch(
-      createModal({
+      createModal<EditModal>({
         type: "edit",
         title: "Edit group",
         label: "Name",

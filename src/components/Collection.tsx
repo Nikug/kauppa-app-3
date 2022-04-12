@@ -1,7 +1,9 @@
+import { UserAddIcon } from "@heroicons/react/outline";
 import { PencilIcon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { updateCollection } from "../firebase/api";
+import { AddUserModal, EditModal } from "../types/modal";
 import { TodoCollection } from "../types/todo";
 
 interface Props {
@@ -15,7 +17,7 @@ export const Collection = (props: Props) => {
 
   const editCollection = () => {
     dispatch(
-      createModal({
+      createModal<EditModal>({
         type: "edit",
         title: "Edit collection",
         value: collection.name,
@@ -26,12 +28,29 @@ export const Collection = (props: Props) => {
     );
   };
 
+  const addUserToCollection = () => {
+    dispatch(
+      createModal<AddUserModal>({
+        type: "addUser",
+        title: "Add user",
+        value: "",
+        label: "Email",
+        okButtonText: "Add",
+        collectionId: collection.id,
+      })
+    );
+  };
+
   return (
     <div className="border bg-white p-4 flex justify-between items-center">
       <Link to={collection.url} onClick={() => onSelect(collection.id)}>
         <h2>{collection.name ?? <i>No name</i>}</h2>
         <p>{collection.url}</p>
       </Link>
+      <UserAddIcon
+        className="w-8 h-8 text-icon cursor-pointer"
+        onClick={addUserToCollection}
+      />
       <PencilIcon
         className="w-8 h-8 text-icon cursor-pointer"
         onClick={editCollection}

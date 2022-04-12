@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
 
 export interface Modal {
-  type: "confirmation" | "edit";
+  type: "confirmation" | "edit" | "addUser";
   uid: string;
   title?: string;
   okButtonText?: string;
@@ -10,13 +10,22 @@ export interface Modal {
 }
 
 export interface ConfirmationModal extends Modal {
+  type: "confirmation";
   onOk?(): void;
 }
 
-export interface EditModal extends Omit<Modal, "onOk"> {
+export interface EditModal extends Modal {
+  type: "edit";
   label?: string;
   value?: string;
   onOk?(value: string): void;
+}
+
+export interface AddUserModal extends Modal {
+  type: "addUser";
+  label?: string;
+  value?: string;
+  collectionId: string;
 }
 
 export interface ModalAction<T> {
