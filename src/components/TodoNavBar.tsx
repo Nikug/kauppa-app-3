@@ -22,10 +22,11 @@ export const createNewGroup = (): Api<TodoGroup> => ({
   name: "",
 });
 
-const createNewCollection = (): Api<TodoCollection> => {
+const createNewCollection = (): TodoCollection => {
   const url = humanId({ separator: "-", capitalize: false });
   return {
     url,
+    name: "",
   };
 };
 
@@ -61,7 +62,7 @@ export const TodoNavBar = () => {
         okButtonText: "Save",
         value: newGroup.name,
         onOk: (value) =>
-          addGroup(selectedCollection.id, { ...newGroup, name: value }),
+          addGroup(selectedCollection.url, { ...newGroup, name: value }),
       })
     );
   };

@@ -21,8 +21,8 @@ export const Collections = () => {
   }, [user?.uid]);
 
   const collectionList: TodoCollection[] = useMemo(() => {
-    return Object.entries(collections).map(([id, collection]) => ({
-      id: id,
+    return Object.entries(collections).map(([url, collection]) => ({
+      url,
       ...collection,
     }));
   }, [collections]);
@@ -36,7 +36,7 @@ export const Collections = () => {
       <div className="text-black">
         {collectionList.map((collection) => (
           <Collection
-            key={collection.id}
+            key={collection.url}
             collection={collection}
             onSelect={selectCollection}
           />

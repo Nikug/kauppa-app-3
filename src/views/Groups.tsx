@@ -23,10 +23,10 @@ export const Groups = () => {
   const { dispatch: modalDispatch } = useModalContext();
 
   useEffect(() => {
-    if (!selectedCollection?.id) return;
-    const unsubscribe = listenForGroups(selectedCollection.id);
+    if (!selectedCollection?.url) return;
+    const unsubscribe = listenForGroups(selectedCollection.url);
     return unsubscribe;
-  }, [selectedCollection?.id]);
+  }, [selectedCollection?.url]);
 
   const groupList: TodoGroup[] = useMemo(() => {
     if (!groups) return [];
@@ -50,7 +50,7 @@ export const Groups = () => {
         value: newGroup.name,
         okButtonText: "Save",
         onOk: (value) =>
-          addGroup(selectedCollection.id, { ...newGroup, name: value }),
+          addGroup(selectedCollection.url, { ...newGroup, name: value }),
       })
     );
   };
@@ -70,7 +70,7 @@ export const Groups = () => {
           {groupList?.map((group) => (
             <Group
               key={group.id}
-              collectionId={selectedCollection?.id}
+              collectionId={selectedCollection?.url}
               group={group}
               onSelect={(id) => handleGroupSelect(id)}
             />
@@ -78,7 +78,10 @@ export const Groups = () => {
         </div>
       )}
       {groups && selectedGroup && selectedCollection && (
-        <GroupView group={selectedGroup} collectionId={selectedCollection.id} />
+        <GroupView
+          group={selectedGroup}
+          collectionId={selectedCollection.url}
+        />
       )}
     </div>
   );

@@ -11,7 +11,6 @@ export interface TodoGroup {
 }
 
 export interface TodoCollection {
-  id: string;
   url: string;
   name?: string;
 }
@@ -22,7 +21,7 @@ export interface UserShare {
   username?: string;
 }
 
-export type Api<T> = Omit<T, "id">;
+export type Api<T> = Omit<T, "id" | "url">;
 export type FirebaseData<T> = Record<string, Api<T>>;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -35,24 +34,23 @@ interface FirebaseSchema {
   };
   // Used for data access rules
   collectionUsers: {
-    [collectionId: string]: {
+    [collectionUrl: string]: {
       [userId: string]: boolean;
     };
   };
   // Used for fetching all user collections
   userCollections: {
     [userId: string]: {
-      [collectionId: string]: boolean;
+      [collectionUrl: string]: boolean;
     };
   };
   collections: {
-    [collectionId: string]: {
-      name?: string;
-      url: string;
+    [collectionUrl: string]: {
+      name: string;
     };
   };
   groups: {
-    [collectionId: string]: {
+    [collectionUrl: string]: {
       [groupId: string]: {
         name?: string;
         todos?: {

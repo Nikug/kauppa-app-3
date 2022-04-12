@@ -23,7 +23,7 @@ export const Collection = (props: Props) => {
         value: collection.name,
         label: "Name",
         okButtonText: "Save",
-        onOk: (value) => updateCollection(collection.id, value),
+        onOk: (value) => updateCollection(collection.url, value),
       })
     );
   };
@@ -36,14 +36,14 @@ export const Collection = (props: Props) => {
         value: "",
         label: "Email",
         okButtonText: "Add",
-        collectionId: collection.id,
+        collectionId: collection.url,
       })
     );
   };
 
   return (
     <div className="border bg-white p-4 flex justify-between items-center">
-      <Link to={collection.url} onClick={() => onSelect(collection.id)}>
+      <Link to={collection.url} onClick={() => onSelect(collection.url)}>
         <h2>{collection.name ?? <i>No name</i>}</h2>
         <p>{collection.url}</p>
       </Link>

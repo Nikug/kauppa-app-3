@@ -21,10 +21,10 @@ export const TodoLayout = () => {
   const collections = useAppSelector(getCollections);
 
   useEffect(() => {
-    if (!selectedCollection?.id) return;
-    const unsubscribe = listenForGroups(selectedCollection.id);
+    if (!selectedCollection?.url) return;
+    const unsubscribe = listenForGroups(selectedCollection.url);
     return unsubscribe;
-  }, [selectedCollection?.id]);
+  }, [selectedCollection?.url]);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -33,9 +33,9 @@ export const TodoLayout = () => {
   }, [user?.uid]);
 
   useEffect(() => {
-    if (selectedCollection?.id || !collectionUrl || !collections) return;
+    if (selectedCollection?.url || !collectionUrl || !collections) return;
     dispatch(setSelectedCollectionWithUrl(collectionUrl));
-  }, [collectionUrl, selectedCollection?.id, dispatch, collections]);
+  }, [collectionUrl, selectedCollection?.url, dispatch, collections]);
 
   return (
     <div className="w-content max-w-content min-w-0">

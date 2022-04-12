@@ -34,18 +34,14 @@ export const appSlice = createSlice({
       state.groups = groups;
     },
     setCollection: (state, action: PayloadAction<SetCollectionPayload>) => {
-      const { collectionId, collection } = action.payload;
-      state.collections[collectionId] = collection;
+      const { collectionUrl, collection } = action.payload;
+      state.collections[collectionUrl] = collection;
     },
     setSelectedCollection: (state, action: PayloadAction<string>) => {
       state.selectedCollection = action.payload;
     },
     setSelectedCollectionWithUrl: (state, action: PayloadAction<string>) => {
-      if (!state.collections) return;
-      const result = Object.entries(state.collections).find(
-        ([, collection]) => collection.url === action.payload
-      );
-      state.selectedCollection = result ? result[0] : null;
+      state.selectedCollection = action.payload;
     },
     setSelectedGroup: (state, action: PayloadAction<string>) => {
       state.selectedGroup = action.payload;
@@ -70,17 +66,17 @@ export const getCollection = (
   url: string | null
 ): TodoCollection | undefined => {
   const result = Object.entries(state.app.collections).find(
-    ([id, collection]) => collection.url === url
+    ([id]) => id === url
   );
   if (!result) return undefined;
-  return { id: result[0], ...result[1] };
+  return { url: result[0], ...result[1] };
 };
 export const getSelectedCollection = (
   state: RootState
 ): TodoCollection | undefined => {
   if (state.app.selectedCollection == null) return undefined;
   return {
-    id: state.app.selectedCollection,
+    url: state.app.selectedCollection,
     ...state.app.collections[state.app.selectedCollection],
   };
 };
