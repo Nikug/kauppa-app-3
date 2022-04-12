@@ -30,7 +30,7 @@ export const AddUserModal = (props: Props) => {
 
     // TODO: Show error if user does not exist
     if (!user?.uid) return;
-    addUserToCollection(modal.collectionId, user.uid);
+    addUserToCollection(user.uid, modal.collectionId);
 
     closeModal();
   };
