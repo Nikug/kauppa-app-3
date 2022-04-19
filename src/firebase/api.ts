@@ -212,3 +212,19 @@ export const addUserToCollection = async (
     console.error(e);
   }
 };
+
+export const addInvitedCollection = async (
+  userId: string,
+  collectionUrl: string
+) => {
+  const firebase = getDatabase();
+
+  try {
+    await set(
+      ref(firebase, `userCollections/${userId}/${collectionUrl}`),
+      true
+    );
+  } catch (e) {
+    console.error(e);
+  }
+};

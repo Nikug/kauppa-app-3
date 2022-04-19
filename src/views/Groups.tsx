@@ -1,10 +1,17 @@
+import { getAuth } from "firebase/auth";
 import { useEffect, useMemo } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Group } from "../components/Group";
 import { Button } from "../components/inputs/Button";
 import { createNewGroup } from "../components/TodoNavBar";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
-import { addGroup, listenForGroups } from "../firebase/api";
 import {
+  addGroup,
+  addInvitedCollection,
+  listenForGroups,
+} from "../firebase/api";
+import {
+  getCollections,
   getGroups,
   getSelectedCollection,
   getSelectedGroup,
@@ -17,8 +24,12 @@ import { GroupView } from "./GroupView";
 
 export const Groups = () => {
   const groups = useAppSelector(getGroups);
+  const collections = useAppSelector(getCollections);
   const selectedCollection = useAppSelector(getSelectedCollection);
   const selectedGroup = useAppSelector(getSelectedGroup);
+  const auth = getAuth();
+  const [user] = useAuthState(auth);
+
   const dispatch = useAppDispatch();
   const { dispatch: modalDispatch } = useModalContext();
 
@@ -55,6 +66,17 @@ export const Groups = () => {
     );
   };
 
+  const isInvitedCollection = useMemo(() => {
+    if (!selectedCollection) return false;
+    return !collections[selectedCollection.url];
+  }, [selectedCollection, collections]);
+
+  const addInvitedCollectionToOwnCollections = async () => {
+    if (!user || !selectedCollection) return;
+    await addInvitedCollection(user?.uid, selectedCollection.url);
+    // TODO: Toast when succesful
+  };
+
   return (
     <div>
       {!groupList.length && (
@@ -67,6 +89,17 @@ export const Groups = () => {
       )}
       {groups && !selectedGroup && (
         <div>
+          {isInvitedCollection && (
+            <div className="flex flex-col items-center my-8">
+              <p className="mb-2">You have been invited to this collection</p>
+              <Button
+                className="primary"
+                onClick={addInvitedCollectionToOwnCollections}
+              >
+                Add to your collections
+              </Button>
+            </div>
+          )}
           {groupList?.map((group) => (
             <Group
               key={group.id}

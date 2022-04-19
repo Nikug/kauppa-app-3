@@ -27,8 +27,8 @@ export const Collections = () => {
     }));
   }, [collections]);
 
-  const selectCollection = (colletionId: string) => {
-    dispatch(setSelectedCollection(colletionId));
+  const selectCollection = (collectionId: string) => {
+    dispatch(setSelectedCollection(collectionId));
   };
 
   return (
