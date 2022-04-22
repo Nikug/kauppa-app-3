@@ -37,6 +37,9 @@ export const appSlice = createSlice({
       const { collectionUrl, collection } = action.payload;
       state.collections[collectionUrl] = collection;
     },
+    removeCollection: (state, action: PayloadAction<string>) => {
+      delete state.collections[action.payload];
+    },
     setSelectedCollection: (state, action: PayloadAction<string>) => {
       state.selectedCollection = action.payload;
     },
@@ -53,6 +56,7 @@ export const {
   updateGroups,
   setGroups,
   setCollection,
+  removeCollection,
   setSelectedCollection,
   setSelectedCollectionWithUrl,
   setSelectedGroup,

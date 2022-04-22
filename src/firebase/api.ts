@@ -10,7 +10,11 @@ import {
   Unsubscribe,
   get,
 } from "firebase/database";
-import { setCollection, updateGroups } from "../redux/appSlice";
+import {
+  setCollection,
+  removeCollection as removeReduxCollection,
+  updateGroups,
+} from "../redux/appSlice";
 import {
   Api,
   TodoCollection,
@@ -238,9 +242,11 @@ export const removeCollection = async (
   try {
     await Promise.all([
       remove(ref(firebase, `collections/${collectionUrl}`)),
+      remove(ref(firebase, `groups/${collectionUrl}`)),
       remove(ref(firebase, `userCollections/${userId}/${collectionUrl}`)),
       remove(ref(firebase, `collectionUsers/${collectionUrl}`)),
     ]);
+    store.dispatch(removeReduxCollection(collectionUrl));
   } catch (e) {
     console.error(e);
   }
