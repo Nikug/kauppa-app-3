@@ -1,8 +1,10 @@
-import { UserAddIcon } from "@heroicons/react/outline";
-import { PencilIcon } from "@heroicons/react/solid";
+import { UserAddIcon } from "@heroicons/react/solid";
+import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
+import { getAuth } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
-import { updateCollection } from "../firebase/api";
+import { removeCollection, updateCollection } from "../firebase/api";
 import { AddUserModal, EditModal } from "../types/modal";
 import { TodoCollection } from "../types/todo";
 
@@ -13,6 +15,8 @@ interface Props {
 
 export const Collection = (props: Props) => {
   const { collection, onSelect } = props;
+  const auth = getAuth();
+  const [user] = useAuthState(auth);
   const { dispatch } = useModalContext();
 
   const editCollection = () => {
@@ -41,20 +45,31 @@ export const Collection = (props: Props) => {
     );
   };
 
+  const handleCollectionRemove = () => {
+    if (!user) return;
+    removeCollection(collection.url, user.uid);
+  };
+
   return (
     <div className="border bg-white p-4 flex justify-between items-center">
       <Link to={collection.url} onClick={() => onSelect(collection.url)}>
         <h2>{collection.name ?? <i>No name</i>}</h2>
         <p>{collection.url}</p>
       </Link>
-      <UserAddIcon
-        className="w-8 h-8 text-icon cursor-pointer"
-        onClick={addUserToCollection}
-      />
-      <PencilIcon
-        className="w-8 h-8 text-icon cursor-pointer"
-        onClick={editCollection}
-      />
+      <div className="flex justify-end gap-2">
+        <UserAddIcon
+          className="w-8 h-8 text-icon cursor-pointer"
+          onClick={addUserToCollection}
+        />
+        <PencilIcon
+          className="w-8 h-8 text-icon cursor-pointer"
+          onClick={editCollection}
+        />
+        <TrashIcon
+          className="w-8 h-8 text-primary cursor-pointer"
+          onClick={handleCollectionRemove}
+        />
+      </div>
     </div>
   );
 };

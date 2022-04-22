@@ -228,3 +228,20 @@ export const addInvitedCollection = async (
     console.error(e);
   }
 };
+
+export const removeCollection = async (
+  collectionUrl: string,
+  userId: string
+) => {
+  const firebase = getDatabase();
+
+  try {
+    await Promise.all([
+      remove(ref(firebase, `collections/${collectionUrl}`)),
+      remove(ref(firebase, `userCollections/${userId}/${collectionUrl}`)),
+      remove(ref(firebase, `collectionUsers/${collectionUrl}`)),
+    ]);
+  } catch (e) {
+    console.error(e);
+  }
+};
