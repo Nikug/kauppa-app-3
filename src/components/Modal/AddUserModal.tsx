@@ -33,7 +33,10 @@ export const AddUserModal = (props: Props) => {
       toast("User does not exist", { type: "error" });
       return;
     }
-    addUserToCollection(user.uid, modal.collectionId);
+    const success = await addUserToCollection(user.uid, modal.collectionId);
+    if (success) {
+      toast.success(`Added ${data.value} to ${modal.collectionId}`);
+    }
 
     closeModal();
   };

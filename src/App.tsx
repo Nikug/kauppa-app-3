@@ -8,7 +8,7 @@ import { LoginView } from "./views/LoginView";
 import { TodoLayout } from "./Layouts/TodoLayout";
 import { ModalContainer } from "./components/Modal/ModalContainer";
 import { ModalContextProvider } from "./contexts/ModalContextProvider";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -35,7 +35,13 @@ function App() {
             <Route path="*" element={"Not found"} />
           </Routes>
         </BrowserRouter>
-        <ToastContainer />
+        <ToastContainer
+          position="bottom-center"
+          pauseOnHover={false}
+          pauseOnFocusLoss={false}
+          limit={3}
+          transition={Zoom}
+        />
       </ModalContextProvider>
     </div>
   );

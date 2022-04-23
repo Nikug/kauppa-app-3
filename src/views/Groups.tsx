@@ -79,7 +79,7 @@ export const Groups = () => {
       selectedCollection.url
     );
     if (success) {
-      toast(`Added ${selectedCollection.name} to your collections`);
+      toast.success(`Added to your collections`);
     }
   };
 
