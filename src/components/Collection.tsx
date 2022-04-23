@@ -5,7 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { removeCollection, updateCollection } from "../firebase/api";
-import { AddUserModal, EditModal } from "../types/modal";
+import { AddUserModal, ConfirmationModal, EditModal } from "../types/modal";
 import { TodoCollection } from "../types/todo";
 
 interface Props {
@@ -47,7 +47,14 @@ export const Collection = (props: Props) => {
 
   const handleCollectionRemove = () => {
     if (!user) return;
-    removeCollection(collection.url, user.uid);
+    dispatch(
+      createModal<ConfirmationModal>({
+        type: "confirmation",
+        title: "Remove collection",
+        okButtonText: "Remove",
+        onOk: () => removeCollection(collection.url, user.uid),
+      })
+    );
   };
 
   return (

@@ -2,7 +2,7 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
 import { useMemo } from "react";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { removeGroup, updateGroup } from "../firebase/api";
-import { EditModal } from "../types/modal";
+import { ConfirmationModal, EditModal } from "../types/modal";
 import { TodoGroup } from "../types/todo";
 import { getTodoCount } from "../utils";
 
@@ -32,7 +32,14 @@ export const Group = (props: Props) => {
 
   const handleGroupRemove = () => {
     if (!collectionId) return;
-    removeGroup(collectionId, group.id);
+    dispatch(
+      createModal<ConfirmationModal>({
+        type: "confirmation",
+        title: "Remove group",
+        okButtonText: "Remove",
+        onOk: () => removeGroup(collectionId, group.id),
+      })
+    );
   };
 
   const todoCount = useMemo(() => getTodoCount(group), [group]);
