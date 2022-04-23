@@ -98,8 +98,11 @@ export const TodoNavBar = () => {
 
   return (
     <div className={navClasses}>
-      <a className="font-bold text-white text-xl truncate" href="/list">
-        {selectedCollection?.name ?? "Kauppa App"}
+      <a
+        className="font-bold text-white text-xl truncate"
+        href={selectedCollection ? "/list" : "/"}
+      >
+        {selectedCollection ? selectedCollection.name : "Kauppa App"}
       </a>
       {user && !selectedCollection && (
         <TextButton onClick={createCollection}>Add collection</TextButton>
