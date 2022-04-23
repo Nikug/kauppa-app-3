@@ -13,6 +13,7 @@ import {
 import {
   setCollection,
   removeCollection as removeReduxCollection,
+  removeGroup as removeReduxGroup,
   updateGroups,
 } from "../redux/appSlice";
 import {
@@ -247,6 +248,17 @@ export const removeCollection = async (
       remove(ref(firebase, `collectionUsers/${collectionUrl}`)),
     ]);
     store.dispatch(removeReduxCollection(collectionUrl));
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const removeGroup = async (collectionUrl: string, groupId: string) => {
+  const firebase = getDatabase();
+
+  try {
+    await remove(ref(firebase, `groups/${collectionUrl}/${groupId}`));
+    store.dispatch(removeReduxGroup(groupId));
   } catch (e) {
     console.error(e);
   }

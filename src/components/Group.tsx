@@ -1,7 +1,7 @@
-import { PencilIcon } from "@heroicons/react/solid";
+import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
 import { useMemo } from "react";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
-import { updateGroup } from "../firebase/api";
+import { removeGroup, updateGroup } from "../firebase/api";
 import { EditModal } from "../types/modal";
 import { TodoGroup } from "../types/todo";
 import { getTodoCount } from "../utils";
@@ -30,6 +30,11 @@ export const Group = (props: Props) => {
     );
   };
 
+  const handleGroupRemove = () => {
+    if (!collectionId) return;
+    removeGroup(collectionId, group.id);
+  };
+
   const todoCount = useMemo(() => getTodoCount(group), [group]);
 
   return (
@@ -40,10 +45,16 @@ export const Group = (props: Props) => {
         </h2>
         <p>{group.id}</p>
       </div>
-      <PencilIcon
-        className="w-8 h-8 text-icon cursor-pointer"
-        onClick={editGroup}
-      />
+      <div className="flex justify-end gap-2">
+        <PencilIcon
+          className="w-8 h-8 text-icon cursor-pointer"
+          onClick={editGroup}
+        />
+        <TrashIcon
+          className="w-8 h-8 text-primary cursor-pointer"
+          onClick={handleGroupRemove}
+        />
+      </div>
     </div>
   );
 };

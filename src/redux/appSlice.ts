@@ -49,6 +49,9 @@ export const appSlice = createSlice({
     setSelectedGroup: (state, action: PayloadAction<string>) => {
       state.selectedGroup = action.payload;
     },
+    removeGroup: (state, action: PayloadAction<string>) => {
+      delete state.groups[action.payload];
+    },
   },
 });
 
@@ -60,6 +63,7 @@ export const {
   setSelectedCollection,
   setSelectedCollectionWithUrl,
   setSelectedGroup,
+  removeGroup,
 } = appSlice.actions;
 export default appSlice.reducer;
 
