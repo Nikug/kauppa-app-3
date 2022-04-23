@@ -5,6 +5,7 @@ import {
   useCreateUserWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Login } from "../components/Login";
 import { addUser } from "../firebase/api";
 import { LoginInformation } from "../types/react";
@@ -21,10 +22,13 @@ export const Register = () => {
   };
 
   useEffect(() => {
-    if (error || !user) {
-      // TODO: Handle bad login with toast
+    if (error) {
+      toast("Registration failed", { type: "error" });
       return;
     }
+
+    if (!user) return;
+
     const addAndNavigate = async () => {
       await addUser(user);
       navigate("/list");

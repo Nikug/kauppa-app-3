@@ -8,6 +8,9 @@ import { LoginView } from "./views/LoginView";
 import { TodoLayout } from "./Layouts/TodoLayout";
 import { ModalContainer } from "./components/Modal/ModalContainer";
 import { ModalContextProvider } from "./contexts/ModalContextProvider";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -32,6 +35,7 @@ function App() {
             <Route path="*" element={"Not found"} />
           </Routes>
         </BrowserRouter>
+        <ToastContainer />
       </ModalContextProvider>
     </div>
   );

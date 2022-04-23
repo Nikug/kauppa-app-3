@@ -1,6 +1,7 @@
 import { getAuth } from "firebase/auth";
 import { useEffect, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 import { Group } from "../components/Group";
 import { Button } from "../components/inputs/Button";
 import { createNewGroup } from "../components/TodoNavBar";
@@ -73,8 +74,13 @@ export const Groups = () => {
 
   const addInvitedCollectionToOwnCollections = async () => {
     if (!user || !selectedCollection) return;
-    await addInvitedCollection(user?.uid, selectedCollection.url);
-    // TODO: Toast when succesful
+    const success = await addInvitedCollection(
+      user?.uid,
+      selectedCollection.url
+    );
+    if (success) {
+      toast(`Added ${selectedCollection.name} to your collections`);
+    }
   };
 
   return (

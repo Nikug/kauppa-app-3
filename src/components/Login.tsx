@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { addUser } from "../firebase/api";
 import { LoginInformation } from "../types/react";
 import { Button } from "./inputs/Button";
@@ -28,8 +29,12 @@ export const Login = (props: Props) => {
   } = useForm<LoginInformation>();
 
   useEffect(() => {
-    // TODO: Handle bad login with toast
-    if (error || !user) return;
+    if (error) {
+      toast("Login failed", { type: "error" });
+      return;
+    }
+
+    if (!user) return;
 
     const addAndNavigate = async () => {
       await addUser(user);

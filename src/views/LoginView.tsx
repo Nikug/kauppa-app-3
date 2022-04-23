@@ -1,5 +1,7 @@
 import { getAuth } from "firebase/auth";
+import { useEffect } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 import { LinkButton } from "../components/inputs/LinkButton";
 import { Login } from "../components/Login";
 import { LoginInformation } from "../types/react";
@@ -7,11 +9,19 @@ import { LoginInformation } from "../types/react";
 export const LoginView = () => {
   const auth = getAuth();
 
-  const [signIntWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, , , error] =
+    useSignInWithEmailAndPassword(auth);
 
   const handleLogin = async (login: LoginInformation) => {
-    await signIntWithEmailAndPassword(login.email, login.password);
+    await signInWithEmailAndPassword(login.email, login.password);
   };
+
+  useEffect(() => {
+    if (error) {
+      toast("Login failed", { type: "error" });
+      return;
+    }
+  }, [error]);
 
   return (
     <div className="w-full">

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { useModalContext } from "../../contexts/ModalContextProvider";
 import { addUserToCollection, getUserByEmail } from "../../firebase/api";
 import { AddUserModal as AddUserModalType } from "../../types/modal";
@@ -28,8 +29,10 @@ export const AddUserModal = (props: Props) => {
   const onSubmit = async (data: { value: string | undefined }) => {
     const user = await getUserByEmail(data.value);
 
-    // TODO: Show error if user does not exist
-    if (!user?.uid) return;
+    if (!user?.uid) {
+      toast("User does not exist", { type: "error" });
+      return;
+    }
     addUserToCollection(user.uid, modal.collectionId);
 
     closeModal();

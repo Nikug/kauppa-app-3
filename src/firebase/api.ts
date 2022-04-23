@@ -229,9 +229,11 @@ export const addInvitedCollection = async (
       ref(firebase, `userCollections/${userId}/${collectionUrl}`),
       true
     );
+    return true;
   } catch (e) {
     console.error(e);
   }
+  return false;
 };
 
 export const removeCollection = async (
