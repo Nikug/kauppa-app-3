@@ -35,7 +35,7 @@ interface FirebaseSchema {
   // Used for data access rules
   collectionUsers: {
     [collectionUrl: string]: {
-      [userId: string]: boolean;
+      [userId: string]: string; // Email
     };
   };
   // Used for fetching all user collections

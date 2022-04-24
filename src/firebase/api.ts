@@ -87,19 +87,16 @@ export const listenForGroups = (collectionId: string) => {
   return unsubscribe;
 };
 
-export const addCollection = async (
-  userId: string,
-  collection: TodoCollection
-) => {
+export const addCollection = async (user: User, collection: TodoCollection) => {
   const firebase = getDatabase();
 
   try {
     await set(
-      ref(firebase, `collectionUsers/${collection.url}/${userId}`),
-      true
+      ref(firebase, `collectionUsers/${collection.url}/${user.uid}`),
+      user.email
     );
     await set(
-      ref(firebase, `userCollections/${userId}/${collection.url}`),
+      ref(firebase, `userCollections/${user.uid}/${collection.url}`),
       true
     );
     await set(ref(firebase, `collections/${collection.url}`), collection);

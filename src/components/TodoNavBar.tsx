@@ -84,8 +84,7 @@ export const TodoNavBar = () => {
         title: "Create collection",
         label: "Name",
         okButtonText: "Save",
-        onOk: (value) =>
-          addCollection(user.uid, { ...newCollection, name: value }),
+        onOk: (value) => addCollection(user, { ...newCollection, name: value }),
       })
     );
   };
