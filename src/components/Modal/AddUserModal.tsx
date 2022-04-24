@@ -29,11 +29,11 @@ export const AddUserModal = (props: Props) => {
   const onSubmit = async (data: { value: string | undefined }) => {
     const user = await getUserByEmail(data.value);
 
-    if (!user?.uid) {
+    if (!user?.uid || !user?.email) {
       toast("User does not exist", { type: "error" });
       return;
     }
-    const success = await addUserToCollection(user.uid, modal.collectionId);
+    const success = await addUserToCollection(user, modal.collectionId);
     if (success) {
       toast.success(`Added ${data.value} to ${modal.collectionId}`);
     }

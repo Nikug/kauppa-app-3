@@ -25,7 +25,7 @@ import {
 } from "../types/todo";
 import { store } from "../redux/store";
 import { User } from "firebase/auth";
-import { emailToKey } from "../utils";
+import { emailKeyToEmail, emailToKey } from "../utils";
 
 export const addTodo = async (
   collectionId: string,
@@ -195,22 +195,24 @@ export const getUserByEmail = async (
 
   try {
     const user = await get(ref(firebase, `users/${emailToKey(email)}`));
-    return user.val();
+    if (!user.key) return;
+
+    return { ...user.val(), email: emailKeyToEmail(user.key) };
   } catch (e) {
     console.error(e);
   }
 };
 
 export const addUserToCollection = async (
-  userId: string,
+  user: UserShare,
   collectionUrl: string
 ) => {
   const firebase = getDatabase();
 
   try {
     await set(
-      ref(firebase, `collectionUsers/${collectionUrl}/${userId}`),
-      true
+      ref(firebase, `collectionUsers/${collectionUrl}/${user.uid}`),
+      user.email
     );
     return true;
   } catch (e) {
