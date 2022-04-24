@@ -58,12 +58,19 @@ export const TodoNavBar = () => {
     modalDispatch(
       createModal<EditModal>({
         type: "edit",
-        title: "Create group",
+        title: "Create list",
         label: "Name",
         okButtonText: "Save",
         value: newGroup.name,
-        onOk: (value) =>
-          addGroup(selectedCollection.url, { ...newGroup, name: value }),
+        onOk: async (value) => {
+          const newKey = await addGroup(selectedCollection.url, {
+            ...newGroup,
+            name: value,
+          });
+          if (newKey) {
+            dispatch(setSelectedGroup(newKey));
+          }
+        },
       })
     );
   };
@@ -127,7 +134,7 @@ export const TodoNavBar = () => {
       {user && selectedCollection && (
         <div className="font-semibold flex-1">
           <Dropdown
-            value={selectedGroup ? selectedGroup.name : "Select a group"}
+            value={selectedGroup ? selectedGroup.name : "Select a list"}
           >
             {groupList?.map((group) => (
               <div key={group.id} onClick={() => handleGroupSelect(group.id)}>
@@ -135,7 +142,8 @@ export const TodoNavBar = () => {
               </div>
             ))}
             <div onClick={createGroup}>
-              Add new group <PencilIcon className="h-4 w-4 inline text-icon" />
+              Add new list
+              <PencilIcon className="ml-2 h-5 w-5 inline text-icon" />
             </div>
           </Dropdown>
         </div>

@@ -127,9 +127,11 @@ export const addGroup = async (
   try {
     const newGroup = push(child(ref(firebase), `groups/${collectionurl}`));
     await set(ref(firebase, `groups/${collectionurl}/${newGroup.key}`), group);
+    return newGroup.key;
   } catch (e) {
     console.error(e);
   }
+  return undefined;
 };
 
 export const updateGroup = async (

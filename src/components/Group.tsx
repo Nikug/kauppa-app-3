@@ -21,7 +21,7 @@ export const Group = (props: Props) => {
     dispatch(
       createModal<EditModal>({
         type: "edit",
-        title: "Edit group",
+        title: "Edit list",
         label: "Name",
         value: group.name,
         okButtonText: "Save",
@@ -35,7 +35,7 @@ export const Group = (props: Props) => {
     dispatch(
       createModal<ConfirmationModal>({
         type: "confirmation",
-        title: "Remove group",
+        title: "Remove list",
         okButtonText: "Remove",
         onOk: () => removeGroup(collectionId, group.id),
       })

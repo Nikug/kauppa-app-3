@@ -57,7 +57,7 @@ export const Groups = () => {
     modalDispatch(
       createModal<EditModal>({
         type: "edit",
-        title: "Create group",
+        title: "Create list",
         label: "Name",
         value: newGroup.name,
         okButtonText: "Save",
@@ -87,9 +87,9 @@ export const Groups = () => {
     <div>
       {!groupList.length && (
         <div className="h-screen flex flex-col justify-center items-center">
-          <i className="mb-8">No groups</i>
+          <i className="mb-8">No lists</i>
           <Button className="primary" onClick={createGroup}>
-            Create group
+            Create list
           </Button>
         </div>
       )}
