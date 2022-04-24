@@ -7,6 +7,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Login } from "../components/Login";
+import { COLLECTION_URL } from "../constants";
 import { addUser } from "../firebase/api";
 import { LoginInformation } from "../types/react";
 
@@ -31,7 +32,7 @@ export const Register = () => {
 
     const addAndNavigate = async () => {
       await addUser(user);
-      navigate("/list");
+      navigate(COLLECTION_URL);
     };
     addAndNavigate();
   }, [user, error, navigate]);

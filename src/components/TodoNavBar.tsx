@@ -1,8 +1,9 @@
-import { PencilIcon } from "@heroicons/react/solid";
+import { HomeIcon, PencilIcon } from "@heroicons/react/solid";
 import { getAuth } from "firebase/auth";
 import humanId from "human-id";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { COLLECTION_URL } from "../constants";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { addCollection, addGroup } from "../firebase/api";
 import {
@@ -94,24 +95,37 @@ export const TodoNavBar = () => {
     dispatch(setSelectedGroup(groupId));
   };
 
+  const title = useMemo(() => {
+    if (!selectedCollection) return "Collections";
+    if (selectedGroup) return selectedGroup.name;
+    return selectedCollection.name;
+  }, [selectedCollection, selectedGroup]);
+
   const todoCount = (group: TodoGroup) => getTodoCount(group);
 
   return (
     <div className={navClasses}>
+      <a className="font-bold text-white text-xl truncate flex-1" href={"/"}>
+        {<HomeIcon className="w-8 h-8" />}
+      </a>
       <a
-        className="font-bold text-white text-xl truncate"
-        href={selectedCollection ? "/list" : "/"}
+        className="font-bold text-white text-xl text-center truncate flex-1"
+        href={COLLECTION_URL}
       >
-        {selectedCollection ? selectedCollection.name : "Kauppa App"}
+        {title}
       </a>
       {user && !selectedCollection && (
-        <TextButton onClick={createCollection}>Add collection</TextButton>
+        <div className="flex-1 text-right">
+          <TextButton onClick={createCollection}>Add collection</TextButton>
+        </div>
       )}
       {user && selectedCollection && !groupList && (
-        <TextButton onClick={createGroup}>Add group</TextButton>
+        <div className="flex-1 text-right">
+          <TextButton onClick={createGroup}>Add group</TextButton>
+        </div>
       )}
       {user && selectedCollection && (
-        <div className="font-semibold">
+        <div className="font-semibold flex-1">
           <Dropdown
             value={selectedGroup ? selectedGroup.name : "Select a group"}
           >

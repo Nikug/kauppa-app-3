@@ -11,6 +11,7 @@ import { ModalContextProvider } from "./contexts/ModalContextProvider";
 import { ToastContainer, Zoom } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import { COLLECTION_URL } from "./constants";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
             </Route>
 
             <Route element={<TodoLayout />}>
-              <Route path="/list">
+              <Route path={COLLECTION_URL}>
                 <Route path="" element={<Collections />} />
                 <Route path=":id" element={<Groups />} />
               </Route>
