@@ -4,6 +4,7 @@ import {
   useAuthState,
   useCreateUserWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Login } from "../components/Login";
@@ -12,6 +13,7 @@ import { addUser } from "../firebase/api";
 import { LoginInformation } from "../types/react";
 
 export const Register = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const auth = getAuth();
   const [createUserWithEmailAndPassword, , , error] =
@@ -24,7 +26,7 @@ export const Register = () => {
 
   useEffect(() => {
     if (error) {
-      toast("Registration failed", { type: "error" });
+      toast(t("auth.registrationFailed"), { type: "error" });
       return;
     }
 
@@ -35,7 +37,7 @@ export const Register = () => {
       navigate(COLLECTION_URL);
     };
     addAndNavigate();
-  }, [user, error, navigate]);
+  }, [user, error, navigate, t]);
 
   return (
     <div>

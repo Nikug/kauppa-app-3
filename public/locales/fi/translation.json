@@ -7,7 +7,13 @@
   "auth": {
     "login": "Kirjaudu sisään",
     "logout": "Kirjaudu ulos",
-    "register": "Rekisteröidy"
+    "register": "Rekisteröidy",
+    "registrationFailed": "Rekisteröinti epäonnistui",
+    "loginFailed": "Kirjautuminen epäonnistui",
+    "loginWithGoogle": "Kirjaudu Google-tilillä",
+    "email": "sähköposti",
+    "password": "Salasana",
+    "newUserRegisterInstead": "Uusi käyttäjä? Rekisteröidy"
   },
   "home": {
     "greeting": "Tervetuloa!",
