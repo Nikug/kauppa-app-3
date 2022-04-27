@@ -2,6 +2,7 @@ import { UserAddIcon } from "@heroicons/react/solid";
 import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { removeCollection, updateCollection } from "../firebase/api";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const Collection = (props: Props) => {
+  const { t } = useTranslation();
   const { collection, onSelect } = props;
   const auth = getAuth();
   const [user] = useAuthState(auth);
@@ -23,10 +25,10 @@ export const Collection = (props: Props) => {
     dispatch(
       createModal<EditModal>({
         type: "edit",
-        title: "Edit collection",
+        title: t("modal.editCollection"),
         value: collection.name,
-        label: "Name",
-        okButtonText: "Save",
+        label: t("modal.name"),
+        okButtonText: t("modal.save"),
         onOk: (value) => updateCollection(collection.url, value),
       })
     );
@@ -36,10 +38,10 @@ export const Collection = (props: Props) => {
     dispatch(
       createModal<AddUserModal>({
         type: "addUser",
-        title: "Add user",
+        title: t("modal.addUser"),
         value: "",
-        label: "Email",
-        okButtonText: "Add",
+        label: t("modal.email"),
+        okButtonText: t("modal.add"),
         collectionId: collection.url,
       })
     );
@@ -50,8 +52,8 @@ export const Collection = (props: Props) => {
     dispatch(
       createModal<ConfirmationModal>({
         type: "confirmation",
-        title: "Remove collection",
-        okButtonText: "Remove",
+        title: t("modal.removeCollection"),
+        okButtonText: t("modal.remove"),
         onOk: () => removeCollection(collection.url, user.uid),
       })
     );
@@ -60,7 +62,7 @@ export const Collection = (props: Props) => {
   return (
     <div className="border bg-white p-4 flex justify-between items-center">
       <Link to={collection.url} onClick={() => onSelect(collection.url)}>
-        <h2>{collection.name ?? <i>No name</i>}</h2>
+        <h2>{collection.name || <i>{t("general.noName")}</i>}</h2>
         <p>{collection.url}</p>
       </Link>
       <div className="flex justify-end gap-2">

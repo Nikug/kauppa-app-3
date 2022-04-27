@@ -2,7 +2,8 @@
   "languageName": "Suomi",
   "appName": "Kauppa App",
   "general": {
-    "loading": "Ladataan"
+    "loading": "Ladataan",
+    "noName": "Ei nimeä"
   },
   "auth": {
     "login": "Kirjaudu sisään",
@@ -19,5 +20,34 @@
     "greeting": "Tervetuloa!",
     "userGreeting": "Hei {{user}}!",
     "goToCollections": "Siirry kokoelmiisi"
+  },
+  "modal": {
+    "createList": "Luo lista",
+    "editList": "Muokkaa listaa",
+    "createCollection": "Luo kokoelma",
+    "editCollection": "Muokkaa kokoelmaa",
+    "removeCollection": "Poista kokoelma",
+    "addUser": "Lisää käyttäjä",
+    "name": "Nimi",
+    "add": "Lisää",
+    "remove": "Poista",
+    "save": "Tallenna",
+    "ok": "Ok",
+    "cancel": "Peruuta",
+    "userDoesntExist": "Käyttäjää ei löytynyt",
+    "userAdded": "{{user}} lisätty kokoelmaan {{collection}}",
+    "email": "Sähköposti"
+  },
+  "collection": {
+    "title": "Kokoelmat",
+    "add": "Lisää kokoelma",
+    "addedToCollections": "Lisätty kokoelmiin",
+    "addToCollections": "Lisää kokoelmiisi",
+    "youHaveBeenInvitedToThisCollection": "Sinut on kutsuttu tähän kokoelmaan"
+  },
+  "list": {
+    "add": "Lisää lista",
+    "select": "Valitse lista",
+    "noLists": "Ei listoja"
   }
 }

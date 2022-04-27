@@ -2,7 +2,8 @@
   "languageName": "English",
   "AppName": "Kauppa App",
   "general": {
-    "loading": "Loading"
+    "loading": "Loading",
+    "noName": "No name"
   },
   "auth": {
     "login": "Sign in",
@@ -19,5 +20,34 @@
     "greeting": "Welcome!",
     "userGreeting": "Hello {{user}}!",
     "goToCollections": "Go to your collections"
+  },
+  "modal": {
+    "createList": "Create a list",
+    "editList": "Edit list",
+    "createCollection": "Create a collection",
+    "editCollection": "Edit collection",
+    "removeCollection": "Remove collection",
+    "addUser": "Add a user",
+    "name": "Name",
+    "add": "Add",
+    "remove": "Remove",
+    "save": "Save",
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "userDoesntExist": "User doesn't exist",
+    "userAdded": "Added {{user}} to collection {{collection}}",
+    "email": "Email"
+  },
+  "collection": {
+    "title": "Collections",
+    "add": "Add a collection",
+    "addedToCollections": "Added to your collections",
+    "addToCollections": "Add to your collections",
+    "youHaveBeenInvitedToThisCollection": "You have been invited to this collection"
+  },
+  "list": {
+    "add": "Add a list",
+    "select": "Select a list",
+    "noLists": "No lists"
   }
 }

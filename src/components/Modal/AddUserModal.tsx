@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { useModalContext } from "../../contexts/ModalContextProvider";
 import { addUserToCollection, getUserByEmail } from "../../firebase/api";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const AddUserModal = (props: Props) => {
+  const { t } = useTranslation();
   const { modal } = props;
   const { dispatch } = useModalContext();
   const { register, handleSubmit, setFocus } = useForm({
@@ -30,12 +32,17 @@ export const AddUserModal = (props: Props) => {
     const user = await getUserByEmail(data.value);
 
     if (!user?.uid || !user?.email) {
-      toast("User does not exist", { type: "error" });
+      toast(t("modal.userDoesntExist"), { type: "error" });
       return;
     }
     const success = await addUserToCollection(user, modal.collectionId);
     if (success) {
-      toast.success(`Added ${data.value} to ${modal.collectionId}`);
+      toast.success(
+        t("modal.userAdded", {
+          user: data.value,
+          collection: modal.collectionId,
+        })
+      );
     }
 
     closeModal();
@@ -53,10 +60,10 @@ export const AddUserModal = (props: Props) => {
         <TextInput {...register("value")} />
         <div className="flex mt-4 justify-end gap-x-8">
           <Button onClick={onCancel} className="secondary">
-            {modal.cancelButtonText ?? "Cancel"}
+            {modal.cancelButtonText ?? t("modal.cancel")}
           </Button>
           <SubmitButton
-            value={modal.okButtonText ?? "Ok"}
+            value={modal.okButtonText ?? t("modal.ok")}
             className="primary"
           />
         </div>

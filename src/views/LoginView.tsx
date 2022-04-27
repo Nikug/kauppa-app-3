@@ -20,10 +20,10 @@ export const LoginView = () => {
 
   useEffect(() => {
     if (error) {
-      toast("Login failed", { type: "error" });
+      toast(t("auth.loginFailed"), { type: "error" });
       return;
     }
-  }, [error]);
+  }, [error, t]);
 
   return (
     <div className="w-full">

@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import humanId from "human-id";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useTranslation } from "react-i18next";
 import { COLLECTION_URL } from "../constants";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { addCollection, addGroup } from "../firebase/api";
@@ -44,6 +45,7 @@ const navClasses = `
 `;
 
 export const TodoNavBar = () => {
+  const { t } = useTranslation();
   const auth = getAuth();
   const [user] = useAuthState(auth);
   const dispatch = useAppDispatch();
@@ -58,9 +60,9 @@ export const TodoNavBar = () => {
     modalDispatch(
       createModal<EditModal>({
         type: "edit",
-        title: "Create list",
-        label: "Name",
-        okButtonText: "Save",
+        title: t("modal.createList"),
+        label: t("modal.name"),
+        okButtonText: t("modal.save"),
         value: newGroup.name,
         onOk: async (value) => {
           const newKey = await addGroup(selectedCollection.url, {
@@ -81,9 +83,9 @@ export const TodoNavBar = () => {
     modalDispatch(
       createModal<EditModal>({
         type: "edit",
-        title: "Create collection",
-        label: "Name",
-        okButtonText: "Save",
+        title: t("modal.createCollection"),
+        label: t("modal.name"),
+        okButtonText: t("modal.save"),
         onOk: (value) => addCollection(user, { ...newCollection, name: value }),
       })
     );
@@ -102,10 +104,10 @@ export const TodoNavBar = () => {
   };
 
   const title = useMemo(() => {
-    if (!selectedCollection) return "Collections";
-    if (selectedGroup) return selectedGroup.name;
-    return selectedCollection.name;
-  }, [selectedCollection, selectedGroup]);
+    if (!selectedCollection) return t("collection.title");
+    if (selectedGroup) return selectedGroup.name || t("general.noName");
+    return selectedCollection.name || t("general.noName");
+  }, [selectedCollection, selectedGroup, t]);
 
   const todoCount = (group: TodoGroup) => getTodoCount(group);
 
@@ -122,26 +124,33 @@ export const TodoNavBar = () => {
       </a>
       {user && !selectedCollection && (
         <div className="flex-1 text-right">
-          <TextButton onClick={createCollection}>Add collection</TextButton>
+          <TextButton onClick={createCollection}>
+            {t("collection.add")}
+          </TextButton>
         </div>
       )}
       {user && selectedCollection && !groupList && (
         <div className="flex-1 text-right">
-          <TextButton onClick={createGroup}>Add group</TextButton>
+          <TextButton onClick={createGroup}>{t("list.add")}</TextButton>
         </div>
       )}
       {user && selectedCollection && (
         <div className="font-semibold flex-1">
           <Dropdown
-            value={selectedGroup ? selectedGroup.name : "Select a list"}
+            value={
+              selectedGroup
+                ? selectedGroup.name || t("general.noName")
+                : t("list.select")
+            }
           >
             {groupList?.map((group) => (
               <div key={group.id} onClick={() => handleGroupSelect(group.id)}>
-                {group.name} {todoCount(group) ? `(${todoCount(group)})` : ""}
+                {group.name || t("general.noName")}{" "}
+                {todoCount(group) ? `(${todoCount(group)})` : ""}
               </div>
             ))}
             <div onClick={createGroup}>
-              Add new list
+              {t("list.add")}
               <PencilIcon className="ml-2 h-5 w-5 inline text-icon" />
             </div>
           </Dropdown>

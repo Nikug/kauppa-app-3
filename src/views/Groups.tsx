@@ -1,6 +1,7 @@
 import { getAuth } from "firebase/auth";
 import { useEffect, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { Group } from "../components/Group";
 import { Button } from "../components/inputs/Button";
@@ -24,6 +25,7 @@ import { TodoGroup } from "../types/todo";
 import { GroupView } from "./GroupView";
 
 export const Groups = () => {
+  const { t } = useTranslation();
   const groups = useAppSelector(getGroups);
   const collections = useAppSelector(getCollections);
   const selectedCollection = useAppSelector(getSelectedCollection);
@@ -57,10 +59,10 @@ export const Groups = () => {
     modalDispatch(
       createModal<EditModal>({
         type: "edit",
-        title: "Create list",
-        label: "Name",
+        title: t("modal.createList"),
+        label: t("modal.name"),
         value: newGroup.name,
-        okButtonText: "Save",
+        okButtonText: t("modal.save"),
         onOk: (value) =>
           addGroup(selectedCollection.url, { ...newGroup, name: value }),
       })
@@ -79,7 +81,7 @@ export const Groups = () => {
       selectedCollection.url
     );
     if (success) {
-      toast.success(`Added to your collections`);
+      toast.success(t("collection.addedToCollections"));
     }
   };
 
@@ -87,9 +89,9 @@ export const Groups = () => {
     <div>
       {!groupList.length && (
         <div className="h-screen flex flex-col justify-center items-center">
-          <i className="mb-8">No lists</i>
+          <i className="mb-8">{t("list.noLists")}</i>
           <Button className="primary" onClick={createGroup}>
-            Create list
+            {t("modal.createList")}
           </Button>
         </div>
       )}
@@ -97,12 +99,14 @@ export const Groups = () => {
         <div>
           {isInvitedCollection && (
             <div className="flex flex-col items-center my-8">
-              <p className="mb-2">You have been invited to this collection</p>
+              <p className="mb-2">
+                {t("collection.youHaveBeenInvitedToThisCollection")}
+              </p>
               <Button
                 className="primary"
                 onClick={addInvitedCollectionToOwnCollections}
               >
-                Add to your collections
+                {t("collection.addToCollections")}
               </Button>
             </div>
           )}

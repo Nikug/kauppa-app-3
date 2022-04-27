@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useModalContext } from "../../contexts/ModalContextProvider";
 import { ConfirmationModal as ConfirmationModalType } from "../../types/modal";
 import { Button } from "../inputs/Button";
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const ConfirmationModal = (props: Props) => {
+  const { t } = useTranslation();
   const { modal } = props;
   const { dispatch } = useModalContext();
 
@@ -27,10 +29,10 @@ export const ConfirmationModal = (props: Props) => {
     <ModalBody onClose={onCancel} title={modal.title}>
       <div className="flex mt-4 justify-end gap-x-8">
         <Button onClick={onCancel} className="secondary">
-          {modal.cancelButtonText ?? "Cancel"}
+          {modal.cancelButtonText ?? t("modal.cancel")}
         </Button>
         <Button className="primary" onClick={onSubmit}>
-          {modal.okButtonText ?? "Ok"}
+          {modal.okButtonText ?? t("modal.ok")}
         </Button>
       </div>
     </ModalBody>

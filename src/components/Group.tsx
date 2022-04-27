@@ -1,4 +1,5 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
+import { t } from "i18next";
 import { useMemo } from "react";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { removeGroup, updateGroup } from "../firebase/api";
@@ -21,10 +22,10 @@ export const Group = (props: Props) => {
     dispatch(
       createModal<EditModal>({
         type: "edit",
-        title: "Edit list",
-        label: "Name",
+        title: t("modal.editList"),
+        label: t("modal.name"),
         value: group.name,
-        okButtonText: "Save",
+        okButtonText: t("modal.save"),
         onOk: (value) => updateGroup(collectionId, group.id, value),
       })
     );
@@ -35,8 +36,8 @@ export const Group = (props: Props) => {
     dispatch(
       createModal<ConfirmationModal>({
         type: "confirmation",
-        title: "Remove list",
-        okButtonText: "Remove",
+        title: t("modal.removeList"),
+        okButtonText: t("modal.remove"),
         onOk: () => removeGroup(collectionId, group.id),
       })
     );
@@ -48,7 +49,8 @@ export const Group = (props: Props) => {
     <div className="border bg-white p-4 flex justify-between items-center">
       <div className="cursor-pointer" onClick={() => onSelect(group.id)}>
         <h2>
-          {group.name ?? <i>No name</i>} {todoCount ? `(${todoCount})` : ""}
+          {group.name || <i>{t("general.noName")}</i>}{" "}
+          {todoCount ? `(${todoCount})` : ""}
         </h2>
         <p>{group.id}</p>
       </div>

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useModalContext } from "../../contexts/ModalContextProvider";
 import { EditModal as EditModalType } from "../../types/modal";
 import { Button } from "../inputs/Button";
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export const EditModal = (props: Props) => {
+  const { t } = useTranslation();
   const { modal } = props;
   const { dispatch } = useModalContext();
   const { register, handleSubmit, setFocus } = useForm({
@@ -41,10 +43,10 @@ export const EditModal = (props: Props) => {
         <TextInput {...register("value")} />
         <div className="flex mt-4 justify-end gap-x-8">
           <Button onClick={onCancel} className="secondary">
-            {modal.cancelButtonText ?? "Cancel"}
+            {modal.cancelButtonText ?? t("modal.cancel")}
           </Button>
           <SubmitButton
-            value={modal.okButtonText ?? "Ok"}
+            value={modal.okButtonText ?? t("modal.ok")}
             className="primary"
           />
         </div>

@@ -32,16 +32,14 @@ export const Collections = () => {
   };
 
   return (
-    <div>
-      <div className="text-black">
-        {collectionList.map((collection) => (
-          <Collection
-            key={collection.url}
-            collection={collection}
-            onSelect={selectCollection}
-          />
-        ))}
-      </div>
+    <div className="text-black">
+      {collectionList.map((collection) => (
+        <Collection
+          key={collection.url}
+          collection={collection}
+          onSelect={selectCollection}
+        />
+      ))}
     </div>
   );
 };
