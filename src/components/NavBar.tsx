@@ -1,10 +1,12 @@
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getUsername } from "../utils";
 import { Dropdown } from "./Dropdown";
 
 export const NavBar = () => {
+  const { t } = useTranslation();
   const auth = getAuth();
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
@@ -18,13 +20,13 @@ export const NavBar = () => {
     <div className="sticky top-0 h-16 bg-primary text-white flex items-center px-4 justify-between">
       <div>
         <a className="font-bold text-white text-3xl" href="/">
-          Kauppa App
+          {t("AppName")}
         </a>
       </div>
       {user && (
         <div className="font-semibold">
           <Dropdown value={getUsername(user)}>
-            <option onClick={logout}>Logout</option>
+            <option onClick={logout}>{t("auth.logout")}</option>
           </Dropdown>
         </div>
       )}

@@ -1,3 +1,17 @@
 {
-  "languageName": "Suomi"
+  "languageName": "Suomi",
+  "appName": "Kauppa App",
+  "general": {
+    "loading": "Ladataan"
+  },
+  "auth": {
+    "login": "Kirjaudu sisään",
+    "logout": "Kirjaudu ulos",
+    "register": "Rekisteröidy"
+  },
+  "home": {
+    "greeting": "Tervetuloa!",
+    "userGreeting": "Hei {{user}}!",
+    "goToCollections": "Siirry kokoelmiisi"
+  }
 }

@@ -1,3 +1,17 @@
 {
-  "languageName": "English"
+  "languageName": "English",
+  "AppName": "Kauppa App",
+  "general": {
+    "loading": "Loading"
+  },
+  "auth": {
+    "login": "Sign in",
+    "logout": "Sign out",
+    "register": "Register"
+  },
+  "home": {
+    "greeting": "Welcome!",
+    "userGreeting": "Hello {{user}}!",
+    "goToCollections": "Go to your collections"
+  }
 }
