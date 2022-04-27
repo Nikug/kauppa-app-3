@@ -49,5 +49,9 @@
     "add": "Lisää lista",
     "select": "Valitse lista",
     "noLists": "Ei listoja"
+  },
+  "todo": {
+    "new": "Uusi...",
+    "add": "Lisää"
   }
 }

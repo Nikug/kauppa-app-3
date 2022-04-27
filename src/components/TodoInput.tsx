@@ -3,6 +3,7 @@ import { Api, TodoItem } from "../types/todo";
 import { SubmitButton } from "./inputs/SubmitButton";
 import { TextInput } from "./inputs/TextInput";
 import { addTodo } from "../firebase/api";
+import { useTranslation } from "react-i18next";
 
 interface FormInputs {
   content: string;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const TodoInput = (props: Props) => {
+  const { t } = useTranslation();
   const { groupId, collectionId } = props;
   const { register, handleSubmit, reset, setFocus } = useForm<FormInputs>();
 
@@ -37,10 +39,10 @@ export const TodoInput = (props: Props) => {
         <TextInput
           {...register("content")}
           className="w-full h-full"
-          placeholder="New..."
+          placeholder={t("todo.new")}
           large
         />
-        <SubmitButton className="secondary" value="Add" />
+        <SubmitButton className="secondary" value={t("todo.add")} />
       </form>
     </div>
   );

@@ -49,5 +49,9 @@
     "add": "Add a list",
     "select": "Select a list",
     "noLists": "No lists"
+  },
+  "todo": {
+    "new": "New...",
+    "add": "Add"
   }
 }
