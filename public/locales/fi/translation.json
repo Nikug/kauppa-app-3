@@ -57,6 +57,7 @@
   "options": {
     "title": "Asetukset",
     "close": "Sulje",
-    "show": "Avaa asetukset"
+    "show": "Avaa asetukset",
+    "language": "Kieli"
   }
 }

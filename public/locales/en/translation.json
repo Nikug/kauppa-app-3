@@ -57,6 +57,7 @@
   "options": {
     "title": "Settings",
     "close": "Close",
-    "show": "Open options"
+    "show": "Open options",
+    "language": "Language"
   }
 }

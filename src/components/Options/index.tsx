@@ -9,9 +9,10 @@ export const Options = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="w-content m-auto bg-white flex flex-col">
-      <h1 className="mb-4">{t("options.title")}</h1>
-      <div className="w-fit mb-4">
+    <div className="w-content bg-white flex flex-col p-4">
+      <h1 className="mb-8">{t("options.title")}</h1>
+      <h3>{t("options.language")}</h3>
+      <div className="w-fit mb-8">
         <LanguageSelector />
       </div>
       <div>
