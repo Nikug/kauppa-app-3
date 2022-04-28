@@ -1,14 +1,18 @@
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useTranslation } from "react-i18next";
+import { Button } from "../components/inputs/Button";
 import { LinkButton } from "../components/inputs/LinkButton";
 import { COLLECTION_URL } from "../constants";
+import { showOptions } from "../redux/appSlice";
+import { useAppDispatch } from "../redux/hooks";
 import { getUsername } from "../utils";
 
 export const Home = () => {
   const { t } = useTranslation();
   const auth = getAuth();
   const [user, loading] = useAuthState(auth);
+  const dispatch = useAppDispatch();
 
   if (loading) {
     return <div>{t("general.loading")}</div>;
@@ -21,9 +25,12 @@ export const Home = () => {
           <h2 className="mb-8">
             {t("home.userGreeting", { user: getUsername(user) })}
           </h2>
-          <LinkButton className="primary" href={COLLECTION_URL}>
+          <LinkButton className="primary mb-3" href={COLLECTION_URL}>
             {t("home.goToCollections")}
           </LinkButton>
+          <Button className="primary" onClick={() => dispatch(showOptions())}>
+            {t("options.show")}
+          </Button>
         </div>
       )}
       {!user && (

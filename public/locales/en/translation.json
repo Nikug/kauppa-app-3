@@ -53,5 +53,10 @@
   "todo": {
     "new": "New...",
     "add": "Add"
+  },
+  "options": {
+    "title": "Settings",
+    "close": "Close",
+    "show": "Open options"
   }
 }

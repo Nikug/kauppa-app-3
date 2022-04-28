@@ -53,5 +53,10 @@
   "todo": {
     "new": "Uusi...",
     "add": "Lisää"
+  },
+  "options": {
+    "title": "Asetukset",
+    "close": "Sulje",
+    "show": "Avaa asetukset"
   }
 }

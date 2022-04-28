@@ -13,31 +13,39 @@ import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { COLLECTION_URL } from "./constants";
 import { Suspense } from "react";
+import { Options } from "./components/Options";
+import { useAppSelector } from "./redux/hooks";
+import { getShowOptions } from "./redux/appSlice";
 
 function App() {
+  const showOptions = useAppSelector(getShowOptions);
+
   return (
     <Suspense fallback="Loading...">
-      <div className="flex justify-center">
+      <div className="flex justify-center relative">
         <ModalContextProvider>
           <ModalContainer />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<LoginView />} />
-              </Route>
-
-              <Route element={<TodoLayout />}>
-                <Route path={COLLECTION_URL}>
-                  <Route path="" element={<Collections />} />
-                  <Route path=":id" element={<Groups />} />
+          {showOptions && <Options />}
+          {!showOptions && (
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Home />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<LoginView />} />
                 </Route>
-              </Route>
 
-              <Route path="*" element={"Not found"} />
-            </Routes>
-          </BrowserRouter>
+                <Route element={<TodoLayout />}>
+                  <Route path={COLLECTION_URL}>
+                    <Route path="" element={<Collections />} />
+                    <Route path=":id" element={<Groups />} />
+                  </Route>
+                </Route>
+
+                <Route path="*" element={"Not found"} />
+              </Routes>
+            </BrowserRouter>
+          )}
           <ToastContainer
             position="bottom-center"
             pauseOnHover={false}

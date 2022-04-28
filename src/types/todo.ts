@@ -24,6 +24,10 @@ export interface UserShare {
 export type Api<T> = Omit<T, "id" | "url">;
 export type FirebaseData<T> = Record<string, Api<T>>;
 
+export interface AppOptions {
+  show: boolean;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface FirebaseSchema {
   users: {

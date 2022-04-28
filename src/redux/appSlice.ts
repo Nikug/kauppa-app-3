@@ -4,7 +4,12 @@ import {
   SetGroupsPayload,
   UpdateGroupPayload,
 } from "../types/redux";
-import { FirebaseData, TodoCollection, TodoGroup } from "../types/todo";
+import {
+  AppOptions,
+  FirebaseData,
+  TodoCollection,
+  TodoGroup,
+} from "../types/todo";
 import { RootState } from "./store";
 
 interface AppState {
@@ -12,6 +17,7 @@ interface AppState {
   collections: FirebaseData<TodoCollection>;
   selectedCollection: string | null;
   selectedGroup: string | null;
+  options: AppOptions;
 }
 
 const initialState: AppState = {
@@ -19,6 +25,7 @@ const initialState: AppState = {
   collections: {},
   selectedCollection: null,
   selectedGroup: null,
+  options: { show: false },
 };
 
 export const appSlice = createSlice({
@@ -52,6 +59,12 @@ export const appSlice = createSlice({
     removeGroup: (state, action: PayloadAction<string>) => {
       delete state.groups[action.payload];
     },
+    showOptions: (state) => {
+      state.options.show = true;
+    },
+    hideOptions: (state) => {
+      state.options.show = false;
+    },
   },
 });
 
@@ -64,6 +77,8 @@ export const {
   setSelectedCollectionWithUrl,
   setSelectedGroup,
   removeGroup,
+  showOptions,
+  hideOptions,
 } = appSlice.actions;
 export default appSlice.reducer;
 
@@ -95,3 +110,4 @@ export const getSelectedGroup = (state: RootState): TodoGroup | undefined => {
     ...state.app.groups[state.app.selectedGroup],
   };
 };
+export const getShowOptions = (state: RootState) => state.app.options.show;
