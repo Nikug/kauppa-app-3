@@ -19,7 +19,7 @@ interface AppState {
   selectedCollection: string | null;
   selectedGroup: string | null;
   options: AppOptions;
-  userSettings: UserSettings;
+  userSettings?: UserSettings;
 }
 
 const initialState: AppState = {
