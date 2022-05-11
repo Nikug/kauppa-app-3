@@ -67,13 +67,10 @@ export const TodoNavBar = () => {
         okButtonText: t("modal.save"),
         value: newGroup.name,
         onOk: async (value) => {
-          const newKey = await addGroup(selectedCollection.url, {
+          await addGroup(selectedCollection.url, {
             ...newGroup,
             name: value,
           });
-          if (newKey) {
-            dispatch(setSelectedGroup(newKey));
-          }
         },
       })
     );
