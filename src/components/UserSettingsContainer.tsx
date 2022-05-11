@@ -24,7 +24,7 @@ export const UserSettingsContainer = (props: Props) => {
   }, [user?.uid]);
 
   useEffect(() => {
-    if (!userSettings.language) return;
+    if (!userSettings?.language) return;
     i18n.changeLanguage(userSettings.language);
   }, [userSettings, i18n]);
 
