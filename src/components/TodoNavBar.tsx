@@ -12,6 +12,7 @@ import {
   getGroups,
   getSelectedCollection,
   getSelectedGroup,
+  setSelectedCollection,
   setSelectedGroup,
 } from "../redux/appSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -104,6 +105,11 @@ export const TodoNavBar = () => {
     dispatch(setSelectedGroup(groupId));
   };
 
+  const onTitleClick = () => {
+    dispatch(setSelectedGroup(null));
+    dispatch(setSelectedCollection(null));
+  };
+
   const title = useMemo(() => {
     if (!selectedCollection) return t("collection.title");
     if (selectedGroup) return selectedGroup.name || t("general.noName");
@@ -114,12 +120,17 @@ export const TodoNavBar = () => {
 
   return (
     <div className={navClasses}>
-      <Link className="font-bold text-white text-xl truncate flex-1" to={"/"}>
+      <Link
+        className="font-bold text-white text-xl truncate flex-1"
+        to={"/"}
+        onClick={onTitleClick}
+      >
         {<HomeIcon className="w-8 h-8" />}
       </Link>
       <Link
         className="font-bold text-white text-xl text-center truncate flex-1"
         to={COLLECTION_URL}
+        onClick={onTitleClick}
       >
         {title}
       </Link>

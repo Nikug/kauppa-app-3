@@ -50,13 +50,13 @@ export const appSlice = createSlice({
     removeCollection: (state, action: PayloadAction<string>) => {
       delete state.collections[action.payload];
     },
-    setSelectedCollection: (state, action: PayloadAction<string>) => {
+    setSelectedCollection: (state, action: PayloadAction<string | null>) => {
       state.selectedCollection = action.payload;
     },
     setSelectedCollectionWithUrl: (state, action: PayloadAction<string>) => {
       state.selectedCollection = action.payload;
     },
-    setSelectedGroup: (state, action: PayloadAction<string>) => {
+    setSelectedGroup: (state, action: PayloadAction<string | null>) => {
       state.selectedGroup = action.payload;
     },
     removeGroup: (state, action: PayloadAction<string>) => {
@@ -112,6 +112,7 @@ export const getSelectedCollection = (
 };
 export const getSelectedGroup = (state: RootState): TodoGroup | undefined => {
   if (state.app.selectedGroup == null) return undefined;
+  if (state.app.groups == null) return undefined;
   return {
     id: state.app.selectedGroup,
     ...state.app.groups[state.app.selectedGroup],
