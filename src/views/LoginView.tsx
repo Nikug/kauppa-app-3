@@ -32,7 +32,7 @@ export const LoginView = () => {
       </div>
       <div className="mb-4">
         <p className="mb-4">{t("auth.newUserRegisterInstead")}</p>
-        <LinkButton className="secondary" href="/register">
+        <LinkButton className="secondary" to="/register">
           {t("auth.register")}
         </LinkButton>
       </div>

@@ -6,6 +6,12 @@
         ".write": "auth.uid != null && auth.token.email.replace('.', 'DOT') === $email"
       }
     },
+    "userSettings": {
+      "$uid": {
+        ".read": "auth.uid != null && auth.uid == $uid",
+        ".write": "auth.uid != null && auth.uid == $uid"
+      }
+    },
     "collectionUsers": {
       "$collection_id": {
         ".read": "auth.uid != null && (root.child('collectionUsers').child($collection_id).hasChild(auth.uid) || !root.child('collections').hasChild($collection_id))",

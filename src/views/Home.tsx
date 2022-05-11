@@ -25,7 +25,7 @@ export const Home = () => {
           <h2 className="mb-8">
             {t("home.userGreeting", { user: getUsername(user) })}
           </h2>
-          <LinkButton className="primary mb-3" href={COLLECTION_URL}>
+          <LinkButton className="primary mb-3" to={COLLECTION_URL}>
             {t("home.goToCollections")}
           </LinkButton>
           <Button className="primary" onClick={() => dispatch(showOptions())}>
@@ -36,10 +36,10 @@ export const Home = () => {
       {!user && (
         <div className="w-full flex flex-col px-32">
           <h1 className="mb-32">{t("home.greeting")}</h1>
-          <LinkButton className="primary mb-6" href="/login">
+          <LinkButton className="primary mb-6" to="/login">
             {t("auth.login")}
           </LinkButton>
-          <LinkButton className="secondary" href="/register">
+          <LinkButton className="secondary" to="/register">
             {t("auth.register")}
           </LinkButton>
         </div>

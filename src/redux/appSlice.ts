@@ -9,6 +9,7 @@ import {
   FirebaseData,
   TodoCollection,
   TodoGroup,
+  UserSettings,
 } from "../types/todo";
 import { RootState } from "./store";
 
@@ -18,6 +19,7 @@ interface AppState {
   selectedCollection: string | null;
   selectedGroup: string | null;
   options: AppOptions;
+  userSettings: UserSettings;
 }
 
 const initialState: AppState = {
@@ -26,6 +28,7 @@ const initialState: AppState = {
   selectedCollection: null,
   selectedGroup: null,
   options: { show: false },
+  userSettings: {},
 };
 
 export const appSlice = createSlice({
@@ -65,6 +68,9 @@ export const appSlice = createSlice({
     hideOptions: (state) => {
       state.options.show = false;
     },
+    updateUserSettings: (state, action: PayloadAction<UserSettings>) => {
+      state.userSettings = action.payload;
+    },
   },
 });
 
@@ -79,6 +85,7 @@ export const {
   removeGroup,
   showOptions,
   hideOptions,
+  updateUserSettings,
 } = appSlice.actions;
 export default appSlice.reducer;
 
@@ -111,3 +118,4 @@ export const getSelectedGroup = (state: RootState): TodoGroup | undefined => {
   };
 };
 export const getShowOptions = (state: RootState) => state.app.options.show;
+export const getUserSettings = (state: RootState) => state.app.userSettings;

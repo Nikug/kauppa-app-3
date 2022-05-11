@@ -1,26 +1,17 @@
 import classNames from "classnames";
-import {
-  AnchorHTMLAttributes,
-  DetailedHTMLProps,
-  forwardRef,
-  Ref,
-} from "react";
+import React, { forwardRef, RefAttributes } from "react";
+import { Link, LinkProps } from "react-router-dom";
 import { buttonClasses } from "./Button";
 
-export const LinkButton = forwardRef(
-  (
-    props: DetailedHTMLProps<
-      AnchorHTMLAttributes<HTMLAnchorElement>,
-      HTMLAnchorElement
-    >,
-    ref: Ref<HTMLAnchorElement>
-  ) => {
-    const { children, className, ...rest } = props;
+export const LinkButton = forwardRef<
+  HTMLAnchorElement & RefAttributes<HTMLAnchorElement>,
+  LinkProps
+>((props, ref) => {
+  const { children, className, ...rest } = props;
 
-    return (
-      <a ref={ref} {...rest} className={classNames(className, buttonClasses)}>
-        {children}
-      </a>
-    );
-  }
-);
+  return (
+    <Link ref={ref} {...rest} className={classNames(className, buttonClasses)}>
+      {children}
+    </Link>
+  );
+});

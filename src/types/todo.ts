@@ -21,6 +21,10 @@ export interface UserShare {
   username?: string;
 }
 
+export interface UserSettings {
+  language?: string;
+}
+
 export type Api<T> = Omit<T, "id" | "url">;
 export type FirebaseData<T> = Record<string, Api<T>>;
 
@@ -34,6 +38,11 @@ interface FirebaseSchema {
     [email: string]: {
       uid: string;
       username?: string;
+    };
+  };
+  userSettings: {
+    [userId: string]: {
+      language?: string;
     };
   };
   // Used for data access rules

@@ -16,6 +16,7 @@ import { Suspense } from "react";
 import { Options } from "./components/Options";
 import { useAppSelector } from "./redux/hooks";
 import { getShowOptions } from "./redux/appSlice";
+import { UserSettingsContainer } from "./components/UserSettingsContainer";
 
 function App() {
   const showOptions = useAppSelector(getShowOptions);
@@ -23,37 +24,39 @@ function App() {
   return (
     <Suspense fallback="Loading...">
       <div className="flex justify-center relative">
-        <ModalContextProvider>
-          <ModalContainer />
-          {showOptions && <Options />}
-          {!showOptions && (
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Layout />}>
-                  <Route index element={<Home />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/login" element={<LoginView />} />
-                </Route>
-
-                <Route element={<TodoLayout />}>
-                  <Route path={COLLECTION_URL}>
-                    <Route path="" element={<Collections />} />
-                    <Route path=":id" element={<Groups />} />
+        <UserSettingsContainer>
+          <ModalContextProvider>
+            <ModalContainer />
+            {showOptions && <Options />}
+            {!showOptions && (
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<LoginView />} />
                   </Route>
-                </Route>
 
-                <Route path="*" element={"Not found"} />
-              </Routes>
-            </BrowserRouter>
-          )}
-          <ToastContainer
-            position="bottom-center"
-            pauseOnHover={false}
-            pauseOnFocusLoss={false}
-            limit={3}
-            transition={Zoom}
-          />
-        </ModalContextProvider>
+                  <Route element={<TodoLayout />}>
+                    <Route path={COLLECTION_URL}>
+                      <Route path="" element={<Collections />} />
+                      <Route path=":id" element={<Groups />} />
+                    </Route>
+                  </Route>
+
+                  <Route path="*" element={"Not found"} />
+                </Routes>
+              </BrowserRouter>
+            )}
+            <ToastContainer
+              position="bottom-center"
+              pauseOnHover={false}
+              pauseOnFocusLoss={false}
+              limit={3}
+              transition={Zoom}
+            />
+          </ModalContextProvider>
+        </UserSettingsContainer>
       </div>
     </Suspense>
   );

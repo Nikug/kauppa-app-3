@@ -4,6 +4,7 @@ import humanId from "human-id";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { COLLECTION_URL } from "../constants";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { addCollection, addGroup } from "../firebase/api";
@@ -113,15 +114,15 @@ export const TodoNavBar = () => {
 
   return (
     <div className={navClasses}>
-      <a className="font-bold text-white text-xl truncate flex-1" href={"/"}>
+      <Link className="font-bold text-white text-xl truncate flex-1" to={"/"}>
         {<HomeIcon className="w-8 h-8" />}
-      </a>
-      <a
+      </Link>
+      <Link
         className="font-bold text-white text-xl text-center truncate flex-1"
-        href={COLLECTION_URL}
+        to={COLLECTION_URL}
       >
         {title}
-      </a>
+      </Link>
       {user && !selectedCollection && (
         <div className="flex-1 text-right">
           <TextButton onClick={createCollection}>

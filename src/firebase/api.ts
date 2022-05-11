@@ -15,6 +15,7 @@ import {
   removeCollection as removeReduxCollection,
   removeGroup as removeReduxGroup,
   updateGroups,
+  updateUserSettings,
 } from "../redux/appSlice";
 import {
   Api,
@@ -264,6 +265,25 @@ export const removeGroup = async (collectionUrl: string, groupId: string) => {
   try {
     await remove(ref(firebase, `groups/${collectionUrl}/${groupId}`));
     store.dispatch(removeReduxGroup(groupId));
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const listenForUserSettings = (userId: string) => {
+  const firebase = getDatabase();
+  const userSettings = ref(firebase, `userSettings/${userId}`);
+  const unsubscribe = onValue(userSettings, (snapshot) => {
+    store.dispatch(updateUserSettings(snapshot.val()));
+  });
+  return unsubscribe;
+};
+
+export const updateUserLanguage = async (userId: string, language: string) => {
+  const firebase = getDatabase();
+
+  try {
+    await update(ref(firebase, `userSettings/${userId}`), { language });
   } catch (e) {
     console.error(e);
   }
