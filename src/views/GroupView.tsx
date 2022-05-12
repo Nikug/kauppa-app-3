@@ -3,23 +3,23 @@ import { TodoInput } from "../components/TodoInput";
 import { animated, useTransition } from "@react-spring/web";
 import { ANIMATION_DURATION, TODO_ITEM_HEIGHT } from "../constants";
 import { useMemo } from "react";
-import { TodoGroup, TodoItem } from "../types/todo";
+import { TodoItem } from "../types/todo";
+import { useParams } from "react-router-dom";
+import { useAppSelector } from "../redux/hooks";
+import { getSelectedGroup } from "../redux/appSlice";
 
-interface Props {
-  collectionId: string;
-  group: TodoGroup;
-}
-
-export const GroupView = (props: Props) => {
-  const { group, collectionId } = props;
+export const GroupView = () => {
+  const { collectionId, groupId } =
+    useParams<{ collectionId: string; groupId: string }>();
+  const group = useAppSelector(getSelectedGroup);
 
   const todos: TodoItem[] | undefined = useMemo(() => {
-    if (!group.todos) return undefined;
+    if (!group?.todos) return undefined;
     return Object.entries(group.todos).map(([id, todo]) => ({
       id: id,
       ...todo,
     }));
-  }, [group.todos]);
+  }, [group?.todos]);
 
   const transitions = useTransition(todos ?? [], {
     initial: { opacity: 1, height: TODO_ITEM_HEIGHT },
@@ -29,6 +29,8 @@ export const GroupView = (props: Props) => {
     delay: ANIMATION_DURATION,
     keys: (todo) => todo.id,
   });
+
+  if (!groupId || !collectionId) return null;
 
   return (
     <div className="w-full max-w-content">
@@ -40,14 +42,14 @@ export const GroupView = (props: Props) => {
                 <Todo
                   key={todo.id}
                   todo={todo}
-                  groupId={group.id}
+                  groupId={groupId}
                   collectionId={collectionId}
                 />
               </animated.div>
             )
         )}
       </div>
-      <TodoInput groupId={group.id} collectionId={collectionId} />
+      <TodoInput groupId={groupId} collectionId={collectionId} />
     </div>
   );
 };

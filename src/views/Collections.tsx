@@ -1,18 +1,17 @@
 import { useEffect, useMemo } from "react";
-import { useSelector } from "react-redux";
 import { listenForCollections } from "../firebase/api";
 import { getCollections, setSelectedCollection } from "../redux/appSlice";
 import { TodoCollection } from "../types/todo";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Collection } from "../components/Collection";
 
 export const Collections = () => {
   const auth = getAuth();
   const [user] = useAuthState(auth);
   const dispatch = useAppDispatch();
-  const collections = useSelector(getCollections);
+  const collections = useAppSelector(getCollections);
 
   useEffect(() => {
     if (!user?.uid) return;

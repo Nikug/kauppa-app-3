@@ -17,6 +17,7 @@ import { Options } from "./components/Options";
 import { useAppSelector } from "./redux/hooks";
 import { getShowOptions } from "./redux/appSlice";
 import { UserSettingsContainer } from "./components/UserSettingsContainer";
+import { GroupView } from "./views/GroupView";
 
 function App() {
   const showOptions = useAppSelector(getShowOptions);
@@ -41,6 +42,10 @@ function App() {
                     <Route path={COLLECTION_URL}>
                       <Route path="" element={<Collections />} />
                       <Route path=":id" element={<Groups />} />
+                      <Route
+                        path=":collectionId/:groupId"
+                        element={<GroupView />}
+                      />
                     </Route>
                   </Route>
 

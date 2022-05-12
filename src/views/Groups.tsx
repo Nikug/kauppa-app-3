@@ -2,6 +2,7 @@ import { getAuth } from "firebase/auth";
 import { useEffect, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Group } from "../components/Group";
 import { Button } from "../components/inputs/Button";
@@ -22,7 +23,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { EditModal } from "../types/modal";
 import { TodoGroup } from "../types/todo";
-import { GroupView } from "./GroupView";
 
 export const Groups = () => {
   const { t } = useTranslation();
@@ -32,6 +32,7 @@ export const Groups = () => {
   const selectedGroup = useAppSelector(getSelectedGroup);
   const auth = getAuth();
   const [user] = useAuthState(auth);
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const { dispatch: modalDispatch } = useModalContext();
@@ -50,8 +51,10 @@ export const Groups = () => {
     }));
   }, [groups]);
 
-  const handleGroupSelect = (groupId: string) =>
+  const handleGroupSelect = (groupId: string) => {
     dispatch(setSelectedGroup(groupId));
+    navigate(groupId);
+  };
 
   const createGroup = () => {
     if (!selectedCollection) return;
@@ -119,12 +122,6 @@ export const Groups = () => {
             />
           ))}
         </div>
-      )}
-      {groups && selectedGroup && selectedCollection && (
-        <GroupView
-          group={selectedGroup}
-          collectionId={selectedCollection.url}
-        />
       )}
     </div>
   );
