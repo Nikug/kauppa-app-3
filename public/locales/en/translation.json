@@ -46,6 +46,7 @@
     "youHaveBeenInvitedToThisCollection": "You have been invited to this collection"
   },
   "list": {
+    "title": "Lists",
     "add": "Add a list",
     "select": "Select a list",
     "noLists": "No lists"

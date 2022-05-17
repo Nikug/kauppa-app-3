@@ -5,7 +5,7 @@ import { Register } from "./views/Register";
 import { Collections } from "./views/Collections";
 import { Groups } from "./views/Groups";
 import { LoginView } from "./views/LoginView";
-import { TodoLayout } from "./Layouts/TodoLayout";
+import { CollectionLayout } from "./Layouts/CollectionLayout";
 import { ModalContainer } from "./components/Modal/ModalContainer";
 import { ModalContextProvider } from "./contexts/ModalContextProvider";
 import { ToastContainer, Zoom } from "react-toastify";
@@ -18,6 +18,7 @@ import { useAppSelector } from "./redux/hooks";
 import { getShowOptions } from "./redux/appSlice";
 import { UserSettingsContainer } from "./components/UserSettingsContainer";
 import { GroupView } from "./views/GroupView";
+import { GroupLayout } from "./Layouts/GroupLayout";
 
 function App() {
   const showOptions = useAppSelector(getShowOptions);
@@ -38,10 +39,14 @@ function App() {
                     <Route path="/login" element={<LoginView />} />
                   </Route>
 
-                  <Route element={<TodoLayout />}>
+                  <Route element={<CollectionLayout />}>
                     <Route path={COLLECTION_URL}>
                       <Route path="" element={<Collections />} />
                       <Route path=":id" element={<Groups />} />
+                    </Route>
+                  </Route>
+                  <Route element={<GroupLayout />}>
+                    <Route path={COLLECTION_URL}>
                       <Route
                         path=":collectionId/:groupId"
                         element={<GroupView />}

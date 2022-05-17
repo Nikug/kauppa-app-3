@@ -46,6 +46,7 @@
     "youHaveBeenInvitedToThisCollection": "Sinut on kutsuttu tähän kokoelmaan"
   },
   "list": {
+    "title": "Listat",
     "add": "Lisää lista",
     "select": "Valitse lista",
     "noLists": "Ei listoja"

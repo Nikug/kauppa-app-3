@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Group } from "../components/Group";
 import { Button } from "../components/inputs/Button";
-import { createNewGroup } from "../components/TodoNavBar";
+import { createNewGroup } from "../components/CollectionNavbar";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import {
   addGroup,

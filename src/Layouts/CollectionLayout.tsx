@@ -1,5 +1,5 @@
 import { Outlet, useParams } from "react-router";
-import { TodoNavBar } from "../components/TodoNavBar";
+import { CollectionNavbar } from "../components/CollectionNavbar";
 import { Authenticated } from "../components/Authenticated";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
@@ -8,23 +8,17 @@ import {
   setSelectedCollectionWithUrl,
 } from "../redux/appSlice";
 import { useEffect } from "react";
-import { listenForCollections, listenForGroups } from "../firebase/api";
+import { listenForCollections } from "../firebase/api";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
 
-export const TodoLayout = () => {
+export const CollectionLayout = () => {
   const auth = getAuth();
   const [user] = useAuthState(auth);
   const { id: collectionUrl } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const selectedCollection = useAppSelector(getSelectedCollection);
   const collections = useAppSelector(getCollections);
-
-  useEffect(() => {
-    if (!selectedCollection?.url) return;
-    const unsubscribe = listenForGroups(selectedCollection.url);
-    return unsubscribe;
-  }, [selectedCollection?.url]);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -41,7 +35,7 @@ export const TodoLayout = () => {
     <div className="w-content max-w-content min-w-0">
       <Authenticated>
         <>
-          <TodoNavBar />
+          <CollectionNavbar />
           <Outlet />
         </>
       </Authenticated>
