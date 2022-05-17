@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { COLLECTION_URL } from "../constants";
 import {
   getGroups,
@@ -25,6 +25,7 @@ export const GroupNavbar = () => {
   const selectedCollection = useAppSelector(getSelectedCollection);
   const selectedGroup = useAppSelector(getSelectedGroup);
   const groups = useAppSelector(getGroups);
+  const navigate = useNavigate();
 
   const groupList: TodoGroup[] = useMemo(() => {
     if (!groups) return [];
@@ -35,7 +36,9 @@ export const GroupNavbar = () => {
   }, [groups]);
 
   const handleGroupSelect = (groupId: string) => {
+    if (!selectedCollection) return;
     dispatch(setSelectedGroup(groupId));
+    navigate(`${COLLECTION_URL}/${selectedCollection.url}/${groupId}`);
   };
 
   const onTitleClick = () => {
