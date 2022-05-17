@@ -24,6 +24,7 @@
   "modal": {
     "createList": "Create a list",
     "editList": "Edit list",
+    "removeList": "Remove list",
     "createCollection": "Create a collection",
     "editCollection": "Edit collection",
     "removeCollection": "Remove collection",

@@ -24,6 +24,7 @@
   "modal": {
     "createList": "Luo lista",
     "editList": "Muokkaa listaa",
+    "removeList": "Poista lista",
     "createCollection": "Luo kokoelma",
     "editCollection": "Muokkaa kokoelmaa",
     "removeCollection": "Poista kokoelma",
