@@ -1,14 +1,15 @@
-import { HomeIcon } from "@heroicons/react/solid";
+import { ArrowLeftIcon, HomeIcon } from "@heroicons/react/solid";
 import { getAuth } from "firebase/auth";
 import humanId from "human-id";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { COLLECTION_URL } from "../constants";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { addCollection, addGroup } from "../firebase/api";
 import {
+  getCollections,
   getSelectedCollection,
   setSelectedCollection,
   setSelectedGroup,
@@ -16,6 +17,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { EditModal } from "../types/modal";
 import { Api, TodoCollection, TodoGroup } from "../types/todo";
+import { Dropdown } from "./Dropdown";
 import { TextButton } from "./inputs/TextButton";
 
 const createNewCollection = (): TodoCollection => {
@@ -48,7 +50,17 @@ export const CollectionNavbar = () => {
   const [user] = useAuthState(auth);
   const dispatch = useAppDispatch();
   const selectedCollection = useAppSelector(getSelectedCollection);
+  const collections = useAppSelector(getCollections);
   const { dispatch: modalDispatch } = useModalContext();
+  const navigate = useNavigate();
+
+  const collectionList: TodoCollection[] = useMemo(() => {
+    if (!collections) return [];
+    return Object.entries(collections).map(([url, collection]) => ({
+      url,
+      ...collection,
+    }));
+  }, [collections]);
 
   const createCollection = () => {
     if (!user) return;
@@ -84,31 +96,48 @@ export const CollectionNavbar = () => {
     );
   };
 
-  const onTitleClick = () => {
+  const handleCollectionSelect = (collectionId: string) => {
+    dispatch(setSelectedGroup(null));
+    dispatch(setSelectedCollection(collectionId));
+    navigate(`${COLLECTION_URL}/${collectionId}`);
+  };
+
+  const onBack = () => {
     dispatch(setSelectedGroup(null));
     dispatch(setSelectedCollection(null));
   };
-
-  const title = useMemo(() => {
-    return selectedCollection?.name || t("collection.title");
-  }, [selectedCollection, t]);
 
   return (
     <div className={navClasses}>
       <Link
         className="font-bold text-white text-xl truncate flex-1"
-        to={"/"}
-        onClick={onTitleClick}
+        to={selectedCollection ? COLLECTION_URL : "/"}
+        onClick={onBack}
       >
-        {<HomeIcon className="w-8 h-8" />}
+        {selectedCollection ? (
+          <ArrowLeftIcon className="w-8 h-8" />
+        ) : (
+          <HomeIcon className="w-8 h-8" />
+        )}
       </Link>
-      <Link
-        className="font-bold text-white text-xl text-center truncate flex-1"
-        to={COLLECTION_URL}
-        onClick={onTitleClick}
-      >
-        {title}
-      </Link>
+      <div className="font-semibold text-xl flex-1 flex justify-center">
+        <Dropdown
+          value={
+            selectedCollection
+              ? selectedCollection.name || t("general.noName")
+              : t("collection.select")
+          }
+        >
+          {collectionList.map((collection) => (
+            <div
+              key={collection.url}
+              onClick={() => handleCollectionSelect(collection.url)}
+            >
+              {collection.name || t("general.noName")}
+            </div>
+          ))}
+        </Dropdown>
+      </div>
       {user && selectedCollection && (
         <div className="flex-1 text-right">
           <TextButton onClick={createGroup}>{t("list.add")}</TextButton>

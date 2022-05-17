@@ -1,4 +1,4 @@
-import { HomeIcon } from "@heroicons/react/solid";
+import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { getAuth } from "firebase/auth";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -41,13 +41,9 @@ export const GroupNavbar = () => {
     navigate(`${COLLECTION_URL}/${selectedCollection.url}/${groupId}`);
   };
 
-  const onTitleClick = () => {
+  const onBack = () => {
     dispatch(setSelectedGroup(null));
   };
-
-  const title = useMemo(() => {
-    return selectedGroup?.name || t("general.noName");
-  }, [selectedGroup, t]);
 
   const todoCount = (group: TodoGroup) => getTodoCount(group);
 
@@ -55,20 +51,13 @@ export const GroupNavbar = () => {
     <div className={navClasses}>
       <Link
         className="font-bold text-white text-xl truncate flex-1"
-        to={"/"}
-        onClick={onTitleClick}
-      >
-        {<HomeIcon className="w-8 h-8" />}
-      </Link>
-      <Link
-        className="font-bold text-white text-xl text-center truncate flex-1"
         to={`${COLLECTION_URL}/${selectedCollection?.url}`}
-        onClick={onTitleClick}
+        onClick={onBack}
       >
-        {title}
+        {<ArrowLeftIcon className="w-8 h-8" />}
       </Link>
       {user && selectedCollection && (
-        <div className="font-semibold flex-1">
+        <div className="font-semibold text-xl flex-1 flex justify-center">
           <Dropdown
             value={
               selectedGroup
@@ -85,6 +74,7 @@ export const GroupNavbar = () => {
           </Dropdown>
         </div>
       )}
+      <div className="flex-1 h-2"></div>
     </div>
   );
 };

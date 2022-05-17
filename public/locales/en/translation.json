@@ -43,7 +43,8 @@
     "add": "Add a collection",
     "addedToCollections": "Added to your collections",
     "addToCollections": "Add to your collections",
-    "youHaveBeenInvitedToThisCollection": "You have been invited to this collection"
+    "youHaveBeenInvitedToThisCollection": "You have been invited to this collection",
+    "select": "Select a collection"
   },
   "list": {
     "title": "Lists",

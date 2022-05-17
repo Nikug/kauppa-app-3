@@ -42,9 +42,10 @@ function App() {
                   <Route element={<CollectionLayout />}>
                     <Route path={COLLECTION_URL}>
                       <Route path="" element={<Collections />} />
-                      <Route path=":id" element={<Groups />} />
+                      <Route path=":collectionId" element={<Groups />} />
                     </Route>
                   </Route>
+
                   <Route element={<GroupLayout />}>
                     <Route path={COLLECTION_URL}>
                       <Route

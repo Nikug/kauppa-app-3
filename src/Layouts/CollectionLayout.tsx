@@ -15,7 +15,7 @@ import { getAuth } from "firebase/auth";
 export const CollectionLayout = () => {
   const auth = getAuth();
   const [user] = useAuthState(auth);
-  const { id: collectionUrl } = useParams<{ id: string }>();
+  const { collectionId: collectionUrl } = useParams<{ collectionId: string }>();
   const dispatch = useAppDispatch();
   const selectedCollection = useAppSelector(getSelectedCollection);
   const collections = useAppSelector(getCollections);

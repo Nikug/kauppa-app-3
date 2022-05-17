@@ -43,7 +43,8 @@
     "add": "Lisää kokoelma",
     "addedToCollections": "Lisätty kokoelmiin",
     "addToCollections": "Lisää kokoelmiisi",
-    "youHaveBeenInvitedToThisCollection": "Sinut on kutsuttu tähän kokoelmaan"
+    "youHaveBeenInvitedToThisCollection": "Sinut on kutsuttu tähän kokoelmaan",
+    "select": "Valitse kokoelma"
   },
   "list": {
     "title": "Listat",
