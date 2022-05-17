@@ -52,7 +52,6 @@ export const Group = (props: Props) => {
           {group.name || <i>{t("general.noName")}</i>}{" "}
           {todoCount ? `(${todoCount})` : ""}
         </h2>
-        <p>{group.id}</p>
       </div>
       <div className="flex justify-end gap-2">
         <PencilIcon

@@ -55,6 +55,9 @@ export const AddUserModal = (props: Props) => {
 
   return (
     <ModalBody onClose={onCancel} title={modal.title}>
+      <p className="mb-4">
+        {t("modal.collectionLink")} {modal.url}
+      </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         {modal.label && <label>{modal.label}</label>}
         <TextInput {...register("value")} />

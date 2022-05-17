@@ -43,6 +43,7 @@ export const Collection = (props: Props) => {
         label: t("modal.email"),
         okButtonText: t("modal.add"),
         collectionId: collection.url,
+        url: `${window.location}/${collection.url}`,
       })
     );
   };
@@ -63,7 +64,7 @@ export const Collection = (props: Props) => {
     <div className="border bg-white p-4 flex justify-between items-center">
       <Link to={collection.url} onClick={() => onSelect(collection.url)}>
         <h2>{collection.name || <i>{t("general.noName")}</i>}</h2>
-        <p>{collection.url}</p>
+        <p className="text-secondary font-semibold">{collection.url}</p>
       </Link>
       <div className="flex justify-end gap-2">
         <UserAddIcon

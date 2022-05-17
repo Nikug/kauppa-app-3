@@ -26,6 +26,7 @@ export interface AddUserModal extends Modal {
   label?: string;
   value?: string;
   collectionId: string;
+  url: string;
 }
 
 export interface ModalAction<T> {
