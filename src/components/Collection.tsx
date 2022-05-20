@@ -63,20 +63,20 @@ export const Collection = (props: Props) => {
   return (
     <div className="border bg-white p-4 flex justify-between items-center">
       <Link to={collection.url} onClick={() => onSelect(collection.url)}>
-        <h2>{collection.name || <i>{t("general.noName")}</i>}</h2>
-        <p className="text-secondary font-semibold">{collection.url}</p>
+        <h4>{collection.name || <i>{t("general.noName")}</i>}</h4>
+        <p className="text-secondary">{collection.url}</p>
       </Link>
       <div className="flex justify-end gap-2">
         <UserAddIcon
-          className="w-8 h-8 text-icon cursor-pointer"
+          className="w-7 h-7 text-icon cursor-pointer"
           onClick={addUserToCollection}
         />
         <PencilIcon
-          className="w-8 h-8 text-icon cursor-pointer"
+          className="w-7 h-7 text-icon cursor-pointer"
           onClick={editCollection}
         />
         <TrashIcon
-          className="w-8 h-8 text-primary cursor-pointer"
+          className="w-7 h-7 text-primary cursor-pointer"
           onClick={handleCollectionRemove}
         />
       </div>

@@ -56,7 +56,7 @@ export const GroupNavbar = () => {
           to={`${COLLECTION_URL}/${selectedCollection?.url}`}
           onClick={onBack}
         >
-          {<ArrowLeftIcon className="w-8 h-8" />}
+          {<ArrowLeftIcon className="w-7 h-7" />}
         </Link>
         {user && selectedCollection && (
           <div className="font-semibold text-xl flex-1 flex justify-center">

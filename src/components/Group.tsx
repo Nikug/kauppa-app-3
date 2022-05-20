@@ -48,18 +48,18 @@ export const Group = (props: Props) => {
   return (
     <div className="border bg-white p-4 flex justify-between items-center">
       <div className="cursor-pointer" onClick={() => onSelect(group.id)}>
-        <h2>
+        <h4>
           {group.name || <i>{t("general.noName")}</i>}{" "}
           {todoCount ? `(${todoCount})` : ""}
-        </h2>
+        </h4>
       </div>
       <div className="flex justify-end gap-2">
         <PencilIcon
-          className="w-8 h-8 text-icon cursor-pointer"
+          className="w-7 h-7 text-icon cursor-pointer"
           onClick={editGroup}
         />
         <TrashIcon
-          className="w-8 h-8 text-primary cursor-pointer"
+          className="w-7 h-7 text-primary cursor-pointer"
           onClick={handleGroupRemove}
         />
       </div>

@@ -118,9 +118,9 @@ export const CollectionNavbar = () => {
           onClick={onBack}
         >
           {selectedCollection ? (
-            <ArrowLeftIcon className="w-8 h-8" />
+            <ArrowLeftIcon className="w-7 h-7" />
           ) : (
-            <HomeIcon className="w-8 h-8" />
+            <HomeIcon className="w-7 h-7" />
           )}
         </Link>
         <div className="font-semibold text-xl flex-1 flex justify-center">
