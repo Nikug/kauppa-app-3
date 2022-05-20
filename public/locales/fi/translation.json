@@ -54,6 +54,7 @@
     "noLists": "Ei listoja"
   },
   "todo": {
+    "title": "Tehtävät",
     "new": "Uusi...",
     "add": "Lisää"
   },

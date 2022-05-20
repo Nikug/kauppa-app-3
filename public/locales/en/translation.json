@@ -54,6 +54,7 @@
     "noLists": "No lists"
   },
   "todo": {
+    "title": "Todos",
     "new": "New...",
     "add": "Add"
   },

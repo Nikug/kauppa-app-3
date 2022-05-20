@@ -35,13 +35,12 @@ export const createNewGroup = (): Api<TodoGroup> => ({
 export const navClasses = `
   sticky
   top-0
-  h-16
+  h-20
   bg-primary
   text-white
   flex
+  flex-col
   items-center
-  px-2
-  justify-between
 `;
 
 export const CollectionNavbar = () => {
@@ -109,47 +108,52 @@ export const CollectionNavbar = () => {
 
   return (
     <div className={navClasses}>
-      <Link
-        className="font-bold text-white text-xl truncate flex-1"
-        to={selectedCollection ? COLLECTION_URL : "/"}
-        onClick={onBack}
-      >
-        {selectedCollection ? (
-          <ArrowLeftIcon className="w-8 h-8" />
-        ) : (
-          <HomeIcon className="w-8 h-8" />
-        )}
-      </Link>
-      <div className="font-semibold text-xl flex-1 flex justify-center">
-        <Dropdown
-          value={
-            selectedCollection
-              ? selectedCollection.name || t("general.noName")
-              : t("collection.select")
-          }
+      <h4 className="h-8 font-bold flex items-center">
+        {selectedCollection ? t("list.title") : t("collection.title")}
+      </h4>
+      <div className="h-12 w-full px-2 flex justify-between items-center">
+        <Link
+          className="font-bold text-white text-xl truncate flex-1"
+          to={selectedCollection ? COLLECTION_URL : "/"}
+          onClick={onBack}
         >
-          {collectionList.map((collection) => (
-            <div
-              key={collection.url}
-              onClick={() => handleCollectionSelect(collection.url)}
-            >
-              {collection.name || t("general.noName")}
-            </div>
-          ))}
-        </Dropdown>
+          {selectedCollection ? (
+            <ArrowLeftIcon className="w-8 h-8" />
+          ) : (
+            <HomeIcon className="w-8 h-8" />
+          )}
+        </Link>
+        <div className="font-semibold text-xl flex-1 flex justify-center">
+          <Dropdown
+            value={
+              selectedCollection
+                ? selectedCollection.name || t("general.noName")
+                : t("collection.select")
+            }
+          >
+            {collectionList.map((collection) => (
+              <div
+                key={collection.url}
+                onClick={() => handleCollectionSelect(collection.url)}
+              >
+                {collection.name || t("general.noName")}
+              </div>
+            ))}
+          </Dropdown>
+        </div>
+        {user && selectedCollection && (
+          <div className="flex-1 text-right">
+            <TextButton onClick={createGroup}>{t("list.add")}</TextButton>
+          </div>
+        )}
+        {user && !selectedCollection && (
+          <div className="flex-1 text-right">
+            <TextButton onClick={createCollection}>
+              {t("collection.add")}
+            </TextButton>
+          </div>
+        )}
       </div>
-      {user && selectedCollection && (
-        <div className="flex-1 text-right">
-          <TextButton onClick={createGroup}>{t("list.add")}</TextButton>
-        </div>
-      )}
-      {user && !selectedCollection && (
-        <div className="flex-1 text-right">
-          <TextButton onClick={createCollection}>
-            {t("collection.add")}
-          </TextButton>
-        </div>
-      )}
     </div>
   );
 };

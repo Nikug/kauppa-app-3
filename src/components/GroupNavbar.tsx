@@ -49,32 +49,35 @@ export const GroupNavbar = () => {
 
   return (
     <div className={navClasses}>
-      <Link
-        className="font-bold text-white text-xl truncate flex-1"
-        to={`${COLLECTION_URL}/${selectedCollection?.url}`}
-        onClick={onBack}
-      >
-        {<ArrowLeftIcon className="w-8 h-8" />}
-      </Link>
-      {user && selectedCollection && (
-        <div className="font-semibold text-xl flex-1 flex justify-center">
-          <Dropdown
-            value={
-              selectedGroup
-                ? selectedGroup.name || t("general.noName")
-                : t("list.select")
-            }
-          >
-            {groupList?.map((group) => (
-              <div key={group.id} onClick={() => handleGroupSelect(group.id)}>
-                {group.name || t("general.noName")}{" "}
-                {todoCount(group) ? `(${todoCount(group)})` : ""}
-              </div>
-            ))}
-          </Dropdown>
-        </div>
-      )}
-      <div className="flex-1 h-2"></div>
+      <h4 className="h-8 font-bold flex items-center">{t("todo.title")}</h4>
+      <div className="h-12 w-full px-2 flex justify-between items-center">
+        <Link
+          className="font-bold text-white text-xl truncate flex-1"
+          to={`${COLLECTION_URL}/${selectedCollection?.url}`}
+          onClick={onBack}
+        >
+          {<ArrowLeftIcon className="w-8 h-8" />}
+        </Link>
+        {user && selectedCollection && (
+          <div className="font-semibold text-xl flex-1 flex justify-center">
+            <Dropdown
+              value={
+                selectedGroup
+                  ? selectedGroup.name || t("general.noName")
+                  : t("list.select")
+              }
+            >
+              {groupList?.map((group) => (
+                <div key={group.id} onClick={() => handleGroupSelect(group.id)}>
+                  {group.name || t("general.noName")}{" "}
+                  {todoCount(group) ? `(${todoCount(group)})` : ""}
+                </div>
+              ))}
+            </Dropdown>
+          </div>
+        )}
+        <div className="flex-1 h-2"></div>
+      </div>
     </div>
   );
 };

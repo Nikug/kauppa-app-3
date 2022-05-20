@@ -34,7 +34,7 @@ export const GroupView = () => {
 
   return (
     <div className="w-full max-w-content">
-      <div className="fixed top-16 bottom-16 w-full max-w-content overflow-y-auto overflow-x-hidden">
+      <div className="fixed top-20 bottom-16 w-full max-w-content overflow-y-auto overflow-x-hidden">
         {transitions(
           (styles, todo) =>
             todo && (
