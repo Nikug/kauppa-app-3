@@ -49,37 +49,52 @@ export const Todo = (props: Props) => {
   const { dispatch } = useModalContext();
 
   const [spring, api] = useSpring(() => ({
-    from: { x: 0 },
+    from: { x: 0, y: 0, zIndex: 0, visibility: "hidden" },
   }));
 
-  const bind = useGesture({
-    onDrag: ({ active, movement: [x] }) => {
-      api.start({
-        x: active ? x : 0,
-        immediate: (name) => active && name === "x",
-      });
-    },
-    onDragEnd: ({ movement: [movementX] }) => {
-      if (Math.abs(movementX) < GESTURE_DISTANCE_THRESHOLD) return;
-      const isRight = movementX > 0;
-
-      if (todo.done) {
-        if (isRight) {
-          handleRemove();
-        } else {
-          updateCheck(false);
+  const bind = useGesture(
+    {
+      onDrag: ({ active, movement: [x, y] }) => {
+        api.start({
+          x: active ? x : 0,
+          y: active ? y : 0,
+          zIndex: active ? 1 : 0,
+          visibility: active && y === 0 ? "visible" : "hidden",
+          immediate: active,
+        });
+      },
+      onDragEnd: ({ movement: [movementX, movementY] }) => {
+        if (movementY !== 0) {
+          // Handle persisting reorder data
+          return;
         }
-      } else {
-        if (isRight) {
-          updateCheck(true);
-        } else {
-          updateTodoContent();
-        }
-      }
-    },
-  });
 
-  const position = spring.x.to({
+        if (Math.abs(movementX) < GESTURE_DISTANCE_THRESHOLD) return;
+        const isRight = movementX > 0;
+
+        if (todo.done) {
+          if (isRight) {
+            handleRemove();
+          } else {
+            updateCheck(false);
+          }
+        } else {
+          if (isRight) {
+            updateCheck(true);
+          } else {
+            updateTodoContent();
+          }
+        }
+      },
+    },
+    {
+      drag: {
+        axis: "lock",
+      },
+    }
+  );
+
+  const positionX = spring.x.to({
     range: [-GESTURE_MAX_DISTANCE, 0, GESTURE_MAX_DISTANCE],
     output: [-GESTURE_MAX_DISTANCE, 0, GESTURE_MAX_DISTANCE],
     extrapolate: "clamp",
@@ -113,9 +128,15 @@ export const Todo = (props: Props) => {
 
   return (
     <div className="relative h-full">
-      <Background done={todo.done} />
       <animated.div
-        style={{ x: position }}
+        style={{
+          visibility: spring.visibility as any,
+        }}
+      >
+        <Background done={todo.done} />
+      </animated.div>
+      <animated.div
+        style={{ x: positionX, y: spring.y, zIndex: spring.zIndex }}
         className={containerClasses(todo.done)}
       >
         <div className="flex w-full h-full items-center gap-4">
