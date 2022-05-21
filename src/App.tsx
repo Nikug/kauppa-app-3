@@ -17,7 +17,7 @@ import { Options } from "./components/Options";
 import { useAppSelector } from "./redux/hooks";
 import { getShowOptions } from "./redux/appSlice";
 import { UserSettingsContainer } from "./components/UserSettingsContainer";
-import { GroupView } from "./views/GroupView";
+import { GroupViewContainer } from "./components/GroupViewContainer";
 import { GroupLayout } from "./Layouts/GroupLayout";
 
 function App() {
@@ -50,7 +50,7 @@ function App() {
                     <Route path={COLLECTION_URL}>
                       <Route
                         path=":collectionId/:groupId"
-                        element={<GroupView />}
+                        element={<GroupViewContainer />}
                       />
                     </Route>
                   </Route>

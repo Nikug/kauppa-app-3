@@ -42,10 +42,11 @@ interface Props {
   groupId: string;
   collectionId: string;
   todo: TodoItem;
+  index: number;
 }
 
 export const Todo = (props: Props) => {
-  const { todo, groupId, collectionId } = props;
+  const { todo, groupId, collectionId, index } = props;
   const { dispatch } = useModalContext();
 
   const [spring, api] = useSpring(() => ({
