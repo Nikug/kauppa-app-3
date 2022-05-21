@@ -25,7 +25,7 @@ export const LanguageSelector = () => {
     <Dropdown value={t("languageName").toString()}>
       {sortedLanguages.map((language) => (
         <div key={language} onClick={() => setLanguage(language)}>
-          {i18n.getFixedT(language)("languageName")}
+          {i18n.getFixedT(language)("languageName").toString()}
         </div>
       ))}
     </Dropdown>

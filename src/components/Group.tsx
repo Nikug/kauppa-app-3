@@ -49,7 +49,7 @@ export const Group = (props: Props) => {
     <div className="border bg-white p-4 flex justify-between items-center">
       <div className="cursor-pointer" onClick={() => onSelect(group.id)}>
         <h4>
-          {group.name || <i>{t("general.noName")}</i>}{" "}
+          {group.name || <i>{t("general.noName").toString()}</i>}{" "}
           {todoCount ? `(${todoCount})` : ""}
         </h4>
       </div>
