@@ -33,3 +33,18 @@ export const getTodoCount = (group?: TodoGroup) => {
 export const emailToKey = (email: string) => email.replaceAll(".", EMAIL_DOT);
 export const emailKeyToEmail = (email: string) =>
   email.replaceAll(EMAIL_DOT, ".");
+
+export const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+export const swap = <T>(list: T[], source: number, target: number) => {
+  const result = [...list];
+  [result[source], result[target]] = [result[target], result[source]];
+  return result;
+};
+
+export const move = <T>(arr: T[], from: number, to: number) => {
+  const arrayCopy = [...arr];
+  arrayCopy.splice(to, 0, arrayCopy.splice(from, 1)[0]);
+  return arrayCopy;
+};

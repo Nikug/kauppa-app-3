@@ -46,7 +46,7 @@ interface Props {
 }
 
 export const Todo = (props: Props) => {
-  const { todo, groupId, collectionId, index } = props;
+  const { todo, groupId, collectionId } = props;
   const { dispatch } = useModalContext();
 
   const [spring, api] = useSpring(() => ({
