@@ -1,6 +1,6 @@
 import { animated, useSprings } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
-import { ReactNode, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { clamp, move } from "../../utils";
 import { itemPosition } from "./util";
 
@@ -13,7 +13,16 @@ export const DraggableList = (props: Props) => {
   const { items, itemHeight } = props;
 
   const order = useRef(items.map((_, i) => i));
-  const [springs, api] = useSprings(items.length, itemPosition(order.current));
+  const [springs, api] = useSprings(
+    items.length,
+    itemPosition(order.current, itemHeight),
+    [items]
+  );
+
+  useEffect(() => {
+    console.log("running use effect");
+    order.current = items.map((_, i) => i);
+  }, [springs, items]);
 
   const bind = useDrag(({ args: [originalIndex], active, movement: [, y] }) => {
     const currentIndex = order.current.indexOf(originalIndex);
@@ -25,20 +34,23 @@ export const DraggableList = (props: Props) => {
 
     const newOrder = move(order.current, currentIndex, currentRow);
 
-    api.start(itemPosition(newOrder, active, originalIndex, currentIndex, y));
+    api.start(
+      itemPosition(newOrder, itemHeight, active, originalIndex, currentIndex, y)
+    );
 
     // Persist the results
     if (!active) {
+      console.log("Persisting order", newOrder);
       order.current = newOrder;
     }
   });
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       {springs.map(({ zIndex, shadow, y, scale }, index) => (
         <animated.div
-          {...bind()}
-          className="w-full absolute origin-center"
+          key={index}
+          className="w-full absolute origin-center h-[100px]"
           style={{
             zIndex,
             y,
@@ -46,7 +58,9 @@ export const DraggableList = (props: Props) => {
             height: itemHeight,
           }}
         >
-          {items[index]}
+          <div {...bind(index)} className="touch-none">
+            {items[index]}
+          </div>
         </animated.div>
       ))}
     </div>

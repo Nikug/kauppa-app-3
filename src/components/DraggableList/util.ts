@@ -3,6 +3,7 @@ import { config } from "@react-spring/web";
 export const itemPosition =
   (
     order: number[],
+    itemHeight: number,
     active = false,
     originalIndex = 0,
     currentIndex = 0,
@@ -11,7 +12,7 @@ export const itemPosition =
   (index: number) =>
     active && index === originalIndex
       ? {
-          y: currentIndex * 62 + y,
+          y: currentIndex * itemHeight + y,
           scale: 1.1,
           zIndex: 1,
           shadow: 15,
@@ -20,7 +21,7 @@ export const itemPosition =
             key === "y" ? config.stiff : config.default,
         }
       : {
-          y: order.indexOf(index) * 62,
+          y: order.indexOf(index) * itemHeight,
           scale: 1,
           zIndex: 0,
           shadow: 1,

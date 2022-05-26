@@ -6,6 +6,7 @@ import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Collection } from "../components/Collection";
+import { DraggableList } from "../components/DraggableList";
 
 export const Collections = () => {
   const auth = getAuth();
@@ -31,14 +32,17 @@ export const Collections = () => {
   };
 
   return (
-    <div className="text-black">
-      {collectionList.map((collection) => (
-        <Collection
-          key={collection.url}
-          collection={collection}
-          onSelect={selectCollection}
-        />
-      ))}
+    <div className="h-[600px] overflow-x-visible">
+      <DraggableList
+        items={collectionList.map((collection) => (
+          <Collection
+            key={collection.url}
+            collection={collection}
+            onSelect={selectCollection}
+          />
+        ))}
+        itemHeight={86}
+      />
     </div>
   );
 };
