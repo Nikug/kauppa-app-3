@@ -9,11 +9,10 @@ export const itemPosition =
     currentIndex = 0,
     y = 0
   ) =>
-  (index: number) =>
-    active && index === originalIndex
+  (index: number) => {
+    return active && index === originalIndex
       ? {
           y: currentIndex * itemHeight + y,
-          scale: 1.1,
           zIndex: 1,
           shadow: 15,
           immediate: (key: string) => key === "zIndex",
@@ -22,8 +21,8 @@ export const itemPosition =
         }
       : {
           y: order.indexOf(index) * itemHeight,
-          scale: 1,
           zIndex: 0,
           shadow: 1,
           immediate: false,
         };
+  };

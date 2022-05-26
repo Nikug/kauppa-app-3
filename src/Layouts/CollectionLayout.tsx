@@ -36,7 +36,9 @@ export const CollectionLayout = () => {
       <Authenticated>
         <>
           <CollectionNavbar />
-          <Outlet />
+          <div className="h-content overflow-y-auto">
+            <Outlet />
+          </div>
         </>
       </Authenticated>
     </div>

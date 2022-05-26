@@ -11,6 +11,9 @@ module.exports = {
       maxWidth: {
         content: "600px",
       },
+      height: {
+        content: "calc(100vh - 5rem)",
+      },
       colors: {
         primary: {
           light: colors.rose[400],

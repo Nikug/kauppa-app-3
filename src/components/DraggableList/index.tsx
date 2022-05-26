@@ -13,16 +13,17 @@ export const DraggableList = (props: Props) => {
   const { items, itemHeight } = props;
 
   const order = useRef(items.map((_, i) => i));
+
   const [springs, api] = useSprings(
     items.length,
     itemPosition(order.current, itemHeight),
-    [items]
+    [order.current, items.length]
   );
 
   useEffect(() => {
     console.log("running use effect");
     order.current = items.map((_, i) => i);
-  }, [springs, items]);
+  }, [items]);
 
   const bind = useDrag(({ args: [originalIndex], active, movement: [, y] }) => {
     const currentIndex = order.current.indexOf(originalIndex);
@@ -47,14 +48,13 @@ export const DraggableList = (props: Props) => {
 
   return (
     <div className="relative h-full">
-      {springs.map(({ zIndex, shadow, y, scale }, index) => (
+      {springs.map(({ zIndex, shadow, y }, index) => (
         <animated.div
           key={index}
-          className="w-full absolute origin-center h-[100px]"
+          className="w-full absolute origin-center"
           style={{
             zIndex,
             y,
-            scale,
             height: itemHeight,
           }}
         >

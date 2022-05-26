@@ -32,7 +32,7 @@ export const Collections = () => {
   };
 
   return (
-    <div className="h-[600px] overflow-x-visible">
+    <div className="overflow-x-visible">
       <DraggableList
         items={collectionList.map((collection) => (
           <Collection
