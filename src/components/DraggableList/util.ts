@@ -2,27 +2,35 @@ import { config } from "@react-spring/web";
 
 export const itemPosition =
   (
-    order: number[],
+    order: string[],
     itemHeight: number,
     active = false,
-    originalIndex = 0,
+    originalUrl = "",
     currentIndex = 0,
     y = 0
   ) =>
   (index: number) => {
-    return active && index === originalIndex
-      ? {
-          y: currentIndex * itemHeight + y,
-          zIndex: 1,
-          shadow: 15,
-          immediate: (key: string) => key === "zIndex",
-          config: (key: string) =>
-            key === "y" ? config.stiff : config.default,
-        }
-      : {
-          y: order.indexOf(index) * itemHeight,
-          zIndex: 0,
-          shadow: 1,
-          immediate: false,
-        };
+    const url = order[index];
+    // console.log(order, index, url, originalUrl, currentIndex);
+
+    // Moving the selected item
+    if (active && url === originalUrl) {
+      // console.log(url, currentIndex * itemHeight + y);
+      return {
+        y: currentIndex * itemHeight + y,
+        zIndex: 1,
+        immediate: (key: string) => key === "zIndex",
+        config: (key: string) => (key === "y" ? config.stiff : config.default),
+      };
+
+      // Other items, including initial positions
+    } else {
+      const position = order.findIndex((u) => u === url);
+      // console.log(url, position * itemHeight);
+      return {
+        y: position * itemHeight,
+        zIndex: 0,
+        immediate: false,
+      };
+    }
   };
