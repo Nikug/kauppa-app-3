@@ -40,14 +40,13 @@ export const DraggableList = (props: Props) => {
 
   return (
     <div className="relative h-full">
-      {springs.map(({ zIndex, y }, index) => {
+      {springs.map((styles, index) => {
         return (
           <animated.div
             key={order[index]}
             className="w-full absolute origin-center"
             style={{
-              zIndex,
-              y,
+              ...styles,
               height: itemHeight,
             }}
           >
