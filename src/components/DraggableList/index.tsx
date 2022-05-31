@@ -1,8 +1,13 @@
 import { animated, useSprings } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
 import { clamp, move } from "../../utils";
 import { itemPosition } from "./util";
+
+export interface SpringMapping {
+  springIndex: number;
+  itemId: string;
+}
 
 interface Props {
   items: ReactNode[];
@@ -16,10 +21,21 @@ export const DraggableList = (props: Props) => {
 
   const [springs, api] = useSprings(
     items.length,
-    itemPosition(order, itemHeight)
+    itemPosition(order, [], itemHeight)
   );
+  const springMapping: SpringMapping[] = useMemo(() => {
+    return springs.map((_, index) => ({
+      springIndex: index,
+      itemId: order[index],
+    }));
+  }, [springs, order]);
+
+  useEffect(() => {
+    api.start(itemPosition(order, springMapping, itemHeight));
+  }, [order, api, itemHeight, springMapping]);
 
   const bind = useDrag(({ args: [url], active, movement: [, y] }) => {
+    // Calculate new positions
     const currentIndex = order.indexOf(url);
     const currentRow = clamp(
       Math.round((currentIndex * itemHeight + y) / itemHeight),
@@ -27,9 +43,21 @@ export const DraggableList = (props: Props) => {
       items.length - 1
     );
 
+    // Create new order of items
     const newOrder = move(order, currentIndex, currentRow);
 
-    api.start(itemPosition(newOrder, itemHeight, active, url, currentIndex, y));
+    // Animate the transition
+    api.start(
+      itemPosition(
+        newOrder,
+        springMapping,
+        itemHeight,
+        active,
+        url,
+        currentIndex,
+        y
+      )
+    );
 
     // Persist the results
     if (!active) {
@@ -41,17 +69,24 @@ export const DraggableList = (props: Props) => {
   return (
     <div className="relative h-full">
       {springs.map((styles, index) => {
+        const springIndex = springMapping.find(
+          (spring) => spring.springIndex === index
+        );
+        if (!springIndex) return null;
+
+        const itemIndex = order.indexOf(springIndex.itemId);
+
         return (
           <animated.div
-            key={order[index]}
+            key={springIndex.itemId}
             className="w-full absolute origin-center"
             style={{
               ...styles,
               height: itemHeight,
             }}
           >
-            <div {...bind(order[index])} className="touch-none">
-              {items[index]}
+            <div {...bind(springIndex.itemId)} className="touch-none">
+              {items[itemIndex]}
             </div>
           </animated.div>
         );
