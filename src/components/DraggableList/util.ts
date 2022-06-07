@@ -6,6 +6,7 @@ export const itemPosition =
     order: string[],
     springMapping: SpringMapping[],
     itemHeight: number,
+    immediate = false,
     active = false,
     originalUrl = "",
     currentIndex = 0,
@@ -33,7 +34,7 @@ export const itemPosition =
       return {
         y: position * itemHeight,
         zIndex: 0,
-        immediate: false,
+        immediate,
       };
     }
   };

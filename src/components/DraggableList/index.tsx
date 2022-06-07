@@ -31,7 +31,7 @@ export const DraggableList = (props: Props) => {
   }, [springs, order]);
 
   useEffect(() => {
-    api.start(itemPosition(order, springMapping, itemHeight));
+    api.start(itemPosition(order, springMapping, itemHeight, true));
   }, [order, api, itemHeight, springMapping]);
 
   const bind = useDrag(({ args: [url], active, movement: [, y] }) => {
@@ -52,6 +52,7 @@ export const DraggableList = (props: Props) => {
         newOrder,
         springMapping,
         itemHeight,
+        false,
         active,
         url,
         currentIndex,
@@ -61,7 +62,6 @@ export const DraggableList = (props: Props) => {
 
     // Persist the results
     if (!active) {
-      console.log("Persisting order", newOrder);
       updateOrder(newOrder);
     }
   });
