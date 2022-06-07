@@ -11,12 +11,13 @@ import { TodoCollection } from "../types/todo";
 
 interface Props {
   collection: TodoCollection;
+  collectionIndex: number;
   onSelect(collectionId: string): void;
 }
 
 export const Collection = (props: Props) => {
   const { t } = useTranslation();
-  const { collection, onSelect } = props;
+  const { collection, collectionIndex, onSelect } = props;
   const auth = getAuth();
   const [user] = useAuthState(auth);
   const { dispatch } = useModalContext();
@@ -55,7 +56,7 @@ export const Collection = (props: Props) => {
         type: "confirmation",
         title: t("modal.removeCollection"),
         okButtonText: t("modal.remove"),
-        onOk: () => removeCollection(collection.url, user.uid),
+        onOk: () => removeCollection(collection.url, collectionIndex, user.uid),
       })
     );
   };

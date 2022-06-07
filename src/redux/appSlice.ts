@@ -16,6 +16,7 @@ import { RootState } from "./store";
 interface AppState {
   groups: FirebaseData<TodoGroup>;
   collections: FirebaseData<TodoCollection>;
+  collectionOrder: string[];
   selectedCollection: string | null;
   selectedGroup: string | null;
   options: AppOptions;
@@ -25,6 +26,7 @@ interface AppState {
 const initialState: AppState = {
   groups: {},
   collections: {},
+  collectionOrder: [],
   selectedCollection: null,
   selectedGroup: null,
   options: { show: false },
@@ -47,8 +49,14 @@ export const appSlice = createSlice({
       const { collectionUrl, collection } = action.payload;
       state.collections[collectionUrl] = collection;
     },
+    setCollectionOrder: (state, action: PayloadAction<string[]>) => {
+      state.collectionOrder = action.payload;
+    },
     removeCollection: (state, action: PayloadAction<string>) => {
       delete state.collections[action.payload];
+      state.collectionOrder = state.collectionOrder.filter(
+        (collection) => collection !== action.payload
+      );
     },
     setSelectedCollection: (state, action: PayloadAction<string | null>) => {
       state.selectedCollection = action.payload;
@@ -74,21 +82,24 @@ export const appSlice = createSlice({
   },
 });
 
+// Dispatch actions
 export const {
-  updateGroups,
-  setGroups,
-  setCollection,
+  hideOptions,
   removeCollection,
+  removeGroup,
+  setCollection,
+  setCollectionOrder,
+  setGroups,
   setSelectedCollection,
   setSelectedCollectionWithUrl,
   setSelectedGroup,
-  removeGroup,
   showOptions,
-  hideOptions,
+  updateGroups,
   updateUserSettings,
 } = appSlice.actions;
 export default appSlice.reducer;
 
+// Selectors
 export const getGroups = (state: RootState) => state.app.groups;
 export const getCollections = (state: RootState) => state.app.collections;
 export const getCollection = (
@@ -120,3 +131,5 @@ export const getSelectedGroup = (state: RootState): TodoGroup | undefined => {
 };
 export const getShowOptions = (state: RootState) => state.app.options.show;
 export const getUserSettings = (state: RootState) => state.app.userSettings;
+export const getCollectionOrder = (state: RootState) =>
+  state.app.collectionOrder;

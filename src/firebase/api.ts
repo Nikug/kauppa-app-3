@@ -16,6 +16,7 @@ import {
   removeGroup as removeReduxGroup,
   updateGroups,
   updateUserSettings,
+  setCollectionOrder as setReduxCollectionOrder,
 } from "../redux/appSlice";
 import {
   Api,
@@ -88,6 +89,22 @@ export const listenForGroups = (collectionId: string) => {
   return unsubscribe;
 };
 
+export const setCollectionOrder = async (
+  collectionOrder: string[],
+  userId: string
+) => {
+  const firebase = getDatabase();
+
+  try {
+    await set(
+      ref(firebase, `userCollections/${userId}/collectionOrder`),
+      collectionOrder
+    );
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const addCollection = async (user: User, collection: TodoCollection) => {
   const firebase = getDatabase();
 
@@ -97,8 +114,15 @@ export const addCollection = async (user: User, collection: TodoCollection) => {
       user.email
     );
     await set(
-      ref(firebase, `userCollections/${user.uid}/${collection.url}`),
+      ref(
+        firebase,
+        `userCollections/${user.uid}/collections/${collection.url}`
+      ),
       true
+    );
+    await push(
+      ref(firebase, `userCollections/${user.uid}/collectionOrder`),
+      collection.url
     );
     await set(ref(firebase, `collections/${collection.url}`), collection);
   } catch (e) {
@@ -148,7 +172,16 @@ export const updateGroup = async (
 
 export const listenForCollections = (userId: string) => {
   const firebase = getDatabase();
-  const collectionUrls = ref(firebase, `userCollections/${userId}`);
+  const collectionUrls = ref(firebase, `userCollections/${userId}/collections`);
+  const collectionOrder = ref(
+    firebase,
+    `userCollections/${userId}/collectionOrder`
+  );
+
+  const orderUnsubscribe = onValue(collectionOrder, (snapshot) => {
+    const collectionOrder = snapshot.val() || [];
+    store.dispatch(setReduxCollectionOrder(Object.values(collectionOrder)));
+  });
 
   const unsubscribes: Unsubscribe[] = [];
   const unsubscribe = onValue(collectionUrls, (snapshot) => {
@@ -170,6 +203,7 @@ export const listenForCollections = (userId: string) => {
   });
   return () => {
     unsubscribe();
+    orderUnsubscribe();
     unsubscribes.forEach((unsubscribe) => unsubscribe());
   };
 };
@@ -230,7 +264,7 @@ export const addInvitedCollection = async (
 
   try {
     await set(
-      ref(firebase, `userCollections/${userId}/${collectionUrl}`),
+      ref(firebase, `userCollections/${userId}/collections/${collectionUrl}`),
       true
     );
     return true;
@@ -242,6 +276,7 @@ export const addInvitedCollection = async (
 
 export const removeCollection = async (
   collectionUrl: string,
+  collectionIndex: number,
   userId: string
 ) => {
   const firebase = getDatabase();
@@ -250,9 +285,17 @@ export const removeCollection = async (
     await Promise.all([
       remove(ref(firebase, `collections/${collectionUrl}`)),
       remove(ref(firebase, `groups/${collectionUrl}`)),
-      remove(ref(firebase, `userCollections/${userId}/${collectionUrl}`)),
-      remove(ref(firebase, `collectionUsers/${collectionUrl}`)),
+      remove(
+        ref(
+          firebase,
+          `userCollections/${userId}/collectionOrder/${collectionIndex}`
+        )
+      ),
+      remove(
+        ref(firebase, `userCollections/${userId}/collections/${collectionUrl}`)
+      ),
     ]);
+    await remove(ref(firebase, `collectionUsers/${collectionUrl}`));
     store.dispatch(removeReduxCollection(collectionUrl));
   } catch (e) {
     console.error(e);

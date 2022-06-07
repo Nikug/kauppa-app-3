@@ -20,8 +20,14 @@
     },
     "userCollections": {
       "$uid": {
-        ".read": "auth.uid != null && auth.uid == $uid",
-        ".write": "auth.uid != null && auth.uid == $uid"
+        "collectionOrder": {
+          ".read": "auth.uid != null && auth.uid == $uid",
+          ".write": "auth.uid != null && auth.uid == $uid"
+        },
+        "collections": {
+          ".read": "auth.uid != null && auth.uid == $uid",
+          ".write": "auth.uid != null && auth.uid == $uid"
+        }
       }
     },
     "collections": {

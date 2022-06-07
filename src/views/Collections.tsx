@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react";
-import { listenForCollections } from "../firebase/api";
-import { getCollections, setSelectedCollection } from "../redux/appSlice";
+import { useEffect } from "react";
+import { listenForCollections, setCollectionOrder } from "../firebase/api";
+import {
+  getCollectionOrder,
+  getCollections,
+  setSelectedCollection,
+} from "../redux/appSlice";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -13,8 +17,8 @@ export const Collections = () => {
   const [user] = useAuthState(auth);
   const dispatch = useAppDispatch();
   const collections = useAppSelector(getCollections);
-
-  const [collectionOrder, setCollectionOrder] = useState<string[]>([]);
+  const collectionOrder = useAppSelector(getCollectionOrder);
+  console.log(collectionOrder);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -22,26 +26,24 @@ export const Collections = () => {
     return unsubscribe;
   }, [user?.uid]);
 
-  useEffect(() => {
-    setCollectionOrder(Object.keys(collections));
-  }, [collections]);
-
   const selectCollection = (collectionId: string) => {
     dispatch(setSelectedCollection(collectionId));
   };
 
   // This will store it to firebase later
   const updateOrder = (newOrder: string[]) => {
-    setCollectionOrder(newOrder);
+    if (!user) return;
+    setCollectionOrder(newOrder, user.uid);
   };
 
   return (
     <div className="overflow-x-visible">
       <DraggableList
-        items={collectionOrder.map((url) => (
+        items={collectionOrder.map((url, index) => (
           <Collection
             key={url}
             collection={{ url, ...collections[url] }}
+            collectionIndex={index}
             onSelect={selectCollection}
           />
         ))}

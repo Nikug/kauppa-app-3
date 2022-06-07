@@ -54,7 +54,10 @@ interface FirebaseSchema {
   // Used for fetching all user collections
   userCollections: {
     [userId: string]: {
-      [collectionUrl: string]: boolean;
+      collectionOrder: string[];
+      collections: {
+        [collectionUrl: string]: boolean;
+      };
     };
   };
   collections: {
