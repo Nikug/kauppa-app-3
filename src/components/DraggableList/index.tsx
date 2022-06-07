@@ -85,7 +85,7 @@ export const DraggableList = (props: Props) => {
               height: itemHeight,
             }}
           >
-            <div {...bind(springIndex.itemId)} className="touch-none">
+            <div {...bind(springIndex.itemId)} className="touch-none h-full">
               {items[itemIndex]}
             </div>
           </animated.div>

@@ -61,7 +61,7 @@ export const Collection = (props: Props) => {
   };
 
   return (
-    <div className="border bg-white p-4 flex justify-between items-center">
+    <div className="border bg-white px-4 h-full flex justify-between items-center">
       <Link to={collection.url} onClick={() => onSelect(collection.url)}>
         <h4>{collection.name || <i>{t("general.noName")}</i>}</h4>
         <p className="text-secondary">{collection.url}</p>

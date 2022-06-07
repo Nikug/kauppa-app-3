@@ -6,6 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Collection } from "../components/Collection";
 import { DraggableList } from "../components/DraggableList";
+import { TODO_ITEM_HEIGHT_PX } from "../constants";
 
 export const Collections = () => {
   const auth = getAuth();
@@ -46,7 +47,7 @@ export const Collections = () => {
         ))}
         order={collectionOrder}
         updateOrder={updateOrder}
-        itemHeight={86}
+        itemHeight={TODO_ITEM_HEIGHT_PX}
       />
     </div>
   );
