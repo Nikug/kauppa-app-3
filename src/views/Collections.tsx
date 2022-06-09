@@ -18,7 +18,6 @@ export const Collections = () => {
   const dispatch = useAppDispatch();
   const collections = useAppSelector(getCollections);
   const collectionOrder = useAppSelector(getCollectionOrder);
-  console.log(collectionOrder);
 
   useEffect(() => {
     if (!user?.uid) return;

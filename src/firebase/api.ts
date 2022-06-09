@@ -9,6 +9,7 @@ import {
   update,
   Unsubscribe,
   get,
+  runTransaction,
 } from "firebase/database";
 import {
   setCollection,
@@ -120,10 +121,15 @@ export const addCollection = async (user: User, collection: TodoCollection) => {
       ),
       true
     );
-    await push(
+
+    runTransaction(
       ref(firebase, `userCollections/${user.uid}/collectionOrder`),
-      collection.url
+      (order) => {
+        order.push(collection.url);
+        return order;
+      }
     );
+
     await set(ref(firebase, `collections/${collection.url}`), collection);
   } catch (e) {
     console.error(e);
