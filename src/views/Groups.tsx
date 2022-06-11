@@ -58,10 +58,9 @@ export const Groups = () => {
     setGroupOrder(newOrder, selectedCollection.url);
   };
 
-  // TODO: Handle this better, if user is added to an empty collection, this will not work
   return (
     <div>
-      {groups && !selectedGroup && (
+      {!selectedGroup && (
         <div>
           {isInvitedCollection && (
             <div className="flex flex-col items-center my-8">
