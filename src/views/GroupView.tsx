@@ -46,6 +46,7 @@ export const GroupView = (props: Props) => {
           updateOrder={updateOrder}
           order={group.todoOrder ?? []}
           items={getItems()}
+          lockAxis
         />
       </div>
       <TodoInput groupId={group.id} collectionId={collectionId} />

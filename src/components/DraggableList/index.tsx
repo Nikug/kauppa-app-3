@@ -14,10 +14,11 @@ interface Props {
   order: string[];
   itemHeight: number;
   updateOrder: (newOrder: string[]) => void;
+  lockAxis?: boolean;
 }
 
 export const DraggableList = (props: Props) => {
-  const { items, itemHeight, order, updateOrder } = props;
+  const { items, itemHeight, order, updateOrder, lockAxis } = props;
 
   const [springs, api] = useSprings(
     items.length,
@@ -34,37 +35,42 @@ export const DraggableList = (props: Props) => {
     api.start(itemPosition(order, springMapping, itemHeight, true));
   }, [order, api, itemHeight, springMapping]);
 
-  const bind = useDrag(({ args: [url], active, movement: [, y] }) => {
-    // Calculate new positions
-    const currentIndex = order.indexOf(url);
-    const currentRow = clamp(
-      Math.round((currentIndex * itemHeight + y) / itemHeight),
-      0,
-      items.length - 1
-    );
+  const bind = useDrag(
+    ({ args: [url], active, movement: [, y] }) => {
+      // Calculate new positions
+      const currentIndex = order.indexOf(url);
+      const currentRow = clamp(
+        Math.round((currentIndex * itemHeight + y) / itemHeight),
+        0,
+        items.length - 1
+      );
 
-    // Create new order of items
-    const newOrder = move(order, currentIndex, currentRow);
+      // Create new order of items
+      const newOrder = move(order, currentIndex, currentRow);
 
-    // Animate the transition
-    api.start(
-      itemPosition(
-        newOrder,
-        springMapping,
-        itemHeight,
-        false,
-        active,
-        url,
-        currentIndex,
-        y
-      )
-    );
+      // Animate the transition
+      api.start(
+        itemPosition(
+          newOrder,
+          springMapping,
+          itemHeight,
+          false,
+          active,
+          url,
+          currentIndex,
+          y
+        )
+      );
 
-    // Persist the results
-    if (!active) {
-      updateOrder(newOrder);
+      // Persist the results
+      if (!active) {
+        updateOrder(newOrder);
+      }
+    },
+    {
+      axis: lockAxis ? "lock" : undefined,
     }
-  });
+  );
 
   return (
     <div className="relative h-full">

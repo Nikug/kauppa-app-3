@@ -50,17 +50,16 @@ export const Todo = (props: Props) => {
   const { dispatch } = useModalContext();
 
   const [spring, api] = useSpring(() => ({
-    from: { x: 0, y: 0, zIndex: 0, visibility: "hidden" },
+    from: { x: 0, zIndex: 0, visibility: "hidden" },
   }));
 
   const bind = useGesture(
     {
-      onDrag: ({ active, movement: [x, y] }) => {
+      onDrag: ({ active, movement: [x] }) => {
         api.start({
           x: active ? x : 0,
-          y: active ? y : 0,
           zIndex: active ? 1 : 0,
-          visibility: active && y === 0 ? "visible" : "hidden",
+          visibility: active ? "visible" : "hidden",
           immediate: active,
         });
       },
@@ -90,7 +89,7 @@ export const Todo = (props: Props) => {
     },
     {
       drag: {
-        axis: "lock",
+        axis: "x",
       },
     }
   );
@@ -137,7 +136,7 @@ export const Todo = (props: Props) => {
         <Background done={todo.done} />
       </animated.div>
       <animated.div
-        style={{ x: positionX, y: spring.y, zIndex: spring.zIndex }}
+        style={{ x: positionX, zIndex: spring.zIndex }}
         className={containerClasses(todo.done)}
       >
         <div className="flex w-full h-full items-center gap-4">
