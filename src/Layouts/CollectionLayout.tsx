@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setSelectedCollectionWithUrl } from "../redux/appSlice";
 import { getCollections, getSelectedCollection } from "../redux/appSelectors";
 import { useEffect } from "react";
-import { listenForCollections } from "../firebase/api";
+import { listenForCollections, listenForGroups } from "../firebase/api";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
 
@@ -22,6 +22,12 @@ export const CollectionLayout = () => {
     const unsubscribe = listenForCollections(user.uid);
     return unsubscribe;
   }, [user?.uid]);
+
+  useEffect(() => {
+    if (!collectionUrl || !user?.uid) return;
+    const unsubscribe = listenForGroups(collectionUrl);
+    return unsubscribe;
+  }, [collectionUrl, user?.uid]);
 
   useEffect(() => {
     if (selectedCollection?.url || !collectionUrl || !collections) return;

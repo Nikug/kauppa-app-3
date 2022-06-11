@@ -6,23 +6,23 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Group } from "../components/Group";
 import { Button } from "../components/inputs/Button";
-import { createNewGroup } from "../components/CollectionNavbar";
-import { createModal, useModalContext } from "../contexts/ModalContextProvider";
-import { addGroup, addInvitedCollection } from "../firebase/api";
+import { addInvitedCollection, setGroupOrder } from "../firebase/api";
 import { setSelectedGroup } from "../redux/appSlice";
 import {
   getCollections,
+  getGroupOrder,
   getGroups,
   getSelectedCollection,
   getSelectedGroup,
 } from "../redux/appSelectors";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { EditModal } from "../types/modal";
-import { TodoGroup } from "../types/todo";
+import { DraggableList } from "../components/DraggableList";
+import { TODO_ITEM_HEIGHT_PX } from "../constants";
 
 export const Groups = () => {
   const { t } = useTranslation();
   const groups = useAppSelector(getGroups);
+  const groupOrder = useAppSelector(getGroupOrder);
   const collections = useAppSelector(getCollections);
   const selectedCollection = useAppSelector(getSelectedCollection);
   const selectedGroup = useAppSelector(getSelectedGroup);
@@ -31,35 +31,10 @@ export const Groups = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const { dispatch: modalDispatch } = useModalContext();
-
-  const groupList: TodoGroup[] = useMemo(() => {
-    if (!groups) return [];
-    return Object.entries(groups).map(([id, group]) => ({
-      id: id,
-      ...group,
-    }));
-  }, [groups]);
 
   const handleGroupSelect = (groupId: string) => {
     dispatch(setSelectedGroup(groupId));
     navigate(groupId);
-  };
-
-  const createGroup = () => {
-    if (!selectedCollection) return;
-    const newGroup = createNewGroup();
-    modalDispatch(
-      createModal<EditModal>({
-        type: "edit",
-        title: t("modal.createList"),
-        label: t("modal.name"),
-        value: newGroup.name,
-        okButtonText: t("modal.save"),
-        onOk: (value) =>
-          addGroup(selectedCollection.url, { ...newGroup, name: value }),
-      })
-    );
   };
 
   const isInvitedCollection = useMemo(() => {
@@ -78,17 +53,14 @@ export const Groups = () => {
     }
   };
 
-  // TODO: Handle this better, if added to empty collection, this will not work
+  const updateOrder = (newOrder: string[]) => {
+    if (!selectedCollection) return;
+    setGroupOrder(newOrder, selectedCollection.url);
+  };
+
+  // TODO: Handle this better, if user is added to an empty collection, this will not work
   return (
     <div>
-      {!groupList.length && (
-        <div className="h-screen flex flex-col justify-center items-center">
-          <i className="mb-8">{t("list.noLists")}</i>
-          <Button className="primary" onClick={createGroup}>
-            {t("modal.createList")}
-          </Button>
-        </div>
-      )}
       {groups && !selectedGroup && (
         <div>
           {isInvitedCollection && (
@@ -104,14 +76,20 @@ export const Groups = () => {
               </Button>
             </div>
           )}
-          {groupList?.map((group) => (
-            <Group
-              key={group.id}
-              collectionId={selectedCollection?.url}
-              group={group}
-              onSelect={(id) => handleGroupSelect(id)}
-            />
-          ))}
+          <DraggableList
+            items={groupOrder.map((groupId, index) => (
+              <Group
+                key={groupId}
+                collectionId={selectedCollection?.url}
+                groupIndex={index}
+                group={{ id: groupId, ...groups[groupId] }}
+                onSelect={(id) => handleGroupSelect(id)}
+              />
+            ))}
+            order={groupOrder}
+            updateOrder={updateOrder}
+            itemHeight={TODO_ITEM_HEIGHT_PX}
+          />
         </div>
       )}
     </div>

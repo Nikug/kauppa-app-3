@@ -9,12 +9,13 @@ import { getTodoCount } from "../utils";
 
 interface Props {
   group: TodoGroup;
+  groupIndex: number;
   collectionId?: string;
   onSelect(groupId: string): void;
 }
 
 export const Group = (props: Props) => {
-  const { group, collectionId, onSelect } = props;
+  const { group, groupIndex, collectionId, onSelect } = props;
   const { dispatch } = useModalContext();
 
   const editGroup = () => {
@@ -38,7 +39,7 @@ export const Group = (props: Props) => {
         type: "confirmation",
         title: t("modal.removeList"),
         okButtonText: t("modal.remove"),
-        onOk: () => removeGroup(collectionId, group.id),
+        onOk: () => removeGroup(collectionId, group.id, groupIndex),
       })
     );
   };
@@ -46,7 +47,7 @@ export const Group = (props: Props) => {
   const todoCount = useMemo(() => getTodoCount(group), [group]);
 
   return (
-    <div className="border bg-white p-4 flex justify-between items-center">
+    <div className="border bg-white h-full px-4 flex justify-between items-center">
       <div className="cursor-pointer" onClick={() => onSelect(group.id)}>
         <h4>
           {group.name || <i>{t("general.noName").toString()}</i>}{" "}

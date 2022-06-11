@@ -18,6 +18,7 @@ import {
   updateGroups,
   updateUserSettings,
   setCollectionOrder as setReduxCollectionOrder,
+  setGroupOrder as setReduxGroupOrder,
 } from "../redux/appSlice";
 import {
   Api,
@@ -39,7 +40,7 @@ export const addTodo = async (
 
   try {
     const newTodo = push(
-      child(ref(firebase), `groups/${collectionId}/${groupId}/todos`)
+      child(ref(firebase), `groups/${collectionId}/groups/${groupId}/todos`)
     );
     await set(newTodo, todo);
   } catch (e) {
@@ -56,7 +57,7 @@ export const removeTodo = async (
 
   try {
     await remove(
-      ref(firebase, `groups/${collectionId}/${groupId}/todos/${todoId}`)
+      ref(firebase, `groups/${collectionId}/groups/${groupId}/todos/${todoId}`)
     );
   } catch (e) {
     console.error(e);
@@ -73,7 +74,7 @@ export const updateTodo = async (
   try {
     const { id, ...rest } = todo;
     await set(
-      ref(firebase, `groups/${collectionId}/${groupId}/todos/${id}`),
+      ref(firebase, `groups/${collectionId}/groups/${groupId}/todos/${id}`),
       rest
     );
   } catch (e) {
@@ -83,11 +84,22 @@ export const updateTodo = async (
 
 export const listenForGroups = (collectionId: string) => {
   const firebase = getDatabase();
-  const groups = ref(firebase, `groups/${collectionId}`);
+  const groups = ref(firebase, `groups/${collectionId}/groups`);
+  const groupOrder = ref(firebase, `groups/${collectionId}/groupOrder`);
+
   const unsubscribe = onValue(groups, (snapshot) => {
     store.dispatch(updateGroups({ groups: snapshot.val() }));
   });
-  return unsubscribe;
+
+  const orderUnsubscribe = onValue(groupOrder, (snapshot) => {
+    const groupOrder = snapshot.val() || [];
+    store.dispatch(setReduxGroupOrder(Object.values(groupOrder)));
+  });
+
+  return () => {
+    unsubscribe();
+    orderUnsubscribe();
+  };
 };
 
 export const setCollectionOrder = async (
@@ -125,7 +137,11 @@ export const addCollection = async (user: User, collection: TodoCollection) => {
     runTransaction(
       ref(firebase, `userCollections/${user.uid}/collectionOrder`),
       (order) => {
-        order.push(collection.url);
+        if (!order) {
+          order = [collection.url];
+        } else {
+          order.push(collection.url);
+        }
         return order;
       }
     );
@@ -147,14 +163,29 @@ export const updateCollection = async (collectionUrl: string, name: string) => {
 };
 
 export const addGroup = async (
-  collectionurl: string,
+  collectionUrl: string,
   group: Api<TodoGroup>
 ) => {
   const firebase = getDatabase();
 
   try {
-    const newGroup = push(child(ref(firebase), `groups/${collectionurl}`));
-    await set(ref(firebase, `groups/${collectionurl}/${newGroup.key}`), group);
+    const newGroup = push(
+      child(ref(firebase), `groups/${collectionUrl}/groups`),
+      group
+    );
+
+    runTransaction(
+      ref(firebase, `groups/${collectionUrl}/groupOrder`),
+      (order) => {
+        if (!order) {
+          order = [newGroup.key];
+        } else {
+          order.push(newGroup.key);
+        }
+        return order;
+      }
+    );
+
     return newGroup.key;
   } catch (e) {
     console.error(e);
@@ -170,7 +201,22 @@ export const updateGroup = async (
   const firebase = getDatabase();
 
   try {
-    await update(ref(firebase, `groups/${collectionUrl}/${groupId}`), { name });
+    await update(ref(firebase, `groups/${collectionUrl}/groups/${groupId}`), {
+      name,
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const setGroupOrder = async (
+  groupOrder: string[],
+  collectionUrl: string
+) => {
+  const firebase = getDatabase();
+
+  try {
+    await set(ref(firebase, `groups/${collectionUrl}/groupOrder`), groupOrder);
   } catch (e) {
     console.error(e);
   }
@@ -308,11 +354,18 @@ export const removeCollection = async (
   }
 };
 
-export const removeGroup = async (collectionUrl: string, groupId: string) => {
+export const removeGroup = async (
+  collectionUrl: string,
+  groupId: string,
+  groupIndex: number
+) => {
   const firebase = getDatabase();
 
   try {
-    await remove(ref(firebase, `groups/${collectionUrl}/${groupId}`));
+    await remove(ref(firebase, `groups/${collectionUrl}/groups/${groupId}`));
+    await remove(
+      ref(firebase, `groups/${collectionUrl}/groupOrder/${groupIndex}`)
+    );
     store.dispatch(removeReduxGroup(groupId));
   } catch (e) {
     console.error(e);
