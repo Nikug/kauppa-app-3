@@ -17,7 +17,7 @@ interface Props {
 export const TodoInput = (props: Props) => {
   const { t } = useTranslation();
   const { groupId, collectionId } = props;
-  const { register, handleSubmit, reset, setFocus } = useForm<FormInputs>();
+  const { register, handleSubmit, setFocus, setValue } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     if (!data.content) return;
@@ -26,7 +26,7 @@ export const TodoInput = (props: Props) => {
       content: data.content,
     };
     addTodo(collectionId, groupId, newTodo);
-    reset();
+    setValue("content", "");
     setFocus("content");
   };
 

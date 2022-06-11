@@ -7,6 +7,7 @@ export interface TodoItem {
 export interface TodoGroup {
   id: string;
   name?: string;
+  todoOrder?: string[];
   todos?: FirebaseData<TodoItem>;
 }
 
@@ -71,6 +72,7 @@ interface FirebaseSchema {
       groups: {
         [groupId: string]: {
           name?: string;
+          todoOrder?: string[];
           todos?: {
             [todoId: string]: {
               done: boolean;

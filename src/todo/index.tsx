@@ -46,7 +46,7 @@ interface Props {
 }
 
 export const Todo = (props: Props) => {
-  const { todo, groupId, collectionId } = props;
+  const { todo, groupId, collectionId, index } = props;
   const { dispatch } = useModalContext();
 
   const [spring, api] = useSpring(() => ({
@@ -110,7 +110,7 @@ export const Todo = (props: Props) => {
   };
 
   const handleRemove = async () => {
-    await removeTodo(collectionId, groupId, todo.id);
+    await removeTodo(collectionId, groupId, todo.id, index);
   };
 
   const updateTodoContent = () => {

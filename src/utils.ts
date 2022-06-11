@@ -48,3 +48,14 @@ export const move = <T>(arr: Readonly<T[]>, from: number, to: number) => {
   arrayCopy.splice(to, 0, arrayCopy.splice(from, 1)[0]);
   return arrayCopy;
 };
+
+export const createOrAdd = <T>(
+  arr: Readonly<T[]> | undefined | null,
+  item: T
+) => {
+  if (!arr) {
+    return [item];
+  } else {
+    return [...arr, item];
+  }
+};

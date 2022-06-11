@@ -29,7 +29,7 @@ import {
 } from "../types/todo";
 import { store } from "../redux/store";
 import { User } from "firebase/auth";
-import { emailKeyToEmail, emailToKey } from "../utils";
+import { createOrAdd, emailKeyToEmail, emailToKey } from "../utils";
 
 export const addTodo = async (
   collectionId: string,
@@ -39,10 +39,15 @@ export const addTodo = async (
   const firebase = getDatabase();
 
   try {
-    const newTodo = push(
-      child(ref(firebase), `groups/${collectionId}/groups/${groupId}/todos`)
+    const newTodo = await push(
+      child(ref(firebase), `groups/${collectionId}/groups/${groupId}/todos`),
+      todo
     );
-    await set(newTodo, todo);
+
+    runTransaction(
+      ref(firebase, `groups/${collectionId}/groups/${groupId}/todoOrder`),
+      (order) => createOrAdd(order, newTodo.key)
+    );
   } catch (e) {
     console.error(e);
   }
@@ -51,13 +56,20 @@ export const addTodo = async (
 export const removeTodo = async (
   collectionId: string,
   groupId: string,
-  todoId: string
+  todoId: string,
+  todoIndex: number
 ) => {
   const firebase = getDatabase();
 
   try {
     await remove(
       ref(firebase, `groups/${collectionId}/groups/${groupId}/todos/${todoId}`)
+    );
+    await remove(
+      ref(
+        firebase,
+        `groups/${collectionId}/groups/${groupId}/todoOrder/${todoIndex}`
+      )
     );
   } catch (e) {
     console.error(e);
@@ -76,6 +88,23 @@ export const updateTodo = async (
     await set(
       ref(firebase, `groups/${collectionId}/groups/${groupId}/todos/${id}`),
       rest
+    );
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const updateTodoOrder = async (
+  order: string[],
+  collectionId: string,
+  groupId: string
+) => {
+  const firebase = getDatabase();
+
+  try {
+    await set(
+      ref(firebase, `groups/${collectionId}/groups/${groupId}/todoOrder`),
+      order
     );
   } catch (e) {
     console.error(e);
@@ -136,14 +165,7 @@ export const addCollection = async (user: User, collection: TodoCollection) => {
 
     runTransaction(
       ref(firebase, `userCollections/${user.uid}/collectionOrder`),
-      (order) => {
-        if (!order) {
-          order = [collection.url];
-        } else {
-          order.push(collection.url);
-        }
-        return order;
-      }
+      (order) => createOrAdd(order, collection.url)
     );
 
     await set(ref(firebase, `collections/${collection.url}`), collection);
@@ -169,21 +191,14 @@ export const addGroup = async (
   const firebase = getDatabase();
 
   try {
-    const newGroup = push(
+    const newGroup = await push(
       child(ref(firebase), `groups/${collectionUrl}/groups`),
       group
     );
 
     runTransaction(
       ref(firebase, `groups/${collectionUrl}/groupOrder`),
-      (order) => {
-        if (!order) {
-          order = [newGroup.key];
-        } else {
-          order.push(newGroup.key);
-        }
-        return order;
-      }
+      (order) => createOrAdd(order, newGroup.key)
     );
 
     return newGroup.key;
