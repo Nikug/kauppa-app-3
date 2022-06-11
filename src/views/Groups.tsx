@@ -80,8 +80,8 @@ export const Groups = () => {
               <Group
                 key={groupId}
                 collectionId={selectedCollection?.url}
-                groupIndex={index}
                 group={{ id: groupId, ...groups[groupId] }}
+                groupIndex={index}
                 onSelect={(id) => handleGroupSelect(id)}
               />
             ))}

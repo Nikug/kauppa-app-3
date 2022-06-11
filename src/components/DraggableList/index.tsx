@@ -63,7 +63,7 @@ export const DraggableList = (props: Props) => {
       );
 
       // Persist the results
-      if (!active) {
+      if (!active && currentIndex !== currentRow) {
         updateOrder(newOrder);
       }
     },

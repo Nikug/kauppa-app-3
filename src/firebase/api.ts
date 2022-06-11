@@ -44,7 +44,7 @@ export const addTodo = async (
       todo
     );
 
-    runTransaction(
+    await runTransaction(
       ref(firebase, `groups/${collectionId}/groups/${groupId}/todoOrder`),
       (order) => createOrAdd(order, newTodo.key)
     );
@@ -56,20 +56,23 @@ export const addTodo = async (
 export const removeTodo = async (
   collectionId: string,
   groupId: string,
-  todoId: string,
-  todoIndex: number
+  todoId: string
 ) => {
   const firebase = getDatabase();
 
   try {
-    await remove(
-      ref(firebase, `groups/${collectionId}/groups/${groupId}/todos/${todoId}`)
-    );
-    await remove(
-      ref(
-        firebase,
-        `groups/${collectionId}/groups/${groupId}/todoOrder/${todoIndex}`
-      )
+    await runTransaction(
+      ref(firebase, `groups/${collectionId}/groups/${groupId}`),
+      (group) => {
+        if (!group) return;
+
+        group.todoOrder = Object.values(group.todoOrder).filter(
+          (id) => id !== todoId
+        );
+        delete group?.todos[todoId];
+        console.log(group);
+        return group;
+      }
     );
   } catch (e) {
     console.error(e);
@@ -163,7 +166,7 @@ export const addCollection = async (user: User, collection: TodoCollection) => {
       true
     );
 
-    runTransaction(
+    await runTransaction(
       ref(firebase, `userCollections/${user.uid}/collectionOrder`),
       (order) => createOrAdd(order, collection.url)
     );
@@ -196,7 +199,7 @@ export const addGroup = async (
       group
     );
 
-    runTransaction(
+    await runTransaction(
       ref(firebase, `groups/${collectionUrl}/groupOrder`),
       (order) => createOrAdd(order, newGroup.key)
     );
@@ -381,6 +384,8 @@ export const removeGroup = async (
     await remove(
       ref(firebase, `groups/${collectionUrl}/groupOrder/${groupIndex}`)
     );
+
+    // TODO: this is not needed anymore
     store.dispatch(removeReduxGroup(groupId));
   } catch (e) {
     console.error(e);

@@ -42,11 +42,10 @@ interface Props {
   groupId: string;
   collectionId: string;
   todo: TodoItem;
-  index: number;
 }
 
 export const Todo = (props: Props) => {
-  const { todo, groupId, collectionId, index } = props;
+  const { todo, groupId, collectionId } = props;
   const { dispatch } = useModalContext();
 
   const [spring, api] = useSpring(() => ({
@@ -109,7 +108,7 @@ export const Todo = (props: Props) => {
   };
 
   const handleRemove = async () => {
-    await removeTodo(collectionId, groupId, todo.id, index);
+    await removeTodo(collectionId, groupId, todo.id);
   };
 
   const updateTodoContent = () => {

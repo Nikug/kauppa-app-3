@@ -20,13 +20,12 @@ export const GroupView = (props: Props) => {
 
   const getItems = () => {
     const newItems: ReactNode[] = [];
-    group.todoOrder?.forEach((id, index) => {
+    group.todoOrder?.forEach((id) => {
       const todo = group.todos?.[id];
       if (todo) {
         newItems.push(
           <Todo
             key={id}
-            index={index}
             todo={{ id, ...group.todos![id] }}
             groupId={group.id}
             collectionId={collectionId}
@@ -38,13 +37,18 @@ export const GroupView = (props: Props) => {
     return newItems;
   };
 
+  const getOrder = () => {
+    if (!group.todoOrder) return [];
+    return group.todoOrder.filter((order) => order);
+  };
+
   return (
     <div className="w-full max-w-content">
       <div className="fixed top-20 bottom-16 w-full max-w-content overflow-y-auto overflow-x-hidden">
         <DraggableList
           itemHeight={TODO_ITEM_HEIGHT_PX}
           updateOrder={updateOrder}
-          order={group.todoOrder ?? []}
+          order={getOrder()}
           items={getItems()}
           lockAxis
         />
