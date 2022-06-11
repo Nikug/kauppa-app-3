@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import { listenForCollections, setCollectionOrder } from "../firebase/api";
-import {
-  getCollectionOrder,
-  getCollections,
-  setSelectedCollection,
-} from "../redux/appSlice";
+import { setSelectedCollection } from "../redux/appSlice";
+import { getCollectionOrder, getCollections } from "../redux/appSelectors";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -29,7 +26,6 @@ export const Collections = () => {
     dispatch(setSelectedCollection(collectionId));
   };
 
-  // This will store it to firebase later
   const updateOrder = (newOrder: string[]) => {
     if (!user) return;
     setCollectionOrder(newOrder, user.uid);

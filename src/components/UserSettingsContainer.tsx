@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useTranslation } from "react-i18next";
 import { listenForUserSettings } from "../firebase/api";
-import { getUserSettings } from "../redux/appSlice";
+import { getUserSettings } from "../redux/appSelectors";
 import { useAppSelector } from "../redux/hooks";
 
 interface Props {

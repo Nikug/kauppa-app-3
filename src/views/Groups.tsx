@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -8,18 +8,14 @@ import { Group } from "../components/Group";
 import { Button } from "../components/inputs/Button";
 import { createNewGroup } from "../components/CollectionNavbar";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
-import {
-  addGroup,
-  addInvitedCollection,
-  listenForGroups,
-} from "../firebase/api";
+import { addGroup, addInvitedCollection } from "../firebase/api";
+import { setSelectedGroup } from "../redux/appSlice";
 import {
   getCollections,
   getGroups,
   getSelectedCollection,
   getSelectedGroup,
-  setSelectedGroup,
-} from "../redux/appSlice";
+} from "../redux/appSelectors";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { EditModal } from "../types/modal";
 import { TodoGroup } from "../types/todo";
@@ -36,12 +32,6 @@ export const Groups = () => {
 
   const dispatch = useAppDispatch();
   const { dispatch: modalDispatch } = useModalContext();
-
-  useEffect(() => {
-    if (!selectedCollection?.url) return;
-    const unsubscribe = listenForGroups(selectedCollection.url);
-    return unsubscribe;
-  }, [selectedCollection?.url]);
 
   const groupList: TodoGroup[] = useMemo(() => {
     if (!groups) return [];
@@ -88,6 +78,7 @@ export const Groups = () => {
     }
   };
 
+  // TODO: Handle this better, if added to empty collection, this will not work
   return (
     <div>
       {!groupList.length && (

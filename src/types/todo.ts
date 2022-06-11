@@ -67,12 +67,15 @@ interface FirebaseSchema {
   };
   groups: {
     [collectionUrl: string]: {
-      [groupId: string]: {
-        name?: string;
-        todos?: {
-          [todoId: string]: {
-            done: boolean;
-            content?: string;
+      groupOrder: string[];
+      groups: {
+        [groupId: string]: {
+          name?: string;
+          todos?: {
+            [todoId: string]: {
+              done: boolean;
+              content?: string;
+            };
           };
         };
       };

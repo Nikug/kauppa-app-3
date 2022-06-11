@@ -5,12 +5,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { COLLECTION_URL } from "../constants";
+import { setSelectedGroup } from "../redux/appSlice";
 import {
   getGroups,
   getSelectedCollection,
   getSelectedGroup,
-  setSelectedGroup,
-} from "../redux/appSlice";
+} from "../redux/appSelectors";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { TodoGroup } from "../types/todo";
 import { getTodoCount } from "../utils";

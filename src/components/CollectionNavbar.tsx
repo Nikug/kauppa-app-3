@@ -8,12 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { COLLECTION_URL } from "../constants";
 import { createModal, useModalContext } from "../contexts/ModalContextProvider";
 import { addCollection, addGroup } from "../firebase/api";
-import {
-  getCollections,
-  getSelectedCollection,
-  setSelectedCollection,
-  setSelectedGroup,
-} from "../redux/appSlice";
+import { setSelectedCollection, setSelectedGroup } from "../redux/appSlice";
+import { getCollections, getSelectedCollection } from "../redux/appSelectors";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { EditModal } from "../types/modal";
 import { Api, TodoCollection, TodoGroup } from "../types/todo";

@@ -15,7 +15,7 @@ import { COLLECTION_URL } from "./constants";
 import { Suspense } from "react";
 import { Options } from "./components/Options";
 import { useAppSelector } from "./redux/hooks";
-import { getShowOptions } from "./redux/appSlice";
+import { getShowOptions } from "./redux/appSelectors";
 import { UserSettingsContainer } from "./components/UserSettingsContainer";
 import { GroupViewContainer } from "./components/GroupViewContainer";
 import { GroupLayout } from "./Layouts/GroupLayout";

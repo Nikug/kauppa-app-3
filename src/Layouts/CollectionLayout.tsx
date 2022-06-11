@@ -2,11 +2,8 @@ import { Outlet, useParams } from "react-router";
 import { CollectionNavbar } from "../components/CollectionNavbar";
 import { Authenticated } from "../components/Authenticated";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import {
-  getCollections,
-  getSelectedCollection,
-  setSelectedCollectionWithUrl,
-} from "../redux/appSlice";
+import { setSelectedCollectionWithUrl } from "../redux/appSlice";
+import { getCollections, getSelectedCollection } from "../redux/appSelectors";
 import { useEffect } from "react";
 import { listenForCollections } from "../firebase/api";
 import { useAuthState } from "react-firebase-hooks/auth";

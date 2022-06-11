@@ -3,17 +3,18 @@ import { GroupNavbar } from "../components/GroupNavbar";
 import { Authenticated } from "../components/Authenticated";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
-  getCollections,
-  getSelectedCollection,
   setSelectedCollectionWithUrl,
   setSelectedGroup,
 } from "../redux/appSlice";
+import { getCollections, getSelectedCollection } from "../redux/appSelectors";
 import { useEffect } from "react";
 import { listenForGroups } from "../firebase/api";
 
 export const GroupLayout = () => {
-  const { collectionId: collectionUrl, groupId } =
-    useParams<{ collectionId: string; groupId: string }>();
+  const { collectionId: collectionUrl, groupId } = useParams<{
+    collectionId: string;
+    groupId: string;
+  }>();
   const dispatch = useAppDispatch();
   const selectedCollection = useAppSelector(getSelectedCollection);
   const collections = useAppSelector(getCollections);
