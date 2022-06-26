@@ -76,16 +76,16 @@ export const Groups = () => {
             </div>
           )}
           <DraggableList
-            items={groupOrder.map((groupId, index) => (
+            items={groupOrder.map((orderedId) => (
               <Group
-                key={groupId}
+                key={orderedId.id}
                 collectionId={selectedCollection?.id}
-                group={{ id: groupId, ...groups[groupId] }}
-                groupIndex={index}
+                group={{ id: orderedId.id, ...groups[orderedId.id] }}
+                groupIndex={orderedId.order}
                 onSelect={(id) => handleGroupSelect(id)}
               />
             ))}
-            order={groupOrder}
+            order={groupOrder.map((orderedId) => orderedId.id)}
             updateOrder={updateOrder}
             itemHeight={TODO_ITEM_HEIGHT_PX}
           />

@@ -15,7 +15,7 @@ import {
 
 interface AppState {
   groups: FirebaseData<TodoGroup>;
-  groupOrder: string[];
+  groupOrder: OrderedId[];
   collections: FirebaseData<TodoCollection>;
   collectionOrder: OrderedId[];
   selectedCollection: string | null;
@@ -47,7 +47,7 @@ export const appSlice = createSlice({
       const { groups } = action.payload;
       state.groups = groups;
     },
-    setGroupOrder: (state, action: PayloadAction<string[]>) => {
+    setGroupOrder: (state, action: PayloadAction<OrderedId[]>) => {
       state.groupOrder = action.payload;
     },
     setCollection: (state, action: PayloadAction<SetCollectionPayload>) => {

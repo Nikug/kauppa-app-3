@@ -21,7 +21,6 @@ import {
 } from "../redux/appSlice";
 import {
   Api,
-  OrderedId,
   TodoCollection,
   TodoGroup,
   TodoItem,
@@ -29,7 +28,12 @@ import {
 } from "../types/todo";
 import { store } from "../redux/store";
 import { User } from "firebase/auth";
-import { createOrAdd, emailKeyToEmail, emailToKey } from "../utils";
+import {
+  createOrAdd,
+  databaseOrderToList,
+  emailKeyToEmail,
+  emailToKey,
+} from "../utils";
 
 export const addTodo = async (
   collectionId: string,
@@ -124,7 +128,7 @@ export const listenForGroups = (collectionId: string) => {
 
   const orderUnsubscribe = onValue(groupOrder, (snapshot) => {
     const groupOrder = snapshot.val() || [];
-    store.dispatch(setReduxGroupOrder(Object.values(groupOrder)));
+    store.dispatch(setReduxGroupOrder(databaseOrderToList(groupOrder)));
   });
 
   return () => {
@@ -246,12 +250,7 @@ export const listenForCollections = (userId: string) => {
 
   const orderUnsubscribe = onValue(collectionOrder, (snapshot) => {
     const collectionOrder = snapshot.val() || [];
-    const orderedIds: OrderedId[] = Object.entries<string>(collectionOrder).map(
-      (entry) => ({
-        id: entry[1],
-        order: parseInt(entry[0]),
-      })
-    );
+    const orderedIds = databaseOrderToList(collectionOrder);
     store.dispatch(setReduxCollectionOrder(orderedIds));
   });
 

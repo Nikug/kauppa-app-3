@@ -1,6 +1,6 @@
 import { User } from "firebase/auth";
 import { EMAIL_DOT } from "./constants";
-import { TodoGroup } from "./types/todo";
+import { OrderedId, TodoGroup } from "./types/todo";
 
 export const getUsername = (user: User) => {
   if (user.displayName) {
@@ -47,6 +47,15 @@ export const move = <T>(arr: Readonly<T[]>, from: number, to: number) => {
   const arrayCopy = [...arr];
   arrayCopy.splice(to, 0, arrayCopy.splice(from, 1)[0]);
   return arrayCopy;
+};
+
+export const databaseOrderToList = (
+  order: Record<string, string>
+): OrderedId[] => {
+  return Object.entries(order).map((entry) => ({
+    id: entry[1],
+    order: parseInt(entry[0]),
+  }));
 };
 
 export const createOrAdd = <T>(

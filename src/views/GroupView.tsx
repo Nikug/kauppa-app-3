@@ -20,13 +20,13 @@ export const GroupView = (props: Props) => {
 
   const getItems = () => {
     const newItems: ReactNode[] = [];
-    group.todoOrder?.forEach((id) => {
-      const todo = group.todos?.[id];
+    group.todoOrder?.forEach((orderedId) => {
+      const todo = group.todos?.[orderedId.id];
       if (todo) {
         newItems.push(
           <Todo
-            key={id}
-            todo={{ id, ...group.todos![id] }}
+            key={orderedId.id}
+            todo={{ id: orderedId.id, ...todo }}
             groupId={group.id}
             collectionId={collectionId}
           />
@@ -39,7 +39,7 @@ export const GroupView = (props: Props) => {
 
   const getOrder = () => {
     if (!group.todoOrder) return [];
-    return group.todoOrder.filter((order) => order);
+    return group.todoOrder.map((orderedId) => orderedId.id);
   };
 
   return (

@@ -7,7 +7,7 @@ export interface TodoItem {
 export interface TodoGroup {
   id: string;
   name?: string;
-  todoOrder?: string[];
+  todoOrder?: OrderedId[];
   todos?: FirebaseData<TodoItem>;
 }
 
