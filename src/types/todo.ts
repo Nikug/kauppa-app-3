@@ -60,7 +60,7 @@ interface FirebaseSchema {
   // Used for fetching all user collections
   userCollections: {
     [userId: string]: {
-      collectionOrder: string[];
+      collectionOrder: OrderedId[];
       collections: {
         [collectionId: string]: boolean;
       };
@@ -73,11 +73,11 @@ interface FirebaseSchema {
   };
   groups: {
     [collectionId: string]: {
-      groupOrder: string[];
+      groupOrder: OrderedId[];
       groups: {
         [groupId: string]: {
           name?: string;
-          todoOrder?: string[];
+          todoOrder?: OrderedId[];
           todos?: {
             [todoId: string]: {
               done: boolean;

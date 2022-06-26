@@ -123,7 +123,14 @@ export const listenForGroups = (collectionId: string) => {
   const groupOrder = ref(firebase, `groups/${collectionId}/groupOrder`);
 
   const unsubscribe = onValue(groups, (snapshot) => {
-    store.dispatch(updateGroups({ groups: snapshot.val() }));
+    const groups = snapshot.val();
+    for (const groupId in groups) {
+      if (!groups[groupId].todoOrder) continue;
+      groups[groupId].todoOrder = databaseOrderToList(
+        groups[groupId]?.todoOrder
+      );
+    }
+    store.dispatch(updateGroups({ groups }));
   });
 
   const orderUnsubscribe = onValue(groupOrder, (snapshot) => {
