@@ -26,6 +26,11 @@ export interface UserSettings {
   language?: string;
 }
 
+export interface OrderedId {
+  id: string;
+  order: number;
+}
+
 export type Api<T> = Omit<T, "id">;
 export type FirebaseData<T> = Record<string, Api<T>>;
 

@@ -27,15 +27,15 @@ export const Collections = () => {
   return (
     <div className="overflow-x-visible">
       <DraggableList
-        items={collectionOrder.map((id, index) => (
+        items={collectionOrder.map((orderedId) => (
           <Collection
-            key={id}
-            collection={{ id, ...collections[id] }}
-            collectionIndex={index}
+            key={orderedId.id}
+            collection={{ id: orderedId.id, ...collections[orderedId.id] }}
+            collectionIndex={orderedId.order}
             onSelect={selectCollection}
           />
         ))}
-        order={collectionOrder}
+        order={collectionOrder.map((orderedId) => orderedId.id)}
         updateOrder={updateOrder}
         itemHeight={TODO_ITEM_HEIGHT_PX}
       />

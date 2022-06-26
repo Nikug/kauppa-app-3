@@ -50,12 +50,17 @@ export const move = <T>(arr: Readonly<T[]>, from: number, to: number) => {
 };
 
 export const createOrAdd = <T>(
-  arr: Readonly<T[]> | undefined | null,
+  arr: Readonly<T[]> | Record<string, string> | undefined | null,
   item: T
 ) => {
   if (!arr) {
     return [item];
   } else {
+    if (!Array.isArray(arr)) {
+      arr = Object.values(arr);
+    } else {
+      arr = arr.filter((item) => item);
+    }
     return [...arr, item];
   }
 };

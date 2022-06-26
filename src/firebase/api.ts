@@ -21,6 +21,7 @@ import {
 } from "../redux/appSlice";
 import {
   Api,
+  OrderedId,
   TodoCollection,
   TodoGroup,
   TodoItem,
@@ -69,7 +70,6 @@ export const removeTodo = async (
           (id) => id !== todoId
         );
         delete group?.todos[todoId];
-        console.log(group);
         return group;
       }
     );
@@ -246,19 +246,23 @@ export const listenForCollections = (userId: string) => {
 
   const orderUnsubscribe = onValue(collectionOrder, (snapshot) => {
     const collectionOrder = snapshot.val() || [];
-    store.dispatch(setReduxCollectionOrder(Object.values(collectionOrder)));
+    const orderedIds: OrderedId[] = Object.entries<string>(collectionOrder).map(
+      (entry) => ({
+        id: entry[1],
+        order: parseInt(entry[0]),
+      })
+    );
+    store.dispatch(setReduxCollectionOrder(orderedIds));
   });
 
   const unsubscribes: Unsubscribe[] = [];
   const unsubscribe = onValue(collectionIds, (snapshot) => {
     snapshot.forEach((collectionId) => {
-      console.log("collectionId", collectionId.key);
       const collectionKey = collectionId.key;
       if (!collectionKey) return;
       const collection = ref(firebase, `collections/${collectionKey}`);
 
       const collectionUnsubscibe = onValue(collection, (collectionSnapshot) => {
-        console.log("collectionvalue", collectionSnapshot.val());
         store.dispatch(
           setCollection({
             collectionId: collectionKey,
@@ -354,7 +358,6 @@ export const removeCollection = async (
       remove(ref(firebase, `collections/${collectionId}`)),
       remove(ref(firebase, `groups/${collectionId}`)),
     ]);
-    console.log("removing with index", collectionIndex);
     await remove(
       ref(
         firebase,

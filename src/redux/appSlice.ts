@@ -7,6 +7,7 @@ import {
 import {
   AppOptions,
   FirebaseData,
+  OrderedId,
   TodoCollection,
   TodoGroup,
   UserSettings,
@@ -16,7 +17,7 @@ interface AppState {
   groups: FirebaseData<TodoGroup>;
   groupOrder: string[];
   collections: FirebaseData<TodoCollection>;
-  collectionOrder: string[];
+  collectionOrder: OrderedId[];
   selectedCollection: string | null;
   selectedGroup: string | null;
   options: AppOptions;
@@ -53,13 +54,13 @@ export const appSlice = createSlice({
       const { collectionId, collection } = action.payload;
       state.collections[collectionId] = collection;
     },
-    setCollectionOrder: (state, action: PayloadAction<string[]>) => {
+    setCollectionOrder: (state, action: PayloadAction<OrderedId[]>) => {
       state.collectionOrder = action.payload;
     },
     removeCollection: (state, action: PayloadAction<string>) => {
       delete state.collections[action.payload];
       state.collectionOrder = state.collectionOrder.filter(
-        (collection) => collection !== action.payload
+        (collection) => collection.id !== action.payload
       );
     },
     setSelectedCollection: (state, action: PayloadAction<string | null>) => {
