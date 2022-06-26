@@ -38,7 +38,7 @@ export const GroupNavbar = () => {
   const handleGroupSelect = (groupId: string) => {
     if (!selectedCollection) return;
     dispatch(setSelectedGroup(groupId));
-    navigate(`${COLLECTION_URL}/${selectedCollection.url}/${groupId}`);
+    navigate(`${COLLECTION_URL}/${selectedCollection.id}/${groupId}`);
   };
 
   const onBack = () => {
@@ -53,7 +53,7 @@ export const GroupNavbar = () => {
       <div className="h-12 w-full px-2 flex justify-between items-center">
         <Link
           className="font-bold text-white text-xl truncate flex-1"
-          to={`${COLLECTION_URL}/${selectedCollection?.url}`}
+          to={`${COLLECTION_URL}/${selectedCollection?.id}`}
           onClick={onBack}
         >
           {<ArrowLeftIcon className="w-7 h-7" />}

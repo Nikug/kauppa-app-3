@@ -3,7 +3,7 @@ import { GroupNavbar } from "../components/GroupNavbar";
 import { Authenticated } from "../components/Authenticated";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
-  setSelectedCollectionWithUrl,
+  setSelectedCollectionWithId,
   setSelectedGroup,
 } from "../redux/appSlice";
 import { getCollections, getSelectedCollection } from "../redux/appSelectors";
@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { listenForGroups } from "../firebase/api";
 
 export const GroupLayout = () => {
-  const { collectionId: collectionUrl, groupId } = useParams<{
+  const { collectionId, groupId } = useParams<{
     collectionId: string;
     groupId: string;
   }>();
@@ -20,20 +20,20 @@ export const GroupLayout = () => {
   const collections = useAppSelector(getCollections);
 
   useEffect(() => {
-    if (!collectionUrl) return;
-    const unsubscribe = listenForGroups(collectionUrl);
+    if (!collectionId) return;
+    const unsubscribe = listenForGroups(collectionId);
     return unsubscribe;
-  }, [collectionUrl]);
+  }, [collectionId]);
 
   useEffect(() => {
-    if (selectedCollection?.url || !collectionUrl) return;
-    dispatch(setSelectedCollectionWithUrl(collectionUrl));
-  }, [collectionUrl, selectedCollection?.url, dispatch, collections]);
+    if (selectedCollection?.id || !collectionId) return;
+    dispatch(setSelectedCollectionWithId(collectionId));
+  }, [collectionId, selectedCollection?.id, dispatch, collections]);
 
   useEffect(() => {
-    if (selectedCollection?.url || !collectionUrl || !groupId) return;
+    if (selectedCollection?.id || !collectionId || !groupId) return;
     dispatch(setSelectedGroup(groupId));
-  }, [collectionUrl, selectedCollection?.url, dispatch, collections, groupId]);
+  }, [collectionId, selectedCollection?.id, dispatch, collections, groupId]);
 
   return (
     <div className="w-content max-w-content min-w-0">

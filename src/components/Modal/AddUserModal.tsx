@@ -56,7 +56,7 @@ export const AddUserModal = (props: Props) => {
   return (
     <ModalBody onClose={onCancel} title={modal.title}>
       <p className="mb-4">
-        {t("modal.collectionLink")} {modal.url}
+        {t("modal.collectionLink")} {modal.id}
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         {modal.label && <label>{modal.label}</label>}

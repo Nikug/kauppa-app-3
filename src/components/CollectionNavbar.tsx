@@ -1,6 +1,5 @@
 import { ArrowLeftIcon, HomeIcon } from "@heroicons/react/solid";
 import { getAuth } from "firebase/auth";
-import humanId from "human-id";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useTranslation } from "react-i18next";
@@ -16,13 +15,9 @@ import { Api, TodoCollection, TodoGroup } from "../types/todo";
 import { Dropdown } from "./Dropdown";
 import { TextButton } from "./inputs/TextButton";
 
-const createNewCollection = (): TodoCollection => {
-  const url = humanId({ separator: "-", capitalize: false });
-  return {
-    url,
-    name: "",
-  };
-};
+const createNewCollection = (): Api<TodoCollection> => ({
+  name: "",
+});
 
 export const createNewGroup = (): Api<TodoGroup> => ({
   name: "",
@@ -51,8 +46,8 @@ export const CollectionNavbar = () => {
 
   const collectionList: TodoCollection[] = useMemo(() => {
     if (!collections) return [];
-    return Object.entries(collections).map(([url, collection]) => ({
-      url,
+    return Object.entries(collections).map(([id, collection]) => ({
+      id,
       ...collection,
     }));
   }, [collections]);
@@ -82,7 +77,7 @@ export const CollectionNavbar = () => {
         okButtonText: t("modal.save"),
         value: newGroup.name,
         onOk: async (value) => {
-          await addGroup(selectedCollection.url, {
+          await addGroup(selectedCollection.id, {
             ...newGroup,
             name: value,
           });
@@ -129,8 +124,8 @@ export const CollectionNavbar = () => {
           >
             {collectionList.map((collection) => (
               <div
-                key={collection.url}
-                onClick={() => handleCollectionSelect(collection.url)}
+                key={collection.id}
+                onClick={() => handleCollectionSelect(collection.id)}
               >
                 {collection.name || t("general.noName")}
               </div>

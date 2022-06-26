@@ -12,7 +12,7 @@ export interface TodoGroup {
 }
 
 export interface TodoCollection {
-  url: string;
+  id: string;
   name?: string;
 }
 
@@ -26,7 +26,7 @@ export interface UserSettings {
   language?: string;
 }
 
-export type Api<T> = Omit<T, "id" | "url">;
+export type Api<T> = Omit<T, "id">;
 export type FirebaseData<T> = Record<string, Api<T>>;
 
 export interface AppOptions {
@@ -48,7 +48,7 @@ interface FirebaseSchema {
   };
   // Used for data access rules
   collectionUsers: {
-    [collectionUrl: string]: {
+    [collectionId: string]: {
       [userId: string]: string; // Email
     };
   };
@@ -57,17 +57,17 @@ interface FirebaseSchema {
     [userId: string]: {
       collectionOrder: string[];
       collections: {
-        [collectionUrl: string]: boolean;
+        [collectionId: string]: boolean;
       };
     };
   };
   collections: {
-    [collectionUrl: string]: {
+    [collectionId: string]: {
       name: string;
     };
   };
   groups: {
-    [collectionUrl: string]: {
+    [collectionId: string]: {
       groupOrder: string[];
       groups: {
         [groupId: string]: {

@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { listenForCollections, setCollectionOrder } from "../firebase/api";
+import { setCollectionOrder } from "../firebase/api";
 import { setSelectedCollection } from "../redux/appSlice";
 import { getCollectionOrder, getCollections } from "../redux/appSelectors";
 import { getAuth } from "firebase/auth";
@@ -16,12 +15,6 @@ export const Collections = () => {
   const collections = useAppSelector(getCollections);
   const collectionOrder = useAppSelector(getCollectionOrder);
 
-  useEffect(() => {
-    if (!user?.uid) return;
-    const unsubscribe = listenForCollections(user.uid);
-    return unsubscribe;
-  }, [user?.uid]);
-
   const selectCollection = (collectionId: string) => {
     dispatch(setSelectedCollection(collectionId));
   };
@@ -34,10 +27,10 @@ export const Collections = () => {
   return (
     <div className="overflow-x-visible">
       <DraggableList
-        items={collectionOrder.map((url, index) => (
+        items={collectionOrder.map((id, index) => (
           <Collection
-            key={url}
-            collection={{ url, ...collections[url] }}
+            key={id}
+            collection={{ id, ...collections[id] }}
             collectionIndex={index}
             onSelect={selectCollection}
           />

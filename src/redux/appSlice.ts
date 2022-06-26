@@ -50,8 +50,8 @@ export const appSlice = createSlice({
       state.groupOrder = action.payload;
     },
     setCollection: (state, action: PayloadAction<SetCollectionPayload>) => {
-      const { collectionUrl, collection } = action.payload;
-      state.collections[collectionUrl] = collection;
+      const { collectionId, collection } = action.payload;
+      state.collections[collectionId] = collection;
     },
     setCollectionOrder: (state, action: PayloadAction<string[]>) => {
       state.collectionOrder = action.payload;
@@ -65,7 +65,7 @@ export const appSlice = createSlice({
     setSelectedCollection: (state, action: PayloadAction<string | null>) => {
       state.selectedCollection = action.payload;
     },
-    setSelectedCollectionWithUrl: (state, action: PayloadAction<string>) => {
+    setSelectedCollectionWithId: (state, action: PayloadAction<string>) => {
       state.selectedCollection = action.payload;
     },
     setSelectedGroup: (state, action: PayloadAction<string | null>) => {
@@ -96,7 +96,7 @@ export const {
   setGroups,
   setGroupOrder,
   setSelectedCollection,
-  setSelectedCollectionWithUrl,
+  setSelectedCollectionWithId,
   setSelectedGroup,
   showOptions,
   updateGroups,

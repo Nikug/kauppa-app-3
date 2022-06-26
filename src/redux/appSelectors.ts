@@ -6,13 +6,13 @@ export const getCollections = (state: RootState) => state.app.collections;
 
 export const getCollection = (
   state: RootState,
-  url: string | null
+  id: string | null
 ): TodoCollection | undefined => {
   const result = Object.entries(state.app.collections).find(
-    ([id]) => id === url
+    ([existingId]) => existingId === id
   );
   if (!result) return undefined;
-  return { url: result[0], ...result[1] };
+  return { id: result[0], ...result[1] };
 };
 
 export const getSelectedCollection = (
@@ -20,7 +20,7 @@ export const getSelectedCollection = (
 ): TodoCollection | undefined => {
   if (state.app.selectedCollection == null) return undefined;
   return {
-    url: state.app.selectedCollection,
+    id: state.app.selectedCollection,
     ...state.app.collections[state.app.selectedCollection],
   };
 };

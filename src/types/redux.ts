@@ -9,6 +9,6 @@ export interface SetGroupsPayload {
 }
 
 export interface SetCollectionPayload {
-  collectionUrl: string;
+  collectionId: string;
   collection: Api<TodoCollection>;
 }

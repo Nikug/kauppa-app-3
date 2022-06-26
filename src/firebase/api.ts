@@ -14,7 +14,6 @@ import {
 import {
   setCollection,
   removeCollection as removeReduxCollection,
-  removeGroup as removeReduxGroup,
   updateGroups,
   updateUserSettings,
   setCollectionOrder as setReduxCollectionOrder,
@@ -150,57 +149,54 @@ export const setCollectionOrder = async (
   }
 };
 
-export const addCollection = async (user: User, collection: TodoCollection) => {
-  const firebase = getDatabase();
-
-  try {
-    await set(
-      ref(firebase, `collectionUsers/${collection.url}/${user.uid}`),
-      user.email
-    );
-    await set(
-      ref(
-        firebase,
-        `userCollections/${user.uid}/collections/${collection.url}`
-      ),
-      true
-    );
-
-    await runTransaction(
-      ref(firebase, `userCollections/${user.uid}/collectionOrder`),
-      (order) => createOrAdd(order, collection.url)
-    );
-
-    await set(ref(firebase, `collections/${collection.url}`), collection);
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-export const updateCollection = async (collectionUrl: string, name: string) => {
-  const firebase = getDatabase();
-
-  try {
-    await update(ref(firebase, `collections/${collectionUrl}`), { name });
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-export const addGroup = async (
-  collectionUrl: string,
-  group: Api<TodoGroup>
+export const addCollection = async (
+  user: User,
+  collection: Api<TodoCollection>
 ) => {
   const firebase = getDatabase();
 
   try {
+    const newCollection = await push(
+      ref(firebase, `userCollections/${user.uid}/collections`),
+      true
+    );
+
+    await set(
+      ref(firebase, `collectionUsers/${newCollection.key}/${user.uid}`),
+      user.email
+    );
+
+    await set(ref(firebase, `collections/${newCollection.key}`), collection);
+    await runTransaction(
+      ref(firebase, `userCollections/${user.uid}/collectionOrder`),
+      (order) => createOrAdd(order, newCollection.key)
+    );
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const updateCollection = async (collectionId: string, name: string) => {
+  const firebase = getDatabase();
+
+  try {
+    await update(ref(firebase, `collections/${collectionId}`), { name });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const addGroup = async (collectionId: string, group: Api<TodoGroup>) => {
+  const firebase = getDatabase();
+
+  try {
     const newGroup = await push(
-      child(ref(firebase), `groups/${collectionUrl}/groups`),
+      child(ref(firebase), `groups/${collectionId}/groups`),
       group
     );
 
     await runTransaction(
-      ref(firebase, `groups/${collectionUrl}/groupOrder`),
+      ref(firebase, `groups/${collectionId}/groupOrder`),
       (order) => createOrAdd(order, newGroup.key)
     );
 
@@ -212,14 +208,14 @@ export const addGroup = async (
 };
 
 export const updateGroup = async (
-  collectionUrl: string,
+  collectionId: string,
   groupId: string,
   name: string
 ) => {
   const firebase = getDatabase();
 
   try {
-    await update(ref(firebase, `groups/${collectionUrl}/groups/${groupId}`), {
+    await update(ref(firebase, `groups/${collectionId}/groups/${groupId}`), {
       name,
     });
   } catch (e) {
@@ -229,12 +225,12 @@ export const updateGroup = async (
 
 export const setGroupOrder = async (
   groupOrder: string[],
-  collectionUrl: string
+  collectionId: string
 ) => {
   const firebase = getDatabase();
 
   try {
-    await set(ref(firebase, `groups/${collectionUrl}/groupOrder`), groupOrder);
+    await set(ref(firebase, `groups/${collectionId}/groupOrder`), groupOrder);
   } catch (e) {
     console.error(e);
   }
@@ -242,7 +238,7 @@ export const setGroupOrder = async (
 
 export const listenForCollections = (userId: string) => {
   const firebase = getDatabase();
-  const collectionUrls = ref(firebase, `userCollections/${userId}/collections`);
+  const collectionIds = ref(firebase, `userCollections/${userId}/collections`);
   const collectionOrder = ref(
     firebase,
     `userCollections/${userId}/collectionOrder`
@@ -254,16 +250,18 @@ export const listenForCollections = (userId: string) => {
   });
 
   const unsubscribes: Unsubscribe[] = [];
-  const unsubscribe = onValue(collectionUrls, (snapshot) => {
-    snapshot.forEach((collectionUrl) => {
-      const collectionKey = collectionUrl.key;
+  const unsubscribe = onValue(collectionIds, (snapshot) => {
+    snapshot.forEach((collectionId) => {
+      console.log("collectionId", collectionId.key);
+      const collectionKey = collectionId.key;
       if (!collectionKey) return;
-      const collection = ref(firebase, `collections/${collectionUrl.key}`);
+      const collection = ref(firebase, `collections/${collectionKey}`);
 
       const collectionUnsubscibe = onValue(collection, (collectionSnapshot) => {
+        console.log("collectionvalue", collectionSnapshot.val());
         store.dispatch(
           setCollection({
-            collectionUrl: collectionKey,
+            collectionId: collectionKey,
             collection: collectionSnapshot.val(),
           })
         );
@@ -310,13 +308,13 @@ export const getUserByEmail = async (
 
 export const addUserToCollection = async (
   user: UserShare,
-  collectionUrl: string
+  collectionId: string
 ) => {
   const firebase = getDatabase();
 
   try {
     await set(
-      ref(firebase, `collectionUsers/${collectionUrl}/${user.uid}`),
+      ref(firebase, `collectionUsers/${collectionId}/${user.uid}`),
       user.email
     );
     return true;
@@ -328,13 +326,13 @@ export const addUserToCollection = async (
 
 export const addInvitedCollection = async (
   userId: string,
-  collectionUrl: string
+  collectionId: string
 ) => {
   const firebase = getDatabase();
 
   try {
     await set(
-      ref(firebase, `userCollections/${userId}/collections/${collectionUrl}`),
+      ref(firebase, `userCollections/${userId}/collections/${collectionId}`),
       true
     );
     return true;
@@ -345,7 +343,7 @@ export const addInvitedCollection = async (
 };
 
 export const removeCollection = async (
-  collectionUrl: string,
+  collectionId: string,
   collectionIndex: number,
   userId: string
 ) => {
@@ -353,40 +351,38 @@ export const removeCollection = async (
 
   try {
     await Promise.all([
-      remove(ref(firebase, `collections/${collectionUrl}`)),
-      remove(ref(firebase, `groups/${collectionUrl}`)),
-      remove(
-        ref(
-          firebase,
-          `userCollections/${userId}/collectionOrder/${collectionIndex}`
-        )
-      ),
-      remove(
-        ref(firebase, `userCollections/${userId}/collections/${collectionUrl}`)
-      ),
+      remove(ref(firebase, `collections/${collectionId}`)),
+      remove(ref(firebase, `groups/${collectionId}`)),
     ]);
-    await remove(ref(firebase, `collectionUsers/${collectionUrl}`));
-    store.dispatch(removeReduxCollection(collectionUrl));
+    console.log("removing with index", collectionIndex);
+    await remove(
+      ref(
+        firebase,
+        `userCollections/${userId}/collectionOrder/${collectionIndex}`
+      )
+    );
+    await remove(
+      ref(firebase, `userCollections/${userId}/collections/${collectionId}`)
+    );
+    await remove(ref(firebase, `collectionUsers/${collectionId}`));
+    store.dispatch(removeReduxCollection(collectionId));
   } catch (e) {
     console.error(e);
   }
 };
 
 export const removeGroup = async (
-  collectionUrl: string,
+  collectionId: string,
   groupId: string,
   groupIndex: number
 ) => {
   const firebase = getDatabase();
 
   try {
-    await remove(ref(firebase, `groups/${collectionUrl}/groups/${groupId}`));
+    await remove(ref(firebase, `groups/${collectionId}/groups/${groupId}`));
     await remove(
-      ref(firebase, `groups/${collectionUrl}/groupOrder/${groupIndex}`)
+      ref(firebase, `groups/${collectionId}/groupOrder/${groupIndex}`)
     );
-
-    // TODO: this is not needed anymore
-    store.dispatch(removeReduxGroup(groupId));
   } catch (e) {
     console.error(e);
   }

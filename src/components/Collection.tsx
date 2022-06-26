@@ -30,7 +30,7 @@ export const Collection = (props: Props) => {
         value: collection.name,
         label: t("modal.name"),
         okButtonText: t("modal.save"),
-        onOk: (value) => updateCollection(collection.url, value),
+        onOk: (value) => updateCollection(collection.id, value),
       })
     );
   };
@@ -43,8 +43,8 @@ export const Collection = (props: Props) => {
         value: "",
         label: t("modal.email"),
         okButtonText: t("modal.add"),
-        collectionId: collection.url,
-        url: `${window.location}/${collection.url}`,
+        collectionId: collection.id,
+        id: `${window.location}/${collection.id}`,
       })
     );
   };
@@ -56,16 +56,16 @@ export const Collection = (props: Props) => {
         type: "confirmation",
         title: t("modal.removeCollection"),
         okButtonText: t("modal.remove"),
-        onOk: () => removeCollection(collection.url, collectionIndex, user.uid),
+        onOk: () => removeCollection(collection.id, collectionIndex, user.uid),
       })
     );
   };
 
   return (
     <div className="border bg-white px-4 h-full flex justify-between items-center">
-      <Link to={collection.url} onClick={() => onSelect(collection.url)}>
+      <Link to={collection.id} onClick={() => onSelect(collection.id)}>
         <h4>{collection.name || <i>{t("general.noName")}</i>}</h4>
-        <p className="text-secondary">{collection.url}</p>
+        <p className="text-secondary">{collection.id}</p>
       </Link>
       <div className="flex justify-end gap-2">
         <UserAddIcon

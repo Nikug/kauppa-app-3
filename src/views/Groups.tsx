@@ -39,14 +39,14 @@ export const Groups = () => {
 
   const isInvitedCollection = useMemo(() => {
     if (!selectedCollection) return false;
-    return !collections[selectedCollection.url];
+    return !collections[selectedCollection.id];
   }, [selectedCollection, collections]);
 
   const addInvitedCollectionToOwnCollections = async () => {
     if (!user || !selectedCollection) return;
     const success = await addInvitedCollection(
       user?.uid,
-      selectedCollection.url
+      selectedCollection.id
     );
     if (success) {
       toast.success(t("collection.addedToCollections"));
@@ -55,7 +55,7 @@ export const Groups = () => {
 
   const updateOrder = (newOrder: string[]) => {
     if (!selectedCollection) return;
-    setGroupOrder(newOrder, selectedCollection.url);
+    setGroupOrder(newOrder, selectedCollection.id);
   };
 
   return (
@@ -79,7 +79,7 @@ export const Groups = () => {
             items={groupOrder.map((groupId, index) => (
               <Group
                 key={groupId}
-                collectionId={selectedCollection?.url}
+                collectionId={selectedCollection?.id}
                 group={{ id: groupId, ...groups[groupId] }}
                 groupIndex={index}
                 onSelect={(id) => handleGroupSelect(id)}
